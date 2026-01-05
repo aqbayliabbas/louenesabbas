@@ -1,7 +1,8 @@
 'use client';
 
 import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
+import Image from 'next/image';
 
 const steps = [
     {
@@ -9,7 +10,6 @@ const steps = [
         title: "Deep Dive",
         description: "We don't just ask what you do. We interrogate why it matters. Uncovering the raw truth of your business.",
         color: "bg-blue-300",
-        // Placeholder image - replace with real assets
         img: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2668&auto=format&fit=crop"
     },
     {
@@ -109,10 +109,12 @@ export function Process() {
                         }}
                         className="fixed top-0 left-0 pointer-events-none z-0 w-[400px] h-[300px] rounded-2xl overflow-hidden shadow-2xl hidden md:block"
                     >
-                        <img
+                        <Image
                             src={steps[activeStep].img}
                             alt="Process"
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
+                            sizes="400px"
                         />
                     </motion.div>
                 )}

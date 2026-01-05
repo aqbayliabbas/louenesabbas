@@ -1,8 +1,9 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { X, ArrowRight, Layout, Zap, Target, Palette } from 'lucide-react';
+import { motion, AnimatePresence, useScroll, useTransform, useSpring } from 'framer-motion';
+import { X, Target, MoveRight, ArrowRight, ArrowLeft } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 
 export interface Project {
     title: string;
@@ -25,14 +26,250 @@ interface ProjectPopupProps {
     onClose: () => void;
 }
 
+function PopupContent({ project, isExpanded, setIsExpanded, onClose }: {
+    project: Project,
+    isExpanded: boolean,
+    setIsExpanded: (v: boolean) => void,
+    onClose: () => void
+}) {
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+    const sliderRef = useRef<HTMLDivElement>(null);
+    const { scrollYProgress } = useScroll({ container: scrollContainerRef });
+
+    const scaleX = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    const headerY = useTransform(scrollYProgress, [0, 0.4], [0, 300]);
+    const headerOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+
+    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+        const scrollTop = e.currentTarget.scrollTop;
+        if (scrollTop > 20 && !isExpanded) {
+            setIsExpanded(true);
+        } else if (scrollTop <= 5 && isExpanded) {
+            setIsExpanded(false);
+        }
+    };
+
+    const scrollSlider = (direction: 'left' | 'right') => {
+        if (sliderRef.current) {
+            const scrollAmount = window.innerWidth * 0.8;
+            sliderRef.current.scrollBy({
+                left: direction === 'left' ? -scrollAmount : scrollAmount,
+                behavior: 'smooth'
+            });
+        }
+    };
+
+    return (
+        <motion.div
+            initial={{ y: '100%' }}
+            animate={{
+                y: isExpanded ? '0%' : '8vh',
+                height: isExpanded ? '100vh' : '92vh',
+                borderRadius: isExpanded ? '0px' : '40px 40px 0px 0px'
+            }}
+            exit={{ y: '100%' }}
+            transition={{
+                type: 'spring',
+                damping: 35,
+                stiffness: 250,
+            }}
+            className="fixed bottom-0 left-0 right-0 z-[101] bg-white shadow-[0_-20px_80px_rgba(0,0,0,0.1)] overflow-hidden flex flex-col"
+        >
+            <motion.div
+                className="absolute top-0 left-0 right-0 h-1 bg-black z-[120] origin-left"
+                style={{ scaleX }}
+            />
+
+            {!isExpanded && (
+                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-16 h-1.5 bg-neutral-200 rounded-full z-[110] opacity-50" />
+            )}
+
+            <button
+                onClick={onClose}
+                className="absolute top-8 right-8 z-[110] p-4 rounded-full transition-all duration-500 hover:scale-110 active:scale-90 bg-black text-white hover:bg-neutral-800 shadow-2xl group"
+            >
+                <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-500" />
+            </button>
+
+            <div
+                ref={scrollContainerRef}
+                onScroll={handleScroll}
+                className="h-full overflow-y-auto scroll-smooth hide-scrollbar relative bg-white"
+            >
+                {/* Hero Stage */}
+                <div className="relative h-[90vh] w-full bg-neutral-100 overflow-hidden">
+                    <motion.div
+                        style={{ y: headerY, opacity: headerOpacity }}
+                        className="absolute inset-0"
+                    >
+                        <Image
+                            src={project.gallery.main}
+                            alt={project.title}
+                            fill
+                            className="object-cover"
+                            priority
+                            sizes="100vw"
+                        />
+                    </motion.div>
+
+                    <div className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-white via-white/40 to-transparent z-10" />
+
+                    <div className="absolute bottom-24 left-12 right-12 z-20 max-w-7xl mx-auto md:px-12">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="mb-8"
+                        >
+                            <span className="text-[10px] font-black uppercase tracking-[0.6em] text-neutral-400">
+                                Case Study — 2024
+                            </span>
+                        </motion.div>
+                        <motion.h2
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-8xl md:text-[13vw] font-bold tracking-[-0.07em] text-black leading-[0.8]"
+                        >
+                            {project.title}
+                        </motion.h2>
+                    </div>
+                </div>
+
+                <div className="max-w-7xl mx-auto px-6 py-40 md:px-12">
+                    {/* Section 01: Narrative */}
+                    <section className="mb-48">
+                        <div className="grid lg:grid-cols-12 gap-24">
+                            <div className="lg:col-span-8">
+                                <span className="text-xs font-black text-neutral-400 tracking-[0.4em] uppercase mb-12 block">01 / The Mission</span>
+                                <h3 className="text-4xl md:text-6xl font-bold tracking-tight text-black mb-16 leading-[1.1]">
+                                    {project.description}
+                                </h3>
+                                <div className="grid sm:grid-cols-2 gap-12 border-t border-neutral-100 pt-16">
+                                    <div>
+                                        <h4 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-6">Strategy</h4>
+                                        <p className="text-lg text-neutral-600 leading-relaxed font-light">{project.strategy}</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-6">Execution</h4>
+                                        <p className="text-lg text-neutral-600 leading-relaxed font-light">{project.brief}</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="lg:col-span-4 lg:pl-12">
+                                <div className="sticky top-12 space-y-12">
+                                    <div>
+                                        <h4 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-8">Metadata</h4>
+                                        <div className="space-y-6">
+                                            {[
+                                                { l: 'Category', v: project.category },
+                                                { l: 'Timeline', v: '12 Weeks' },
+                                                { l: 'Role', v: 'Lead Designer' }
+                                            ].map((m, i) => (
+                                                <div key={i} className="flex flex-col border-b border-neutral-100 pb-4">
+                                                    <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest mb-1">{m.l}</span>
+                                                    <span className="text-sm font-bold">{m.v}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h4 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-8">Deliverables</h4>
+                                        <div className="flex flex-wrap gap-2">
+                                            {project.deliverables.map((d, i) => (
+                                                <span key={i} className="px-4 py-2 bg-neutral-50 rounded-full text-xs font-medium text-neutral-600 border border-neutral-100">{d}</span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* Section 02: Horizontal Slider Gallery */}
+                    <section className="mb-64 -mx-6 md:-mx-12 lg:-mx-40">
+                        <div className="px-6 md:px-12 lg:px-40 flex items-center justify-between mb-16">
+                            <h3 className="text-6xl md:text-8xl font-bold tracking-tighter">Gallery.</h3>
+                            <div className="flex gap-4">
+                                <button
+                                    onClick={() => scrollSlider('left')}
+                                    className="p-4 rounded-full border border-neutral-200 hover:bg-neutral-50 transition-colors"
+                                >
+                                    <ArrowLeft className="w-6 h-6" />
+                                </button>
+                                <button
+                                    onClick={() => scrollSlider('right')}
+                                    className="p-4 rounded-full border border-neutral-200 hover:bg-neutral-50 transition-colors"
+                                >
+                                    <ArrowRight className="w-6 h-6" />
+                                </button>
+                            </div>
+                        </div>
+
+                        <div
+                            ref={sliderRef}
+                            className="flex overflow-x-auto gap-8 px-6 md:px-12 lg:px-40 hide-scrollbar scroll-smooth snap-x snap-mandatory"
+                        >
+                            {project.gallery.secondary.map((img, idx) => (
+                                <motion.div
+                                    key={idx}
+                                    className="flex-none w-[85vw] md:w-[60vw] lg:w-[45vw] aspect-[4/5] md:aspect-[16/10] relative rounded-[40px] overflow-hidden bg-neutral-100 snap-center shadow-2xl group"
+                                >
+                                    <Image
+                                        src={img}
+                                        alt={`Slide ${idx + 1}`}
+                                        fill
+                                        className="object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        sizes="(max-width: 768px) 85vw, 60vw"
+                                    />
+                                    <div className="absolute inset-0 bg-black/10 transition-opacity group-hover:opacity-0" />
+                                    <div className="absolute bottom-10 left-10 text-white z-20">
+                                        <span className="text-[10px] font-black uppercase tracking-[0.4em] opacity-40">Detail / 0{idx + 1}</span>
+                                    </div>
+                                </motion.div>
+                            ))}
+                        </div>
+                    </section>
+
+                    {/* Section 03: The Outcome */}
+                    <section className="pb-40">
+                        <div className="relative bg-black text-white rounded-[80px] p-16 md:p-32 overflow-hidden">
+                            <div className="max-w-4xl relative z-10">
+                                <h4 className="text-[10px] font-black text-neutral-500 tracking-[0.6em] uppercase mb-16 block">03 / Outcome</h4>
+                                <p className="text-4xl md:text-7xl font-bold tracking-tight leading-[1.05] mb-20">
+                                    "Transforming digital touchpoints into <span className="italic font-serif font-light text-neutral-400">memorable narratives</span> that speak to the soul."
+                                </p>
+                                <div className="flex items-center gap-12">
+                                    <div className="flex flex-col">
+                                        <span className="text-2xl font-bold">Creative Lead Review</span>
+                                        <span className="text-sm font-bold text-neutral-500 uppercase tracking-widest mt-1">Founding Director</span>
+                                    </div>
+                                    <button className="flex items-center gap-6 text-2xl font-bold group hover:translate-x-4 transition-transform">
+                                        Next Project
+                                        <MoveRight className="w-8 h-8" />
+                                    </button>
+                                </div>
+                            </div>
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] aspect-square bg-radial-gradient from-neutral-800/20 to-transparent" />
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </motion.div>
+    );
+}
+
 export default function ProjectPopup({ project, isOpen, onClose }: ProjectPopupProps) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (isOpen) {
             document.body.style.overflow = 'hidden';
-            setIsExpanded(false); // Reset expansion state when opening
+            setIsExpanded(false);
         } else {
             document.body.style.overflow = 'unset';
             setIsExpanded(false);
@@ -42,203 +279,25 @@ export default function ProjectPopup({ project, isOpen, onClose }: ProjectPopupP
         };
     }, [isOpen]);
 
-    const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-        const scrollTop = e.currentTarget.scrollTop;
-        // If user scrolls down more than 20px, expand to full screen
-        if (scrollTop > 20 && !isExpanded) {
-            setIsExpanded(true);
-        } else if (scrollTop <= 5 && isExpanded) {
-            setIsExpanded(false);
-        }
-    };
-
     if (!project) return null;
 
     return (
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 bg-black/60 backdrop-blur-md z-[100]"
+                        className="fixed inset-0 bg-black/70 backdrop-blur-2xl z-[100]"
                     />
-
-                    {/* Popup Sheet */}
-                    <motion.div
-                        initial={{ y: '100%' }}
-                        animate={{
-                            y: isExpanded ? '0%' : '8vh',
-                            height: isExpanded ? '100vh' : '92vh',
-                            borderRadius: isExpanded ? '0px' : '32px 32px 0px 0px'
-                        }}
-                        exit={{ y: '100%' }}
-                        transition={{
-                            type: 'spring',
-                            damping: 30,
-                            stiffness: 300,
-                            borderRadius: { duration: 0.2 }
-                        }}
-                        className="fixed bottom-0 left-0 right-0 z-[101] bg-white shadow-2xl overflow-hidden flex flex-col"
-                    >
-                        {/* Decorative Handle - only visible when not expanded */}
-                        {!isExpanded && (
-                            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-gray-200 rounded-full z-[110]" />
-                        )}
-
-                        {/* Close button - Using mix-blend-mode for dynamic contrast against any background */}
-                        <button
-                            onClick={onClose}
-                            className="absolute top-6 right-6 z-[110] p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 bg-white mix-blend-difference group"
-                        >
-                            <X className="w-5 h-5 text-black group-hover:rotate-90 transition-transform duration-300" />
-                        </button>
-
-                        {/* Scrollable Content */}
-                        <div
-                            onScroll={handleScroll}
-                            className="h-full overflow-y-auto scroll-smooth hide-scrollbar relative"
-                        >
-                            {/* Sticky Header Visual (Optional) */}
-                            <div className="relative h-[60vh] w-full">
-                                <img
-                                    src={project.gallery.main}
-                                    alt={project.title}
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-linear-to-t from-white via-transparent to-transparent" />
-                                <div className="absolute bottom-12 left-12 right-12">
-                                    <motion.span
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        className="text-sm font-bold tracking-[0.2em] uppercase text-black/60 mb-2 block"
-                                    >
-                                        {project.category}
-                                    </motion.span>
-                                    <motion.h2
-                                        initial={{ opacity: 0, y: 20 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: 0.1 }}
-                                        className="text-6xl md:text-8xl font-bold tracking-tighter text-black"
-                                    >
-                                        {project.title}
-                                    </motion.h2>
-                                </div>
-                            </div>
-
-                            <div className="max-w-7xl mx-auto px-6 py-20 md:px-12">
-                                {/* Introduction */}
-                                <div className="grid lg:grid-cols-12 gap-12 mb-32">
-                                    <div className="lg:col-span-8">
-                                        <h3 className="text-3xl font-medium mb-8 text-black/40">The Story</h3>
-                                        <p className="text-2xl md:text-3xl font-light text-black leading-[1.4]">
-                                            {project.description}
-                                        </p>
-                                    </div>
-                                    <div className="lg:col-span-4 flex flex-col justify-end">
-                                        <div className="h-[2px] w-12 bg-black mb-6" />
-                                        <p className="text-muted-foreground text-sm uppercase tracking-widest font-bold">
-                                            Project Reveal 2024
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Secondary Gallery Grid */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
-                                    {project.gallery.secondary.slice(0, 2).map((img, idx) => (
-                                        <div key={idx} className="aspect-[4/3] rounded-3xl overflow-hidden group bg-muted">
-                                            <img
-                                                src={img}
-                                                alt={`${project.title} details ${idx + 1}`}
-                                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                            />
-                                        </div>
-                                    ))}
-                                    {project.gallery.secondary.slice(2, 4).map((img, idx) => (
-                                        <div key={idx + 2} className="aspect-[4/5] rounded-3xl overflow-hidden group bg-muted">
-                                            <img
-                                                src={img}
-                                                alt={`${project.title} details ${idx + 3}`}
-                                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                            />
-                                        </div>
-                                    ))}
-                                </div>
-
-                                {/* Deep Dive Sections */}
-                                <div className="grid md:grid-cols-3 gap-16 mb-32">
-                                    <div className="space-y-6 group">
-                                        <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white mb-8 transition-transform group-hover:rotate-12">
-                                            <Target className="w-6 h-6" />
-                                        </div>
-                                        <h4 className="text-2xl font-bold">The Brief</h4>
-                                        <p className="text-foreground/70 leading-relaxed text-lg">
-                                            {project.brief}
-                                        </p>
-                                    </div>
-                                    <div className="space-y-6 group">
-                                        <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white mb-8 transition-transform group-hover:rotate-12 shadow-xl shadow-black/10">
-                                            <Zap className="w-6 h-6" />
-                                        </div>
-                                        <h4 className="text-2xl font-bold">Strategy</h4>
-                                        <p className="text-foreground/70 leading-relaxed text-lg">
-                                            {project.strategy}
-                                        </p>
-                                    </div>
-                                    <div className="space-y-6 group">
-                                        <div className="w-12 h-12 rounded-2xl bg-black flex items-center justify-center text-white mb-8 transition-transform group-hover:rotate-12">
-                                            <Palette className="w-6 h-6" />
-                                        </div>
-                                        <h4 className="text-2xl font-bold">Concept</h4>
-                                        <p className="text-foreground/70 leading-relaxed text-lg">
-                                            Merging architectural precision with organic fluidness to create a visual language that speaks beyond trends.
-                                        </p>
-                                    </div>
-                                </div>
-
-                                {/* Deliverables & Footer Image */}
-                                <div className="bg-black text-white p-12 md:p-20 rounded-[40px] overflow-hidden relative">
-                                    <div className="relative z-10 grid lg:grid-cols-2 gap-16">
-                                        <div>
-                                            <h3 className="text-4xl font-bold mb-12">Deliverables</h3>
-                                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-4">
-                                                {project.deliverables.map((item, idx) => (
-                                                    <div key={idx} className="flex items-center gap-3 text-lg text-white/70 group py-2">
-                                                        <div className="w-2 h-2 rounded-full bg-white transition-all group-hover:w-4" />
-                                                        {item}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <div className="flex flex-col justify-center">
-                                            <div className="p-8 border border-white/10 rounded-3xl backdrop-blur-md">
-                                                <p className="text-xl font-light italic leading-relaxed text-white/80">
-                                                    "The transformation wasn't just visual; it was fundamental. The brand now breathes the same air as the leaders in its industry."
-                                                </p>
-                                                <div className="mt-6 flex items-center gap-4">
-                                                    <div className="w-10 h-10 rounded-full bg-white/20" />
-                                                    <div>
-                                                        <p className="font-bold">Creative Director</p>
-                                                        <p className="text-sm text-white/40">Collaborative Review</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* Abstract background blobs for premium feel */}
-                                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-                                    <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-white/5 blur-[100px] rounded-full translate-y-1/2 -translate-x-1/2" />
-                                </div>
-                            </div>
-
-                            {/* Footer Space */}
-                            <div className="h-20" />
-                        </div>
-                    </motion.div>
+                    <PopupContent
+                        project={project}
+                        isExpanded={isExpanded}
+                        setIsExpanded={setIsExpanded}
+                        onClose={onClose}
+                    />
                 </>
             )}
         </AnimatePresence>

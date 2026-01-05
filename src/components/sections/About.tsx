@@ -3,6 +3,7 @@
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { ArrowUpRight } from 'lucide-react';
+import Image from 'next/image';
 
 const StatItem = ({ number, label, detail, index }: { number: string, label: string, detail: string, index: number }) => {
     const ref = useRef(null);
@@ -69,7 +70,7 @@ export function About() {
 
     return (
         <section ref={containerRef} className="relative bg-[#050505] text-white overflow-hidden">
-            {/* Massive Scrolly Text Background - Hidden on small mobile to prevent overflow/clutter, visible on tablets up */}
+            {/* Massive Scrolly Text Background */}
             <div className="absolute top-0 left-0 w-full h-full hidden sm:flex items-center justify-center pointer-events-none -z-0">
                 <motion.span
                     style={{ x }}
@@ -106,10 +107,12 @@ export function About() {
                             transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
                             className="relative aspect-[4/5] overflow-hidden rounded-2xl group w-full max-w-lg mx-auto lg:mx-0"
                         >
-                            <img
+                            <Image
                                 src="/me.png"
                                 alt="Louenes Abbas"
-                                className="w-full h-full object-cover grayscale brightness-50 md:group-hover:grayscale-0 md:group-hover:brightness-100 transition-all duration-1000"
+                                fill
+                                className="object-cover grayscale brightness-50 md:group-hover:grayscale-0 md:group-hover:brightness-100 transition-all duration-1000"
+                                sizes="(max-width: 1024px) 100vw, 40vw"
                             />
                             <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
                         </motion.div>

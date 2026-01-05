@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
 import { useRef, useState } from 'react';
+import Image from 'next/image';
 import ProjectPopup, { Project } from '../ui/ProjectPopup';
 
 const projects: Project[] = [
@@ -121,10 +122,13 @@ const Card = ({
                 {/* Background Image with Zoom Effect */}
                 <div className="absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-105">
                     <motion.div style={{ scale: imageScale }} className="w-full h-full">
-                        <img
+                        <Image
                             src={project.img}
                             alt={project.title}
-                            className="w-full h-full object-cover"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 1000px) 100vw, 1000px"
+                            priority={i === 0}
                         />
                     </motion.div>
                     <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500" />
@@ -197,7 +201,7 @@ export function Work() {
                                 i={index}
                                 project={project}
                                 progress={scrollYProgress}
-                                range={[index * 0.25, 1]}
+                                range={[index * 0.25, 1] as [number, number]}
                                 targetScale={targetScale}
                                 onOpen={handleOpenProject}
                             />
@@ -214,3 +218,4 @@ export function Work() {
         </section>
     );
 }
+
