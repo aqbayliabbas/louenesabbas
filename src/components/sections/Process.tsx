@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useMotionValue, useSpring, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import Image from 'next/image';
 
@@ -38,24 +38,8 @@ const steps = [
 export function Process() {
     const [activeStep, setActiveStep] = useState<number | null>(null);
 
-    // Mouse position for the floating image
-    const x = useMotionValue(0);
-    const y = useMotionValue(0);
-
-    // Smooth spring animation for the mouse follow
-    const mouseX = useSpring(x, { stiffness: 500, damping: 50 });
-    const mouseY = useSpring(y, { stiffness: 500, damping: 50 });
-
-    function handleMouseMove({ clientX, clientY }: React.MouseEvent) {
-        x.set(clientX);
-        y.set(clientY);
-    }
-
     return (
-        <section
-            className="py-32 px-6 relative overflow-hidden"
-            onMouseMove={handleMouseMove}
-        >
+        <section className="py-32 px-6 relative overflow-hidden">
             <div className="max-w-[1200px] mx-auto relative z-10">
                 <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-16">The Process</h2>
 
@@ -92,30 +76,25 @@ export function Process() {
                 </div>
             </div>
 
-            {/* Floating Image */}
+            {/* Static Image Box replacing floating mouse logic for better performance */}
             <AnimatePresence>
                 {activeStep !== null && (
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.5 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.5 }}
-                        transition={{ duration: 0.2 }}
-                        style={{
-                            x: mouseX,
-                            y: mouseY,
-                            translateX: "-50%",
-                            translateY: "-50%",
-                            rotate: -5
-                        }}
-                        className="fixed top-0 left-0 pointer-events-none z-0 w-[400px] h-[300px] rounded-2xl overflow-hidden shadow-2xl hidden md:block"
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                        className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-10"
                     >
-                        <Image
-                            src={steps[activeStep].img}
-                            alt="Process"
-                            fill
-                            className="object-cover"
-                            sizes="400px"
-                        />
+                        <div className="w-[80vw] h-[80vh] relative">
+                            <Image
+                                src={steps[activeStep].img}
+                                alt="Process Background"
+                                fill
+                                className="object-cover grayscale"
+                                sizes="80vw"
+                            />
+                        </div>
                     </motion.div>
                 )}
             </AnimatePresence>

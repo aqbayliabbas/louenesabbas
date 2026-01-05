@@ -4,67 +4,101 @@ import { motion } from 'framer-motion';
 
 export function Hero() {
   return (
-    <section className="h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden bg-gradient-to-br from-white to-neutral-300">
-      {/* Grain Overlay */}
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0 mix-blend-overlay"
-        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}
+    <section className="h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden bg-white">
+      {/* High-Contrast Moving Grain (More Obvious) */}
+      <motion.div
+        animate={{
+          x: [0, -20, 10, -5, 20, 0],
+          y: [0, 10, -20, 15, -10, 0]
+        }}
+        transition={{
+          duration: 0.1,
+          repeat: Infinity,
+          ease: "linear"
+        }}
+        className="absolute inset-[-15%] opacity-[0.08] pointer-events-none z-10 mix-blend-multiply"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+          backgroundSize: '160px 160px'
+        }}
       />
 
-      {/* Animated Background Blobs (Monochrome) */}
+      {/* Vibrant "Obvious" Moving Gradients */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Deep Burgundy Blob */}
         <motion.div
           animate={{
-            scale: [1, 1.2, 1],
-            rotate: [0, 90, 0],
-            x: [0, 100, 0]
+            x: ['-25%', '45%', '-25%'],
+            y: ['-15%', '35%', '-15%'],
+            scale: [1, 1.6, 1],
+            rotate: [0, 90, 0]
           }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute -top-[20%] -right-[10%] w-[80vw] h-[80vw] bg-neutral-400/20 rounded-full blur-[100px]"
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-0 left-0 w-[120vw] h-[120vw] bg-[#800020] rounded-full blur-[120px] opacity-[0.25] mix-blend-multiply"
         />
+
+        {/* Electric Blue Blob */}
         <motion.div
           animate={{
-            scale: [1, 1.5, 1],
-            rotate: [0, -60, 0],
-            x: [0, -50, 0]
+            x: ['40%', '-30%', '40%'],
+            y: ['50%', '-25%', '50%'],
+            scale: [1.2, 1.8, 1.2],
+            rotate: [0, -60, 0]
           }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[40%] -left-[20%] w-[60vw] h-[60vw] bg-neutral-300/20 rounded-full blur-[100px]"
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-0 right-0 w-[110vw] h-[110vw] bg-[#0033ff] rounded-full blur-[140px] opacity-[0.3] mix-blend-multiply"
         />
+
+        {/* Accent Teal/Cyan for Depth */}
+        <motion.div
+          animate={{
+            x: ['10%', '60%', '10%'],
+            y: ['70%', '10%', '70%'],
+            scale: [1, 1.4, 1],
+          }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-0 left-1/4 w-[80vw] h-[80vw] bg-[#00f2ff] rounded-full blur-[160px] opacity-[0.2] mix-blend-multiply"
+        />
+
+        {/* Brightening Layer to keep it "Light" */}
+        <div className="absolute inset-0 bg-white/40 z-[5]" />
       </div>
 
-      <div className="max-w-[1400px] w-full z-10 text-center relative">
+      <div className="max-w-[1400px] w-full z-20 text-center relative">
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
         >
-          <h1 className="text-[13vw] leading-[0.8] font-bold tracking-tighter text-black select-none">
+          <h1 className="text-[14vw] leading-[0.75] font-black tracking-tighter text-black select-none drop-shadow-sm">
             Thinking <br />
-            <span className="font-serif italic font-light text-black/80">To life.</span>
+            <span className="font-serif italic font-light text-neutral-500/80">To life.</span>
           </h1>
         </motion.div>
 
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 1 }}
-          className="mt-12 flex flex-col md:flex-row justify-center items-center gap-6 md:gap-12"
+          transition={{ delay: 1, duration: 1.5 }}
+          className="mt-20 flex flex-col md:flex-row justify-center items-center gap-10 md:gap-20"
         >
-          <p className="text-xl text-black/50 max-w-sm text-center md:text-left leading-relaxed">
+          <p className="text-2xl text-black/60 max-w-sm text-center md:text-left leading-relaxed font-light">
             I build brands that refuse to be ignored. Bridging the gap between silence and noise with strategic precision.
           </p>
-          <div className="h-px w-12 bg-black/20 hidden md:block" />
-          <div className="flex gap-4">
-            <button className="px-8 py-4 rounded-full bg-black text-white font-medium hover:scale-105 transition-transform active:scale-95">
-              View Work
+          <div className="h-px w-20 bg-black/10 hidden md:block" />
+          <div className="flex gap-8">
+            <button className="px-12 py-6 rounded-full bg-black text-white font-bold hover:scale-105 transition-all shadow-2xl active:scale-95 text-lg">
+              Explore Projects
             </button>
-            <button className="px-8 py-4 rounded-full border border-black/10 bg-white/50 backdrop-blur-sm font-medium hover:bg-black/5 transition-colors active:scale-95">
-              Contact Me
+            <button className="px-12 py-6 rounded-full border border-black/20 bg-white/40 backdrop-blur-2xl text-black font-bold hover:bg-black/5 transition-all active:scale-95 text-lg">
+              Get in Touch
             </button>
           </div>
         </motion.div>
       </div>
+
+      {/* Modern Vignette */}
+      <div className="absolute inset-0 ring-1 ring-inset ring-black/5 pointer-events-none z-30" />
     </section>
   );
 }
