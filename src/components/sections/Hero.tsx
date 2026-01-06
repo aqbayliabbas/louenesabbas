@@ -23,46 +23,7 @@ export function Hero() {
         }}
       />
 
-      {/* Vibrant "Obvious" Moving Gradients */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Deep Burgundy Blob */}
-        <motion.div
-          animate={{
-            x: ['-25%', '45%', '-25%'],
-            y: ['-15%', '35%', '-15%'],
-            scale: [1, 1.6, 1],
-            rotate: [0, 90, 0]
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-0 left-0 w-[120vw] h-[120vw] bg-[#800020] rounded-full blur-[120px] opacity-[0.25] mix-blend-multiply"
-        />
 
-        {/* Electric Blue Blob */}
-        <motion.div
-          animate={{
-            x: ['40%', '-30%', '40%'],
-            y: ['50%', '-25%', '50%'],
-            scale: [1.2, 1.8, 1.2],
-            rotate: [0, -60, 0]
-          }}
-          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-0 right-0 w-[110vw] h-[110vw] bg-[#0033ff] rounded-full blur-[140px] opacity-[0.3] mix-blend-multiply"
-        />
-
-        {/* Accent Teal/Cyan for Depth */}
-        <motion.div
-          animate={{
-            x: ['10%', '60%', '10%'],
-            y: ['70%', '10%', '70%'],
-            scale: [1, 1.4, 1],
-          }}
-          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-0 left-1/4 w-[80vw] h-[80vw] bg-[#00f2ff] rounded-full blur-[160px] opacity-[0.2] mix-blend-multiply"
-        />
-
-        {/* Brightening Layer to keep it "Light" */}
-        <div className="absolute inset-0 bg-white/40 z-[5]" />
-      </div>
 
       <div className="max-w-[1400px] w-full z-20 text-center relative">
         <motion.div

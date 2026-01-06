@@ -65,6 +65,20 @@ export function Process() {
                                     {step.title}
                                 </h3>
                             </div>
+
+                            {/* Floating Image reveal - out of frame */}
+                            <div className="absolute left-[40%] top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 group-hover:scale-100 scale-90 -rotate-3 group-hover:rotate-3 transition-all duration-500 ease-[0.16,1,0.3,1] z-20">
+                                <div className="w-[320px] aspect-[4/5] relative rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]">
+                                    <Image
+                                        src={step.img}
+                                        alt={step.title}
+                                        fill
+                                        className="object-cover transition-all duration-700"
+                                        sizes="320px"
+                                    />
+                                </div>
+                            </div>
+
                             <div className="flex-1 max-w-md">
                                 <p className="text-lg text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-300">
                                     {step.description}
@@ -75,29 +89,6 @@ export function Process() {
                     <div className="border-t border-border" />
                 </div>
             </div>
-
-            {/* Static Image Box replacing floating mouse logic for better performance */}
-            <AnimatePresence>
-                {activeStep !== null && (
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.3 }}
-                        className="fixed inset-0 pointer-events-none z-0 flex items-center justify-center opacity-10"
-                    >
-                        <div className="w-[80vw] h-[80vh] relative">
-                            <Image
-                                src={steps[activeStep].img}
-                                alt="Process Background"
-                                fill
-                                className="object-cover grayscale"
-                                sizes="80vw"
-                            />
-                        </div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </section>
     );
 }
