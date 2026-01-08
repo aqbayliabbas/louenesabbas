@@ -163,7 +163,6 @@ function PopupContent({ project, isExpanded, setIsExpanded, onClose }: {
                             <div className="lg:col-span-4 lg:pl-12">
                                 <div className="sticky top-12 space-y-12">
                                     <div>
-                                        <h4 className="text-[10px] font-black text-neutral-400 uppercase tracking-widest mb-8">Metadata</h4>
                                         <div className="space-y-6">
                                             {[
                                                 { l: 'Category', v: project.category },
@@ -248,10 +247,6 @@ function PopupContent({ project, isExpanded, setIsExpanded, onClose }: {
                                         <span className="text-2xl font-bold">Creative Lead Review</span>
                                         <span className="text-sm font-bold text-neutral-500 uppercase tracking-widest mt-1">Founding Director</span>
                                     </div>
-                                    <button className="flex items-center gap-6 text-2xl font-bold group hover:translate-x-4 transition-transform">
-                                        Next Project
-                                        <MoveRight className="w-8 h-8" />
-                                    </button>
                                 </div>
                             </div>
                             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150%] aspect-square bg-radial-gradient from-neutral-800/20 to-transparent" />

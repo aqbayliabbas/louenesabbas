@@ -2,6 +2,7 @@
 
 import { motion, useMotionTemplate, useMotionValue } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import Link from 'next/link';
 
 export function Contact() {
     const mouseX = useMotionValue(0);
@@ -49,11 +50,18 @@ export function Contact() {
                             Interested in working together? We should queue up a time to chat. I’ll buy the coffee.
                         </p>
 
-                        <div className="pt-8">
+                        <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-4">
                             <button className="group relative inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95">
                                 <span>hello@louenes.com</span>
                                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                             </button>
+                            <Link
+                                href="/questionnaire"
+                                className="group relative inline-flex items-center gap-3 bg-transparent border border-white/20 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95"
+                            >
+                                <span>Start Questionnaire</span>
+                                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                            </Link>
                         </div>
                     </div>
                 </motion.div>
