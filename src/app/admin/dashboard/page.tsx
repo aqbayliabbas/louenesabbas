@@ -1,73 +1,194 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
     Users,
-    MessageSquare,
     TrendingUp,
-    Clock,
-    ArrowUpRight
+    DollarSign,
+    ArrowUpRight,
+    ArrowDownRight,
+    Zap
 } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+import Link from 'next/link';
 
-export default function DashboardPage() {
-    const stats = [
-        { label: 'Réponses totales', value: '0', icon: MessageSquare, change: '0%' },
-        { label: 'Visiteurs uniques', value: '0', icon: Users, change: '0%' },
-        { label: 'Taux de Conversion', value: '0%', icon: TrendingUp, change: '0%' },
-        { label: 'Étape moyenne', value: '0 / 15', icon: Clock, change: '0%' },
+export default function DashboardOverview() {
+    const [stats, setStats] = useState({
+        totalResponses: 0,
+        averageBudget: 0,
+        newToday: 0,
+        completionRate: 85, // Placeholder
+    });
+    const [recentResponses, setRecentResponses] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            // Fetch all responses for stats
+            const { data: responses, error } = await supabase
+                .from('responses')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+
+            if (responses) {
+                calculateStats(responses);
+                setRecentResponses(responses.slice(0, 5));
+            }
+        } catch (error) {
+            console.error('Error fetching dashboard data:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const calculateStats = (responses: any[]) => {
+        const total = responses.length;
+        const today = new Date().toISOString().split('T')[0];
+        const newToday = responses.filter(r => r.created_at.split('T')[0] === today).length;
+
+        // Try to parse budgets
+        let totalBudget = 0;
+        let countWithBudget = 0;
+        responses.forEach(r => {
+            if (r.budget) {
+                const match = r.budget.match(/\d+/g);
+                if (match) {
+                    const avg = match.reduce((a: number, b: string) => a + parseInt(b), 0) / match.length;
+                    totalBudget += avg;
+                    countWithBudget++;
+                }
+            }
+        });
+
+        setStats({
+            totalResponses: total,
+            averageBudget: countWithBudget > 0 ? Math.round(totalBudget / countWithBudget) : 0,
+            newToday: newToday,
+            completionRate: 85,
+        });
+    };
+
+    useEffect(() => {
+        fetchData();
+
+        // Subscribe to real-time updates
+        const channel = supabase
+            .channel('dashboard-changes')
+            .on(
+                'postgres_changes',
+                {
+                    event: '*',
+                    schema: 'public',
+                    table: 'responses'
+                },
+                (payload) => {
+                    console.log('Real-time update received:', payload);
+                    if (payload.eventType === 'INSERT') {
+                        // Refresh data or update state directly
+                        fetchData();
+                    } else if (payload.eventType === 'DELETE') {
+                        fetchData();
+                    }
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
+    }, []);
+
+    const kpis = [
+        {
+            label: 'Total Prospects',
+            value: stats.totalResponses,
+            icon: Users,
+            trend: '+12%',
+            trendUp: true,
+            color: 'bg-blue-500'
+        },
+        {
+            label: 'Budget Moyen',
+            value: `${stats.averageBudget.toLocaleString()} DZA`,
+            icon: DollarSign,
+            trend: '+5.4%',
+            trendUp: true,
+            color: 'bg-emerald-500'
+        },
+        {
+            label: 'Nouveaux (Aujourd\'hui)',
+            value: stats.newToday,
+            icon: Zap,
+            trend: stats.newToday > 0 ? 'Live' : 'Calm',
+            trendUp: stats.newToday > 0,
+            color: 'bg-amber-500'
+        },
+        {
+            label: 'Taux de Remplissage',
+            value: `${stats.completionRate}%`,
+            icon: TrendingUp,
+            trend: '+2.1%',
+            trendUp: true,
+            color: 'bg-purple-500'
+        }
     ];
 
     return (
-        <div className="space-y-12">
+        <div className="space-y-16 pb-20">
+            {/* Header */}
             <header>
-                <h1 className="text-4xl font-bold tracking-tighter">Tableau de bord</h1>
-                <p className="text-neutral-500 font-light mt-2">Bienvenue dans votre espace de gestion, Louenes.</p>
+                <h1 className="text-6xl font-black tracking-[-0.04em] leading-none text-black">Tableau de Bord</h1>
+                <p className="text-neutral-400 font-medium text-lg mt-4 max-w-xl leading-relaxed">
+                    Performance globale et insights stratégiques en temps réel.
+                </p>
             </header>
 
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {stats.map((stat, i) => {
-                    const Icon = stat.icon;
-                    return (
+            {/* KPI Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                {isLoading ? (
+                    Array.from({ length: 4 }).map((_, i) => (
+                        <div key={i} className="p-8 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm animate-pulse">
+                            <div className="flex justify-between items-start mb-6">
+                                <div className="w-14 h-14 bg-neutral-100 rounded-2xl" />
+                                <div className="h-4 w-12 bg-neutral-50 rounded-lg" />
+                            </div>
+                            <div className="space-y-3">
+                                <div className="h-3 w-20 bg-neutral-50 rounded-lg" />
+                                <div className="h-8 w-32 bg-neutral-100 rounded-lg" />
+                            </div>
+                        </div>
+                    ))
+                ) : (
+                    kpis.map((kpi, i) => (
                         <motion.div
-                            key={stat.label}
+                            key={kpi.label}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: i * 0.1 }}
-                            className="bg-white p-8 rounded-[2rem] border border-neutral-100 shadow-sm group hover:shadow-xl transition-all duration-500"
+                            className="group p-8 bg-white rounded-[2.5rem] border border-neutral-100 shadow-sm hover:shadow-2xl transition-all duration-500"
                         >
                             <div className="flex justify-between items-start mb-6">
-                                <div className="p-4 bg-neutral-50 rounded-2xl group-hover:bg-black group-hover:text-white transition-colors">
-                                    <Icon size={24} />
+                                <div className={`p-4 rounded-2xl ${kpi.color} text-white shadow-lg group-hover:rotate-6 transition-transform`}>
+                                    <kpi.icon size={24} />
                                 </div>
-                                <span className={`text-xs font-bold px-3 py-1 rounded-full ${stat.change.startsWith('+') ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-600'
-                                    }`}>
-                                    {stat.change}
-                                </span>
+                                <div className={`flex items-center gap-1 text-xs font-black ${kpi.trendUp ? 'text-emerald-500' : 'text-neutral-400'}`}>
+                                    {kpi.trendUp ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />}
+                                    {kpi.trend}
+                                </div>
                             </div>
-                            <p className="text-sm font-bold tracking-widest uppercase text-neutral-400 mb-1">{stat.label}</p>
-                            <h3 className="text-3xl font-bold tracking-tighter">{stat.value}</h3>
+                            <div>
+                                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-neutral-300 mb-2">{kpi.label}</p>
+                                <h3 className="text-3xl font-black tracking-tight text-black">{kpi.value}</h3>
+                            </div>
                         </motion.div>
-                    );
-                })}
+                    ))
+                )}
             </div>
 
-            {/* Recent Activity Skeletons */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <div className="lg:col-span-3 bg-white rounded-[2rem] p-8 border border-neutral-100 shadow-sm">
-                    <div className="flex justify-between items-center mb-8">
-                        <h3 className="text-xl font-bold tracking-tighter">Réponses récentes</h3>
-                        <button className="text-sm font-bold flex items-center gap-1 hover:gap-2 transition-all">
-                            Voir tout <ArrowUpRight size={16} />
-                        </button>
-                    </div>
-                    <div className="space-y-6">
-                        <p className="text-neutral-400 text-center py-12 font-light italic">
-                            Aucune réponse pour le moment.
-                        </p>
-                    </div>
-                </div>
-            </div>
         </div>
     );
 }

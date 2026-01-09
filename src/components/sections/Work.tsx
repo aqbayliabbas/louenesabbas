@@ -114,6 +114,7 @@ const Card = ({
         <div ref={container} className="h-screen flex items-center justify-center sticky top-0">
             <motion.div
                 onClick={() => onOpen(project)}
+                data-nav-dark
                 style={{ scale, top: `calc(-5vh + ${i * 25}px)` }}
                 className="relative flex flex-col w-[1000px] h-[70vh] rounded-3xl overflow-hidden shadow-2xl origin-top cursor-pointer group"
             >

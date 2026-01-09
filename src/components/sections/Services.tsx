@@ -101,7 +101,7 @@ function ServiceCard({ service, index }: { service: typeof services[0], index: n
 
 export function Services() {
     return (
-        <section className="py-32 px-6 bg-[#0a0a0a] text-white">
+        <section data-nav-dark className="py-32 px-6 bg-[#0a0a0a] text-white">
             <div className="max-w-[1200px] mx-auto">
                 <div className="mb-24 md:flex justify-between items-end">
                     <h2 className="text-5xl md:text-7xl font-semibold tracking-tighter max-w-2xl">

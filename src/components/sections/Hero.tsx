@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 export function Hero() {
   return (
-    <section className="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden bg-white pt-24">
+    <section id="hero" data-nav-light className="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden bg-white pt-24">
       {/* Subtle Grain */}
       <div
         className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"

@@ -9,10 +9,17 @@ import {
     Calendar,
     RefreshCw,
     Activity,
-    ArrowUpRight
+    ArrowUpRight,
+    Users,
+    DollarSign,
+    Zap,
+    TrendingUp,
+    ArrowDownRight
 } from 'lucide-react';
 import ResponsePopup from '@/components/ui/ResponsePopup';
 import DeleteModal from '@/components/ui/DeleteModal';
+import { supabase } from '@/lib/supabase';
+
 
 export default function ResponsesPage() {
     const [responses, setResponses] = useState<any[]>([]);
@@ -21,12 +28,49 @@ export default function ResponsesPage() {
     const [selectedResponse, setSelectedResponse] = useState<any>(null);
     const [responseToDelete, setResponseToDelete] = useState<string | null>(null);
 
+    const [stats, setStats] = useState({
+        total: 0,
+        average: 0,
+        today: 0
+    });
+
+    const calculateStats = (data: any[]) => {
+        const total = data.length;
+        const todayStr = new Date().toISOString().split('T')[0];
+        const today = data.filter(r => r.created_at.split('T')[0] === todayStr).length;
+
+        let totalBudget = 0;
+        let countWithBudget = 0;
+        data.forEach(r => {
+            if (r.budget) {
+                const match = r.budget.match(/\d+/g);
+                if (match) {
+                    const avg = match.reduce((a: number, b: string) => a + parseInt(b), 0) / match.length;
+                    totalBudget += avg;
+                    countWithBudget++;
+                }
+            }
+        });
+
+        setStats({
+            total,
+            today,
+            average: countWithBudget > 0 ? Math.round(totalBudget / countWithBudget) : 0
+        });
+    };
+
     const fetchResponses = async () => {
         setIsLoading(true);
         try {
-            const res = await fetch('/api/responses');
-            const data = await res.json();
-            setResponses(data.responses || []);
+            const { data, error } = await supabase
+                .from('responses')
+                .select('*')
+                .order('created_at', { ascending: false });
+
+            if (error) throw error;
+            const resData = data || [];
+            setResponses(resData);
+            calculateStats(resData);
         } catch (error) {
             console.error('Failed to fetch:', error);
         } finally {
@@ -36,7 +80,42 @@ export default function ResponsesPage() {
 
     useEffect(() => {
         fetchResponses();
+
+        // Real-time subscription
+        const channel = supabase
+            .channel('responses-feed')
+            .on(
+                'postgres_changes',
+                { event: '*', schema: 'public', table: 'responses' },
+                (payload) => {
+                    if (payload.eventType === 'INSERT') {
+                        setResponses(prev => {
+                            const updated = [payload.new, ...prev];
+                            calculateStats(updated);
+                            return updated;
+                        });
+                    } else if (payload.eventType === 'DELETE') {
+                        setResponses(prev => {
+                            const updated = prev.filter(r => r.id !== payload.old.id);
+                            calculateStats(updated);
+                            return updated;
+                        });
+                    } else if (payload.eventType === 'UPDATE') {
+                        setResponses(prev => {
+                            const updated = prev.map(r => r.id === payload.new.id ? payload.new : r);
+                            calculateStats(updated);
+                            return updated;
+                        });
+                    }
+                }
+            )
+            .subscribe();
+
+        return () => {
+            supabase.removeChannel(channel);
+        };
     }, []);
+
 
     const confirmDelete = async () => {
         if (!responseToDelete) return;
@@ -60,33 +139,15 @@ export default function ResponsesPage() {
     return (
         <div className="space-y-16 pb-20">
             {/* Editorial Header */}
-            <header className="flex flex-col lg:flex-row lg:items-end justify-between gap-10">
-                <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                        <span className="px-3 py-1 bg-black text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-full">Database.v1</span>
-                        <div className="h-px w-12 bg-neutral-200" />
-                    </div>
-                    <h1 className="text-6xl font-black tracking-[-0.04em] leading-none">Renseignements Stratégiques</h1>
-                    <p className="text-neutral-400 font-medium text-lg max-w-xl leading-relaxed">
-                        Analyse et gestion des flux d'intelligence collectés via le système d'audit.
-                    </p>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button
-                        onClick={fetchResponses}
-                        className="p-5 bg-white rounded-2xl border border-neutral-100 shadow-sm hover:shadow-xl transition-all duration-500 group"
-                    >
-                        <RefreshCw size={20} className={`${isLoading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-700'}`} />
-                    </button>
-                    <button className="flex items-center gap-4 px-8 py-5 bg-black text-white rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] hover:scale-[1.02] transition-all active:scale-[0.98] font-bold text-sm">
-                        Exporter l'Intelligence
-                        <ArrowUpRight size={18} />
-                    </button>
-                </div>
+            <header>
+                <h1 className="text-6xl font-black tracking-[-0.04em] leading-none text-black">Renseignements Stratégiques</h1>
+                <p className="text-neutral-400 font-medium text-lg mt-4 max-w-xl leading-relaxed">
+                    Analyse et gestion des flux d'intelligence collectés via le système d'audit.
+                </p>
             </header>
 
             {/* Intelligence Ledger (Table) */}
-            <div className="bg-white rounded-[3rem] border border-neutral-100 shadow-2xl overflow-hidden text-black">
+            <div className="bg-white rounded-[3rem] border border-neutral-100 shadow-sm overflow-hidden text-black">
                 <div className="overflow-x-auto">
                     <table className="w-full text-left border-collapse">
                         <thead>
@@ -98,12 +159,36 @@ export default function ResponsesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-neutral-50">
-                            {isLoading && responses.length === 0 ? (
-                                <tr>
-                                    <td colSpan={4} className="px-10 py-32 text-center text-neutral-400 italic">
-                                    </td>
-                                </tr>
-                            ) : displayedResponses.length > 0 ? (
+                            {isLoading ? (
+                                Array.from({ length: 5 }).map((_, i) => (
+                                    <tr key={i} className="animate-pulse">
+                                        <td className="px-10 py-8">
+                                            <div className="flex items-center gap-6">
+                                                <div className="w-14 h-14 bg-neutral-100 rounded-2xl" />
+                                                <div className="space-y-2">
+                                                    <div className="h-5 w-32 bg-neutral-100 rounded-lg" />
+                                                    <div className="h-4 w-48 bg-neutral-50 rounded-lg" />
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-8">
+                                            <div className="space-y-2">
+                                                <div className="h-4 w-24 bg-neutral-100 rounded-lg" />
+                                                <div className="h-3 w-16 bg-neutral-50 rounded-lg" />
+                                            </div>
+                                        </td>
+                                        <td className="px-10 py-8 flex justify-center">
+                                            <div className="h-8 w-24 bg-neutral-100 rounded-xl" />
+                                        </td>
+                                        <td className="px-10 py-8">
+                                            <div className="flex justify-end gap-3">
+                                                <div className="w-10 h-10 bg-neutral-50 rounded-xl" />
+                                                <div className="w-10 h-10 bg-neutral-50 rounded-xl" />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : responses.length > 0 ? (
                                 displayedResponses.map((res, i) => (
                                     <motion.tr
                                         key={res.id}
@@ -138,7 +223,7 @@ export default function ResponsesPage() {
                                             </div>
                                         </td>
                                         <td className="px-10 py-8 text-right font-medium">
-                                            <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-opacity translate-x-4 group-hover:translate-x-0">
+                                            <div className="flex items-center justify-end gap-3">
                                                 <button
                                                     onClick={() => setSelectedResponse(res)}
                                                     className="p-4 bg-white border border-neutral-100 rounded-2xl shadow-sm text-black hover:bg-black hover:text-white transition-all"
@@ -150,9 +235,6 @@ export default function ResponsesPage() {
                                                     className="p-4 bg-white border border-neutral-100 rounded-2xl shadow-sm text-red-500 hover:bg-red-500 hover:text-white transition-all"
                                                 >
                                                     <Trash2 size={18} />
-                                                </button>
-                                                <button className="p-4 bg-white border border-neutral-100 rounded-2xl shadow-sm text-neutral-400 hover:bg-neutral-50 transition-all">
-                                                    <MoreHorizontal size={18} />
                                                 </button>
                                             </div>
                                         </td>

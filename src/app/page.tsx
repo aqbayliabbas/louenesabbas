@@ -8,10 +8,12 @@ import { Testimonials } from '@/components/sections/Testimonials';
 import { FAQ } from '@/components/sections/FAQ';
 import { Clients } from '@/components/sections/Clients';
 import { Navbar } from '@/components/ui/Navbar';
+import { Preloader } from '@/components/ui/Preloader';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-background selection:bg-black selection:text-white">
+      <Preloader />
       <Navbar />
       <Hero />
       <About />

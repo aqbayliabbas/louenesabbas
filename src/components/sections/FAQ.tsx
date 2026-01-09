@@ -27,7 +27,7 @@ export function FAQ() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     return (
-        <section className="py-32 px-6 bg-foreground text-background">
+        <section data-nav-dark className="py-32 px-6 bg-foreground text-background">
             <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
                 <div className="md:col-span-4">
                     <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">Common<br />Questions.</h2>

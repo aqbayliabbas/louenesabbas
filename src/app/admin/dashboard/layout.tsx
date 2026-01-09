@@ -33,18 +33,18 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div className="min-h-screen bg-[#fafafa] flex text-black">
             {/* Sidebar Desktop */}
             <aside className="hidden lg:flex flex-col w-80 bg-white border-r border-neutral-100 p-10 h-screen sticky top-0">
-                <div className="mb-20">
-                    <Link href="/" className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 bg-black text-white flex items-center justify-center text-lg font-black italic rounded-xl group-hover:rotate-6 transition-transform">L</div>
-                        <div className="flex flex-col">
-                            <span className="text-sm font-black tracking-tighter leading-none">ABBAS</span>
-                            <span className="text-[8px] font-black tracking-[0.3em] uppercase text-neutral-400">Control Center</span>
-                        </div>
+                <div className="mb-20 flex justify-center">
+                    <Link
+                        href="/"
+                        className="text-xs font-bold tracking-[0.3em] uppercase text-black hover:opacity-50 transition-opacity"
+                    >
+                        Louenes Abbas
                     </Link>
+
                 </div>
 
                 <nav className="flex-1 space-y-2">
-                    <p className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-300 mb-6 px-4">Navigation</p>
+
                     {menuItems.map((item) => {
                         const Icon = item.icon;
                         const isActive = pathname === item.path;
@@ -93,9 +93,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             <div className="flex-1 flex flex-col min-w-0 min-h-screen bg-[#fafafa]">
                 {/* Header Mobile */}
                 <header className="lg:hidden flex items-center justify-between p-6 bg-white border-b border-neutral-100">
-                    <div className="flex items-center gap-3 font-black tracking-tighter">
-                        <div className="w-8 h-8 bg-black text-white flex items-center justify-center rounded-lg italic">L</div>
-                        ADMIN
+                    <div className="flex justify-center flex-1">
+                        <span className="text-xs font-bold tracking-[0.3em] uppercase text-black">
+                            Louenes Abbas
+                        </span>
                     </div>
                     <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="p-3 bg-neutral-50 rounded-xl">
                         {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
@@ -107,17 +108,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                     <div className="fixed top-[-10%] right-[-10%] w-[40rem] h-[40rem] bg-black/[0.02] blur-[120px] rounded-full pointer-events-none" />
                     <div className="fixed bottom-[-10%] left-[-10%] w-[30rem] h-[30rem] bg-black/[0.01] blur-[100px] rounded-full pointer-events-none" />
 
-                    <AnimatePresence mode="wait">
-                        <motion.div
-                            key={pathname}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                            {children}
-                        </motion.div>
-                    </AnimatePresence>
+                    {children}
                 </main>
             </div>
 
@@ -141,9 +132,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                         >
                             <div className="space-y-12">
                                 <div className="flex justify-between items-center">
-                                    <div className="flex items-center gap-3 font-black tracking-tighter">
-                                        <div className="w-8 h-8 bg-black text-white flex items-center justify-center rounded-lg italic text-sm">L</div>
-                                        ADMIN
+                                    <div className="text-xs font-bold tracking-[0.3em] uppercase text-black">
+                                        Louenes Abbas
                                     </div>
                                     <button onClick={() => setIsMobileMenuOpen(false)} className="p-2">
                                         <X size={24} />

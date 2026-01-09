@@ -22,6 +22,7 @@ export function Contact() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     onMouseMove={handleMouseMove}
+                    data-nav-dark
                     className="group relative bg-[#0a0a0a] rounded-[3rem] p-12 md:p-24 overflow-hidden text-center text-white shadow-2xl"
                 >
                     {/* Spotlight Effect */}

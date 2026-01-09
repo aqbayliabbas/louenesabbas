@@ -138,20 +138,9 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                     {/* Sticky Header: Dossier Identity */}
                     <div className="flex items-center justify-between p-8 md:px-12 bg-white border-b border-neutral-100 z-50 print:hidden">
                         <div className="flex flex-col">
-                            <div className="flex items-center gap-3">
-                                <div className="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center text-sm font-black italic">L</div>
-                                <span className="text-[10px] font-black tracking-[0.4em] uppercase text-neutral-400">Intelligence Report No. {response.id.slice(0, 8)}</span>
-                            </div>
                             <h2 className="text-2xl font-bold tracking-tight mt-1">{response.company_name}</h2>
                         </div>
                         <div className="flex items-center gap-3">
-                            <button
-                                onClick={handlePrint}
-                                className="group flex items-center gap-2 px-6 py-3 bg-neutral-50 hover:bg-neutral-100 rounded-2xl text-xs font-bold transition-all border border-neutral-100"
-                            >
-                                <Printer size={16} className="group-hover:rotate-12 transition-transform" />
-                                <span>Exporter PDF</span>
-                            </button>
                             {onDelete && (
                                 <button
                                     onClick={() => {
