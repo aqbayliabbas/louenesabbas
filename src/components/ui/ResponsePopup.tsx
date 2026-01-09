@@ -233,16 +233,16 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                                                 </div>
                                             ) : item.type === 'pills' ? (
                                                 <div className="flex flex-wrap gap-2">
-                                                    {item.value?.map((v: string) => (
-                                                        <span key={v} className="px-4 py-2 bg-neutral-50 border border-neutral-100 rounded-xl text-xs font-bold hover:bg-black hover:text-white transition-all cursor-default">
+                                                    {item.value?.map((v: string, idx: number) => (
+                                                        <span key={`${v}-${idx}`} className="px-4 py-2 bg-neutral-50 border border-neutral-100 rounded-xl text-xs font-bold hover:bg-black hover:text-white transition-all cursor-default">
                                                             {v}
                                                         </span>
                                                     ))}
                                                 </div>
                                             ) : item.type === 'tags' ? (
                                                 <div className="flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-widest">
-                                                    {item.value?.map((v: string) => (
-                                                        <span key={v} className="px-4 py-2 border-2 border-black rounded-full">
+                                                    {item.value?.map((v: string, idx: number) => (
+                                                        <span key={`${v}-${idx}`} className="px-4 py-2 border-2 border-black rounded-full">
                                                             {v}
                                                         </span>
                                                     ))}

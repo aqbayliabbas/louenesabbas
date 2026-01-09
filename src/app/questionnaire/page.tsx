@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, Send, Sparkles, Monitor, Share2, Package, Globe, Smartphone, Newspaper, LucideIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Send, Sparkles, Monitor, Share2, Package, Globe, Smartphone, Newspaper, LucideIcon } from 'lucide-react';
 import Link from 'next/link';
 
 const clsx = (...classes: any[]) => classes.filter(Boolean).join(' ');
@@ -71,7 +71,7 @@ const questions: Question[] = [
     {
         id: 'mission',
         question: 'Quelle est la mission et la vision de votre marque ?',
-        description: 'Quel est l’objectif de votre marque, et où la voyez-vous dans 5 à 10 ans ?',
+        description: "Quel est l'objectif de votre marque, et où la voyez-vous dans 5 à 10 ans ?",
         placeholder: 'Ma mission est de...',
         type: 'textarea',
     },
@@ -106,7 +106,7 @@ const questions: Question[] = [
     {
         id: 'competitors',
         question: 'Qui sont vos concurrents, et comment vous en distinguez-vous ?',
-        description: 'Qu’est-ce qui vous rend unique sur votre marché ?',
+        description: "Qu'est-ce qui vous rend unique sur votre marché ?",
         placeholder: 'Nos concurrents sont... nous nous distinguons par...',
         type: 'textarea',
     },
@@ -114,7 +114,7 @@ const questions: Question[] = [
         id: 'emotion',
         question: 'Quelle émotion voulez-vous susciter ?',
         description: 'Confiance, enthousiasme, confort, inspiration, assurance...',
-        placeholder: 'Je veux qu’ils se sentent...',
+        placeholder: "Je veux qu'ils se sentent...",
         type: 'text',
     },
     {
@@ -135,14 +135,14 @@ const questions: Question[] = [
         id: 'references',
         question: 'Des références visuelles qui vous inspirent ?',
         description: 'Marques, styles artistiques ou préférences esthétiques.',
-        placeholder: 'J’aime l’esthétique Apple, les couleurs terreuses...',
+        placeholder: "J'aime l'esthétique Apple, les couleurs terreuses...",
         type: 'textarea',
     },
     {
         id: 'timeline',
         question: 'Quel est votre calendrier idéal ?',
         description: 'Quand avez-vous besoin que les livrables soient finalisés ?',
-        placeholder: 'D’ici fin mars 2024...',
+        placeholder: "D'ici fin mars 2024...",
         type: 'text',
     },
     {
@@ -153,6 +153,7 @@ const questions: Question[] = [
         type: 'text',
     },
 ];
+
 
 export default function QuestionnairePage() {
     const [step, setStep] = useState(0);
@@ -268,7 +269,7 @@ export default function QuestionnairePage() {
         return (
             <main
                 onMouseMove={handleMouseMove}
-                className="min-h-screen bg-white selection:bg-black selection:text-white flex flex-col items-center justify-center p-6 text-center overflow-hidden relative"
+                className="min-h-screen bg-white selection:bg-black selection:text-white flex flex-col items-center justify-center p-4 md:p-6 text-center overflow-hidden relative"
             >
                 {/* Re-use dynamic background */}
                 <motion.div
@@ -289,46 +290,47 @@ export default function QuestionnairePage() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="max-w-4xl w-full relative z-20"
+                    className="max-w-4xl w-full relative z-20 px-4"
                 >
-                    <div className="mb-12 inline-flex items-center gap-4 text-neutral-300 justify-center">
-                        <div className="h-px w-12 bg-neutral-200" />
-                        <span className="text-xs font-bold tracking-[0.4em] uppercase">Transmission Réussie</span>
-                        <div className="h-px w-12 bg-neutral-200" />
+                    <div className="mb-8 md:mb-12 inline-flex items-center gap-3 md:gap-4 text-neutral-300 justify-center">
+                        <div className="h-px w-8 md:w-12 bg-neutral-200" />
+                        <span className="text-[10px] md:text-xs font-bold tracking-[0.3em] md:tracking-[0.4em] uppercase">Transmission Réussie</span>
+                        <div className="h-px w-8 md:w-12 bg-neutral-200" />
                     </div>
 
-                    <h1 className="text-[clamp(2.5rem,8vw,6.5rem)] font-bold tracking-tighter leading-[0.9] mb-12">
+                    <h1 className="text-3xl md:text-5xl lg:text-[clamp(2.5rem,8vw,6.5rem)] font-bold tracking-tighter leading-[0.95] mb-8 md:mb-12">
                         Votre vision est <br /> entre de bonnes mains.
                     </h1>
 
-                    <p className="text-xl md:text-2xl text-neutral-500 mb-20 font-light max-w-2xl mx-auto leading-relaxed">
+                    <p className="text-base md:text-xl lg:text-2xl text-neutral-500 mb-12 md:mb-20 font-light max-w-2xl mx-auto leading-relaxed">
                         Merci pour votre confiance. Je vais maintenant analyser chaque détail de votre stratégie pour concevoir une identité qui vous ressemble vraiment.
                     </p>
 
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24 text-left">
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8 mb-12 md:mb-24 text-left">
                         {[
                             { title: 'Analyse', desc: 'Décryptage de vos valeurs et de votre positionnement.', delay: 0.2 },
                             { title: 'Conception', desc: 'Exploration créative et recherche de directions artistiques.', delay: 0.3 },
-                            { title: 'Contact', desc: 'Je reviendrai vers vous d’ici 48h pour en discuter.', delay: 0.4 },
+                            { title: 'Contact', desc: "Je reviendrai vers vous d'ici 48h pour en discuter.", delay: 0.4 },
+
                         ].map((item, i) => (
                             <motion.div
                                 key={item.title}
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: item.delay, duration: 0.8 }}
-                                className="p-10 rounded-[2.5rem] bg-neutral-50 border border-neutral-100 group hover:bg-black hover:text-white transition-all duration-500 h-full flex flex-col"
+                                className="p-6 md:p-10 rounded-2xl md:rounded-[2.5rem] bg-neutral-50 border border-neutral-100 group hover:bg-black hover:text-white transition-all duration-500 h-full flex flex-col"
                             >
-                                <span className="text-[10px] font-bold text-neutral-300 uppercase tracking-widest mb-6 block group-hover:text-neutral-500 transition-colors">Étape 0{i + 1}</span>
-                                <h3 className="text-2xl font-bold mb-3 tracking-tight">{item.title}</h3>
+                                <span className="text-[10px] font-bold text-neutral-300 uppercase tracking-widest mb-4 md:mb-6 block group-hover:text-neutral-500 transition-colors">Étape 0{i + 1}</span>
+                                <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3 tracking-tight">{item.title}</h3>
                                 <p className="text-sm text-neutral-400 font-light leading-relaxed group-hover:text-neutral-300 transition-colors">{item.desc}</p>
                             </motion.div>
                         ))}
                     </div>
 
-                    <div className="flex flex-col md:flex-row items-center justify-center gap-8">
-                        <Link href="/" className="group relative px-14 py-6 rounded-full bg-black text-white font-bold hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center gap-4 overflow-hidden">
+                    <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8">
+                        <Link href="/" className="group relative px-8 md:px-14 py-4 md:py-6 rounded-full bg-black text-white font-bold hover:scale-105 active:scale-95 transition-all shadow-2xl flex items-center gap-3 md:gap-4 overflow-hidden text-sm md:text-base">
                             <span className="relative z-10">Retour à l'accueil</span>
-                            <ArrowRight size={20} className="relative z-10 group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight size={18} className="relative z-10 group-hover:translate-x-1 transition-transform" />
                             <div className="absolute inset-0 bg-neutral-800 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
                         </Link>
                     </div>
@@ -359,7 +361,7 @@ export default function QuestionnairePage() {
 
             {/* Header / Progress bar */}
             <div className="fixed top-0 left-0 w-full z-50">
-                <div className="h-1.5 bg-neutral-100 w-full overflow-hidden">
+                <div className="h-1 md:h-1.5 bg-neutral-100 w-full overflow-hidden">
                     <motion.div
                         className="h-full bg-black"
                         initial={{ width: 0 }}
@@ -367,15 +369,15 @@ export default function QuestionnairePage() {
                         transition={{ type: 'spring', stiffness: 40, damping: 20 }}
                     />
                 </div>
-                <div className="flex justify-between items-center px-10 py-8 relative z-20">
-                    <Link href="/" className="text-sm font-bold tracking-tighter hover:opacity-50 transition-opacity">LOUENES ABBAS</Link>
-                    <span className="text-xs font-mono text-neutral-400 bg-white/80 backdrop-blur-sm px-4 py-1.5 rounded-full border border-neutral-100 shadow-sm">
+                <div className="flex justify-between items-center px-4 md:px-10 py-4 md:py-8 relative z-20">
+                    <Link href="/" className="text-xs md:text-sm font-bold tracking-tighter hover:opacity-50 transition-opacity">LOUENES ABBAS</Link>
+                    <span className="text-[10px] md:text-xs font-mono text-neutral-400 bg-white/80 backdrop-blur-sm px-3 md:px-4 py-1 md:py-1.5 rounded-full border border-neutral-100 shadow-sm">
                         {step + 1} / {questions.length}
                     </span>
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col items-center justify-center p-6 pt-24 pb-32 relative z-20">
+            <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 pt-20 md:pt-24 pb-28 md:pb-32 relative z-20 overflow-y-auto">
                 <div className="max-w-5xl w-full relative">
                     <AnimatePresence mode="wait">
                         <motion.div
@@ -386,24 +388,25 @@ export default function QuestionnairePage() {
                             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
                             className="w-full"
                         >
-                            <div className="mb-12">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <span className="text-xs font-bold tracking-[0.3em] text-neutral-400 uppercase">ÉTAPE {step + 1}</span>
-                                    <div className="h-px w-8 bg-neutral-200" />
-                                    <Sparkles size={14} className="text-neutral-300" />
+                            <div className="mb-8 md:mb-12">
+                                <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+                                    <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] text-neutral-400 uppercase">ÉTAPE {step + 1}</span>
+                                    <div className="h-px w-6 md:w-8 bg-neutral-200" />
+                                    <Sparkles size={12} className="text-neutral-300 md:hidden" />
+                                    <Sparkles size={14} className="text-neutral-300 hidden md:block" />
                                 </div>
                                 <hgroup>
-                                    <h2 className="text-[clamp(1.5rem,5vw,3.2rem)] font-bold tracking-tighter leading-[1.1] mb-6">
+                                    <h2 className="text-2xl md:text-4xl lg:text-[clamp(1.5rem,5vw,3.2rem)] font-bold tracking-tighter leading-[1.1] mb-4 md:mb-6">
                                         {currentQuestion.question}
                                     </h2>
-                                    <p className="text-xl text-neutral-400 font-light max-w-2xl leading-relaxed">
+                                    <p className="text-base md:text-xl text-neutral-400 font-light max-w-2xl leading-relaxed">
                                         {currentQuestion.description}
                                     </p>
                                 </hgroup>
                             </div>
 
                             {/* Dynamic Inputs */}
-                            <div className="mt-8">
+                            <div className="mt-6 md:mt-8">
                                 {currentQuestion.type === 'text' && (
                                     <input
                                         autoFocus
@@ -411,7 +414,7 @@ export default function QuestionnairePage() {
                                         value={formData[currentQuestion.id] || ''}
                                         onChange={(e) => handleInputChange(currentQuestion.id, e.target.value)}
                                         placeholder={currentQuestion.placeholder}
-                                        className="w-full bg-transparent border-b-2 border-neutral-100 py-6 text-2xl md:text-4xl font-light focus:outline-none focus:border-black transition-all duration-500 placeholder:text-neutral-100"
+                                        className="w-full bg-transparent border-b-2 border-neutral-100 py-4 md:py-6 text-xl md:text-3xl lg:text-4xl font-light focus:outline-none focus:border-black transition-all duration-500 placeholder:text-neutral-200"
                                     />
                                 )}
 
@@ -421,18 +424,18 @@ export default function QuestionnairePage() {
                                         value={formData[currentQuestion.id] || ''}
                                         onChange={(e) => handleInputChange(currentQuestion.id, e.target.value)}
                                         placeholder={currentQuestion.placeholder}
-                                        className="w-full bg-transparent border-b-2 border-neutral-100 py-6 text-2xl md:text-3xl font-light focus:outline-none focus:border-black transition-all duration-500 resize-none h-[250px] placeholder:text-neutral-100"
+                                        className="w-full bg-transparent border-b-2 border-neutral-100 py-4 md:py-6 text-lg md:text-2xl lg:text-3xl font-light focus:outline-none focus:border-black transition-all duration-500 resize-none h-[180px] md:h-[250px] placeholder:text-neutral-200"
                                     />
                                 )}
 
                                 {currentQuestion.type === 'multiselect_pills' && (
-                                    <div className="flex flex-wrap gap-3">
+                                    <div className="flex flex-wrap gap-2 md:gap-3">
                                         {(currentQuestion.options as string[])?.map((option) => (
                                             <button
                                                 key={option}
                                                 onClick={() => toggleMultiselect(currentQuestion.id, option)}
                                                 className={clsx(
-                                                    'px-6 py-3 rounded-full border-2 transition-all duration-300 text-lg font-medium',
+                                                    'px-4 md:px-6 py-2.5 md:py-3 rounded-full border-2 transition-all duration-300 text-sm md:text-lg font-medium',
                                                     formData[currentQuestion.id]?.includes(option)
                                                         ? 'bg-black border-black text-white shadow-xl scale-105'
                                                         : 'bg-white border-neutral-100 text-neutral-500 hover:border-neutral-300'
@@ -445,12 +448,12 @@ export default function QuestionnairePage() {
                                 )}
 
                                 {currentQuestion.type === 'personality_sliders' && (
-                                    <div className="space-y-12 max-w-3xl">
+                                    <div className="space-y-8 md:space-y-12 max-w-3xl">
                                         {(currentQuestion.traits || personalityTraits).map((trait) => (
                                             <div key={trait.id} className="relative py-2">
-                                                <div className="flex justify-between items-center mb-6 px-1">
-                                                    <span className={clsx("text-sm font-bold tracking-widest uppercase transition-colors", (formData[currentQuestion.id][trait.id] < 40) ? "text-black" : "text-neutral-300")}>{trait.left}</span>
-                                                    <span className={clsx("text-sm font-bold tracking-widest uppercase transition-colors", (formData[currentQuestion.id][trait.id] > 60) ? "text-black" : "text-neutral-300")}>{trait.right}</span>
+                                                <div className="flex justify-between items-center mb-4 md:mb-6 px-1">
+                                                    <span className={clsx("text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest uppercase transition-colors", (formData[currentQuestion.id][trait.id] < 40) ? "text-black" : "text-neutral-300")}>{trait.left}</span>
+                                                    <span className={clsx("text-[10px] md:text-sm font-bold tracking-wider md:tracking-widest uppercase transition-colors text-right", (formData[currentQuestion.id][trait.id] > 60) ? "text-black" : "text-neutral-300")}>{trait.right}</span>
                                                 </div>
                                                 <input
                                                     type="range"
@@ -473,7 +476,7 @@ export default function QuestionnairePage() {
                                 )}
 
                                 {currentQuestion.type === 'touchpoints_grid' && (
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
                                         {(currentQuestion.options as TouchpointOption[])?.map((option) => {
                                             const Icon = option.icon;
                                             const isActive = formData[currentQuestion.id]?.includes(option.id);
@@ -482,14 +485,15 @@ export default function QuestionnairePage() {
                                                     key={option.id}
                                                     onClick={() => toggleMultiselect(currentQuestion.id, option.id)}
                                                     className={clsx(
-                                                        'p-8 rounded-[2rem] border-2 transition-all duration-500 flex flex-col items-center gap-4 text-center group relative overflow-hidden backdrop-blur-sm',
+                                                        'p-4 md:p-8 rounded-xl md:rounded-[2rem] border-2 transition-all duration-500 flex flex-col items-center gap-2 md:gap-4 text-center group relative overflow-hidden backdrop-blur-sm',
                                                         isActive
                                                             ? 'bg-black border-black text-white shadow-2xl scale-105'
                                                             : 'bg-white/50 border-neutral-100 text-neutral-400 hover:border-neutral-300'
                                                     )}
                                                 >
-                                                    <Icon size={32} className={clsx("transition-transform duration-500 relative z-10", isActive ? "scale-110" : "group-hover:scale-110")} />
-                                                    <span className="font-bold tracking-tight text-lg relative z-10">{option.label}</span>
+                                                    <Icon size={24} className={clsx("md:hidden transition-transform duration-500 relative z-10", isActive ? "scale-110" : "group-hover:scale-110")} />
+                                                    <Icon size={32} className={clsx("hidden md:block transition-transform duration-500 relative z-10", isActive ? "scale-110" : "group-hover:scale-110")} />
+                                                    <span className="font-bold tracking-tight text-sm md:text-lg relative z-10">{option.label}</span>
                                                     {isActive && (
                                                         <motion.div
                                                             layoutId="active-bg"
@@ -510,30 +514,42 @@ export default function QuestionnairePage() {
             </div>
 
             {/* Navigation Footer */}
-            <div className="fixed bottom-0 left-0 w-full p-10 flex justify-between items-center backdrop-blur-md bg-white/50 z-50">
+            <div className="fixed bottom-0 left-0 w-full p-4 md:p-10 flex justify-between items-center backdrop-blur-md bg-white/50 z-50">
                 <button
                     onClick={handleBack}
                     disabled={step === 0}
                     className={clsx(
-                        'flex items-center gap-3 text-sm font-bold transition-all px-8 py-4 rounded-full hover:bg-neutral-50',
+                        'flex items-center gap-2 md:gap-3 text-xs md:text-sm font-bold transition-all px-4 md:px-8 py-3 md:py-4 rounded-full hover:bg-neutral-50',
                         step === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
                     )}
                 >
-                    <ArrowLeft size={18} /> Précédent
+                    <ArrowLeft size={16} className="md:hidden" />
+                    <ArrowLeft size={18} className="hidden md:block" />
+                    <span className="hidden md:inline">Précédent</span>
                 </button>
 
                 <button
                     onClick={handleNext}
                     disabled={!canProceed()}
                     className={clsx(
-                        "group flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-bold text-lg transition-all shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]",
+                        "group flex items-center gap-2 md:gap-4 bg-black text-white px-6 md:px-10 py-3.5 md:py-5 rounded-full font-bold text-sm md:text-lg transition-all shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]",
                         !canProceed() ? "opacity-30 cursor-not-allowed" : "hover:scale-105 active:scale-95"
                     )}
                 >
                     {step === questions.length - 1 ? (
-                        <>Soumettre le projet <Send size={20} /></>
+                        <>
+                            <span className="hidden md:inline">Soumettre le projet</span>
+                            <span className="md:hidden">Soumettre</span>
+                            <Send size={16} className="md:hidden" />
+                            <Send size={20} className="hidden md:block" />
+                        </>
                     ) : (
-                        <>Continuer <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" /></>
+                        <>
+                            <span className="hidden md:inline">Continuer</span>
+                            <span className="md:hidden">Suivant</span>
+                            <ArrowRight size={16} className="md:hidden group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight size={20} className="hidden md:block group-hover:translate-x-1 transition-transform" />
+                        </>
                     )}
                 </button>
             </div>
@@ -541,14 +557,21 @@ export default function QuestionnairePage() {
             <style jsx global>{`
         input[type='range']::-webkit-slider-thumb {
           appearance: none;
-          height: 24px;
-          width: 24px;
+          height: 20px;
+          width: 20px;
           border-radius: 50%;
           background: black;
           cursor: pointer;
-          border: 4px solid white;
+          border: 3px solid white;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
           transition: transform 0.2s;
+        }
+        @media (min-width: 768px) {
+          input[type='range']::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border: 4px solid white;
+          }
         }
         input[type='range']::-webkit-slider-thumb:hover {
           transform: scale(1.2);
