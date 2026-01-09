@@ -195,7 +195,20 @@ export default function QuestionnairePage() {
         };
     }, [isSubmitted]);
 
+    const canProceed = () => {
+        const value = formData[currentQuestion.id];
+        if (currentQuestion.type === 'text' || currentQuestion.type === 'textarea') {
+            return value && value.trim().length > 0;
+        }
+        if (currentQuestion.type === 'multiselect_pills' || currentQuestion.type === 'touchpoints_grid') {
+            return value && value.length > 0;
+        }
+        return true; // personality_sliders always has values
+    };
+
     const handleNext = () => {
+        if (!canProceed()) return;
+
         if (step < questions.length - 1) {
             setStep(step + 1);
         } else {
@@ -244,7 +257,7 @@ export default function QuestionnairePage() {
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
             if (e.key === 'Enter' && !isSubmitted && currentQuestion.type !== 'textarea') {
-                handleNext();
+                if (canProceed()) handleNext();
             }
         };
         window.addEventListener('keydown', handleKeyDown);
@@ -511,7 +524,11 @@ export default function QuestionnairePage() {
 
                 <button
                     onClick={handleNext}
-                    className="group flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]"
+                    disabled={!canProceed()}
+                    className={clsx(
+                        "group flex items-center gap-4 bg-black text-white px-10 py-5 rounded-full font-bold text-lg transition-all shadow-2xl hover:shadow-[0_20px_50px_rgba(0,0,0,0.2)]",
+                        !canProceed() ? "opacity-30 cursor-not-allowed" : "hover:scale-105 active:scale-95"
+                    )}
                 >
                     {step === questions.length - 1 ? (
                         <>Soumettre le projet <Send size={20} /></>

@@ -15,7 +15,7 @@ export function Contact() {
     }
 
     return (
-        <section className="py-24 px-6 bg-background">
+        <section id="contact" className="py-24 px-6 bg-background">
             <div className="max-w-[1200px] mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -51,8 +51,11 @@ export function Contact() {
                         </p>
 
                         <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-4">
-                            <button className="group relative inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95">
-                                <span>hello@louenes.com</span>
+                            <button
+                                onClick={() => window.open('https://wa.me/213799739969', '_blank')}
+                                className="group relative inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
+                            >
+                                <span>WhatsApp Me</span>
                                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                             </button>
                             <Link

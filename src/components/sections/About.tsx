@@ -13,19 +13,19 @@ const StatItem = ({ number, label, detail, index }: { number: string, label: str
         <div ref={ref} className="group relative py-12 md:py-20 border-b border-white/10 last:border-0">
             <div className="flex flex-col md:grid md:grid-cols-12 items-start md:items-center gap-6 md:gap-8 relative z-10">
                 {/* Number */}
-                <div className="md:col-span-4 overflow-hidden">
+                <div className="md:col-span-5">
                     <motion.h3
-                        initial={{ y: "100%" }}
-                        animate={isInView ? { y: 0 } : { y: "100%" }}
+                        initial={{ opacity: 0, y: "100%" }}
+                        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: "100%" }}
                         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-                        className="text-7xl md:text-8xl lg:text-[12vw] font-black tracking-tighter leading-none text-white transition-all duration-700 md:group-hover:italic md:group-hover:translate-x-4"
+                        className="text-7xl md:text-8xl lg:text-[7vw] font-black tracking-tighter leading-none text-white transition-all duration-700 md:group-hover:italic md:group-hover:translate-x-4"
                     >
                         {number}
                     </motion.h3>
                 </div>
 
                 {/* Info */}
-                <div className="md:col-span-5 space-y-3 md:space-y-4">
+                <div className="md:col-span-4 space-y-3 md:space-y-4">
                     <motion.p
                         initial={{ opacity: 0, x: 20 }}
                         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
@@ -127,6 +127,7 @@ export function About() {
                             </p>
                             <div className="pt-4 md:pt-8">
                                 <motion.button
+                                    onClick={() => window.open('https://wa.me/213799739969', '_blank')}
                                     className="flex items-center gap-4 md:gap-6 text-lg md:text-xl font-bold transition-all border-b border-white pb-2 hover:gap-8 group"
                                 >
                                     GET IN TOUCH

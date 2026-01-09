@@ -180,7 +180,7 @@ export function Work() {
     };
 
     return (
-        <section ref={container} className="relative bg-background">
+        <section id="work" ref={container} className="relative bg-background">
             <div className="max-w-[1200px] mx-auto pb-[20vh]"> {/* Extra padding at bottom for scroll space */}
                 <div className="py-24 px-6 text-center md:text-left">
                     <h2 className="text-6xl md:text-8xl font-semibold -tracking-[0.03em] mb-4">Selected Work.</h2>
