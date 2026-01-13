@@ -7,11 +7,14 @@ import { usePathname, useRouter } from 'next/navigation';
 import {
     LayoutDashboard,
     MessageSquare,
+    FileText,
+    ScrollText,
     Settings,
     LogOut,
     User,
     Menu,
-    X
+    X,
+    Calendar
 } from 'lucide-react';
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -21,7 +24,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
     const menuItems = [
         { name: 'Aperçu', path: '/admin/dashboard', icon: LayoutDashboard },
+        { name: 'Planning', path: '/admin/dashboard/bookings', icon: Calendar },
         { name: 'Réponses', path: '/admin/dashboard/responses', icon: MessageSquare },
+        { name: 'Factures', path: '/admin/dashboard/invoices', icon: FileText },
+        { name: 'Contrats', path: '/admin/dashboard/contracts', icon: ScrollText },
     ];
 
     const handleLogout = async () => {
