@@ -106,6 +106,12 @@ export function Navbar({ forceDark = false }: { forceDark?: boolean }) {
                                     >
                                         Typology
                                     </Link>
+                                    <Link
+                                        href="/tools/snapstyle"
+                                        className="block px-6 py-3 text-[10px] font-bold text-neutral-500 hover:text-black hover:bg-neutral-50 transition-colors uppercase tracking-widest"
+                                    >
+                                        Snapstyle
+                                    </Link>
 
                                 </motion.div>
                             )}
