@@ -157,8 +157,12 @@ export default function ColorizoPage() {
     // Refs for drag interaction
     const satValRef = useRef<HTMLDivElement>(null);
     const hueRef = useRef<HTMLDivElement>(null);
+    const satRef = useRef<HTMLDivElement>(null);
+    const valRef = useRef<HTMLDivElement>(null);
     const isDraggingSatVal = useRef(false);
     const isDraggingHue = useRef(false);
+    const isDraggingSat = useRef(false);
+    const isDraggingVal = useRef(false);
 
     // Golden Ratio Constant
     /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -202,6 +206,10 @@ export default function ColorizoPage() {
                 colors: [hex, hslToHex(h + 90, s, l), hslToHex(h + 180, s, l), hslToHex(h + 270, s, l)]
             },
             {
+                name: 'Tetradic (Rectangular)',
+                colors: [hex, hslToHex(h + 60, s, l), hslToHex(h + 180, s, l), hslToHex(h + 240, s, l)]
+            },
+            {
                 name: 'Monochromatic',
                 colors: [
                     hslToHex(h, s, Math.max(0, l - 30)),
@@ -209,6 +217,26 @@ export default function ColorizoPage() {
                     hex,
                     hslToHex(h, s, Math.min(100, l + 15)),
                     hslToHex(h, s, Math.min(100, l + 30))
+                ]
+            },
+            {
+                name: 'Shades',
+                colors: [
+                    hslToHex(h, s, 90),
+                    hslToHex(h, s, 70),
+                    hslToHex(h, s, 50),
+                    hslToHex(h, s, 30),
+                    hslToHex(h, s, 10)
+                ]
+            },
+            {
+                name: 'Tones',
+                colors: [
+                    hslToHex(h, 20, l),
+                    hslToHex(h, 40, l),
+                    hslToHex(h, 60, l),
+                    hslToHex(h, 80, l),
+                    hslToHex(h, 100, l)
                 ]
             }
         ];
@@ -263,12 +291,49 @@ export default function ColorizoPage() {
         handleColorUpdate({ ...hsv, h });
     }, [hsv]);
 
+    const handleSatMove = useCallback((e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
+        if (!satRef.current) return;
+        const rect = satRef.current.getBoundingClientRect();
+
+        let clientX;
+        if ('touches' in e) {
+            clientX = e.touches[0].clientX;
+        } else {
+            clientX = (e as MouseEvent).clientX;
+        }
+
+        const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        const s = x * 100;
+
+        handleColorUpdate({ ...hsv, s });
+    }, [hsv]);
+
+    const handleValMove = useCallback((e: MouseEvent | TouchEvent | React.MouseEvent | React.TouchEvent) => {
+        if (!valRef.current) return;
+        const rect = valRef.current.getBoundingClientRect();
+
+        let clientX;
+        if ('touches' in e) {
+            clientX = e.touches[0].clientX;
+        } else {
+            clientX = (e as MouseEvent).clientX;
+        }
+
+        const x = Math.max(0, Math.min(1, (clientX - rect.left) / rect.width));
+        // Value goes from 0 (black) to 100 (full brightness)
+        const v = x * 100;
+
+        handleColorUpdate({ ...hsv, v });
+    }, [hsv]);
+
 
     // Global Event Listeners for Dragging
     useEffect(() => {
         const handleUp = () => {
             isDraggingSatVal.current = false;
             isDraggingHue.current = false;
+            isDraggingSat.current = false;
+            isDraggingVal.current = false;
             document.body.style.userSelect = '';
         };
 
@@ -278,6 +343,12 @@ export default function ColorizoPage() {
             }
             if (isDraggingHue.current) {
                 handleHueMove(e);
+            }
+            if (isDraggingSat.current) {
+                handleSatMove(e);
+            }
+            if (isDraggingVal.current) {
+                handleValMove(e);
             }
         };
 
@@ -292,7 +363,7 @@ export default function ColorizoPage() {
             window.removeEventListener('mousemove', handleMove);
             window.removeEventListener('touchmove', handleMove);
         };
-    }, [handleSatValMove, handleHueMove]);
+    }, [handleSatValMove, handleHueMove, handleSatMove, handleValMove]);
 
 
     const handleSatValDown = (e: React.MouseEvent | React.TouchEvent) => {
@@ -305,6 +376,18 @@ export default function ColorizoPage() {
         isDraggingHue.current = true;
         document.body.style.userSelect = 'none';
         handleHueMove(e);
+    };
+
+    const handleSatDown = (e: React.MouseEvent | React.TouchEvent) => {
+        isDraggingSat.current = true;
+        document.body.style.userSelect = 'none';
+        handleSatMove(e);
+    };
+
+    const handleValDown = (e: React.MouseEvent | React.TouchEvent) => {
+        isDraggingVal.current = true;
+        document.body.style.userSelect = 'none';
+        handleValMove(e);
     };
 
     const handleCopy = (hex: string) => {
@@ -391,6 +474,42 @@ export default function ColorizoPage() {
                                         className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-full shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
                                         style={{
                                             left: `${(hsv.h / 360) * 100}%`
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Custom Saturation Slider */}
+                                <div
+                                    ref={satRef}
+                                    className="relative w-full h-4 rounded-full cursor-pointer shadow-inner"
+                                    onMouseDown={handleSatDown}
+                                    onTouchStart={handleSatDown}
+                                    style={{
+                                        background: `linear-gradient(to right, ${hsvToHex(hsv.h, 0, hsv.v)}, ${hsvToHex(hsv.h, 100, hsv.v)})`
+                                    }}
+                                >
+                                    <div
+                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-full shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
+                                        style={{
+                                            left: `${hsv.s}%`
+                                        }}
+                                    />
+                                </div>
+
+                                {/* Custom Lightness/Value Slider */}
+                                <div
+                                    ref={valRef}
+                                    className="relative w-full h-4 rounded-full cursor-pointer shadow-inner"
+                                    onMouseDown={handleValDown}
+                                    onTouchStart={handleValDown}
+                                    style={{
+                                        background: `linear-gradient(to right, #000000, ${hsvToHex(hsv.h, hsv.s, 100)})`
+                                    }}
+                                >
+                                    <div
+                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-full shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
+                                        style={{
+                                            left: `${hsv.v}%`
                                         }}
                                     />
                                 </div>
