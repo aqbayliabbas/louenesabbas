@@ -94,15 +94,19 @@ export function Navbar({ forceDark = false }: { forceDark?: boolean }) {
                                     transition={{ duration: 0.2 }}
                                     className="absolute top-full left-1/2 -translate-x-1/2 mt-4 py-2 w-48 bg-white rounded-xl shadow-xl border border-neutral-100 overflow-hidden"
                                 >
-                                    {[1, 2, 3].map((i) => (
-                                        <Link
-                                            key={i}
-                                            href={`/tools/tool-${i}`}
-                                            className="block px-6 py-3 text-[10px] font-bold text-neutral-500 hover:text-black hover:bg-neutral-50 transition-colors uppercase tracking-widest"
-                                        >
-                                            Tool {i}
-                                        </Link>
-                                    ))}
+                                    <Link
+                                        href="/tools/colorizo"
+                                        className="block px-6 py-3 text-[10px] font-bold text-neutral-500 hover:text-black hover:bg-neutral-50 transition-colors uppercase tracking-widest"
+                                    >
+                                        Colorizo
+                                    </Link>
+                                    <Link
+                                        href="/tools/typology"
+                                        className="block px-6 py-3 text-[10px] font-bold text-neutral-500 hover:text-black hover:bg-neutral-50 transition-colors uppercase tracking-widest"
+                                    >
+                                        Typology
+                                    </Link>
+
                                 </motion.div>
                             )}
                         </AnimatePresence>
