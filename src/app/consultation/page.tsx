@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Video,
@@ -27,6 +27,15 @@ export default function ConsultationPage() {
     const [notes, setNotes] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const scrollContainerRef = useRef<HTMLDivElement>(null);
+
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollContainerRef.current) {
+            const { current } = scrollContainerRef;
+            const scrollAmount = direction === 'left' ? -200 : 200;
+            current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+        }
+    };
 
     // Dynamic calendar
     const today = new Date();
@@ -185,13 +194,28 @@ export default function ConsultationPage() {
                                             <div className="flex items-center justify-between mb-8">
                                                 <span className="text-2xl font-black">{currentMonth}</span>
                                                 <div className="flex gap-2">
-                                                    <button type="button" className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><ChevronLeft size={16} /></button>
-                                                    <button type="button" className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><ChevronRight size={16} /></button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => scroll('left')}
+                                                        className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
+                                                    >
+                                                        <ChevronLeft size={16} />
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => scroll('right')}
+                                                        className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
+                                                    >
+                                                        <ChevronRight size={16} />
+                                                    </button>
                                                 </div>
                                             </div>
 
                                             {/* Days Grid */}
-                                            <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x">
+                                            <div
+                                                ref={scrollContainerRef}
+                                                className="flex gap-4 overflow-x-auto pb-4 snap-x [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20"
+                                            >
                                                 {days.slice(0, 14).map((date, i) => (
                                                     <button
                                                         key={i}
