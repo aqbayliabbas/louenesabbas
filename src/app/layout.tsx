@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Poppins } from "next/font/google";
+import { Geist, Geist_Mono, Poppins, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,6 +18,13 @@ const poppins = Poppins({
     variable: "--font-poppins",
 });
 
+const cormorant = Cormorant_Garamond({
+    weight: ["300", "400", "500", "600", "700"],
+    subsets: ["latin"],
+    variable: "--font-serif",
+    style: ["normal", "italic"],
+});
+
 export const metadata: Metadata = {
     title: "Louenes Abbas | Brand Strategist & Designer",
     description: "Portfolio of Louenes Abbas, a Brand Strategist and Designer focused on minimalism and impact.",
@@ -34,7 +41,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body
-                className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} antialiased`}
+                className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${cormorant.variable} antialiased`}
             >
                 {children}
             </body>

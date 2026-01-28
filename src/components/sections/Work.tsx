@@ -1,9 +1,18 @@
 'use client';
 
-import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRef, useState } from 'react';
 import Image from 'next/image';
-import ProjectPopup, { Project } from '../ui/ProjectPopup';
+
+interface Project {
+    title: string;
+    category: string;
+    color: string;
+    img: string;
+    logo: string;
+    description: string;
+    deliverables: string[];
+}
 
 const projects: Project[] = [
     {
@@ -11,210 +20,205 @@ const projects: Project[] = [
         category: "Brand Identity",
         color: "#0f172a",
         img: "/2.png",
+        logo: "/logos/projects/aurora.png",
         description: "Architecting the invisible foundations of industry leaders. A high-performance white-label lab where scientific precision meets elite brand development.",
-        gallery: {
-            main: "/2.png",
-            secondary: [
-                "/work/aurora/2.png",
-                "/work/aurora/3.png",
-                "/work/aurora/4.png"
-            ]
-        },
-        brief: "Aurora Labs sought an identity that balanced clinical laboratory excellence with the versatility of a white-label partner. They needed to attract high-end clients who require discretion and uncompromising quality.",
-        strategy: "We created a 'Clinical Minimalist' system—an identity that emphasizes transparency, precision, and scalability. The visual language uses a deep interstellar palette and high-contrast typography to signal authority and innovation.",
-        deliverables: ["Brand Identity", "Visual Language", "social media posts", "Packaging Design", "Marketing Strategy", "Logo System"]
+        deliverables: ["Brand Identity", "Visual Language", "Packaging Design", "Marketing Strategy"]
     },
     {
         title: "Diolata",
         category: "Luxury Beverage",
         color: "#2d1b4d",
         img: "/3.png",
-        description: "A botanical revolution in a cup. We crafted a high-fashion beverage identity for the first French-born Ubé ritual—luxury purple powder that transforms daily hydration into an art form.",
-        gallery: {
-            main: "/3.png",
-            secondary: [
-                "/work/diolata/2.png",
-                "/work/diolata/3.png",
-                "/work/diolata/4.png"
-            ]
-        },
-        brief: "Diolata aimed to introduce Ubé to the French elite as a superior, antioxidant-rich alternative to Matcha. The brand required a visual identity that signalled both extreme luxury and a radical, biodegradable approach to packaging and sourcing.",
-        strategy: "We curated a 'Botanical Noir' aesthetic—pairing the intense violet hues of the product with sustainable, earthy textures. The brand voice is sophisticated and eco-conscious, ensuring every touchpoint from the biodegradable canister to the digital storefront reflects uncompromising quality.",
-        deliverables: ["Brand Identity", "Sustainable Packaging", "Art Direction", "Web Experience", "Print Editorial"]
+        logo: "/logos/projects/diolata.png",
+        description: "A botanical revolution in a cup. We crafted a high-fashion beverage identity for the first French-born Ubé ritual.",
+        deliverables: ["Brand Identity", "Sustainable Packaging", "Art Direction", "Web Experience"]
     },
     {
         title: "Bliss",
-        category: "Real Estate Strategy",
+        category: "Real Estate",
         color: "#1c1c1c",
         img: "/4.png",
-        description: "Redefining the Toronto skyline. A bespoke real estate collective that treats property as high art, moving beyond transactions to curate architectural legacies.",
-        gallery: {
-            main: "/4.png",
-            secondary: [
-                "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2670",
-                "https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2670",
-                "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2670",
-                "https://images.unsplash.com/photo-1600585154340-be6199f7f009?q=80&w=2670"
-            ]
-        },
-        brief: "The Toronto real estate market was drowning in corporate noise and generic listings. Bliss needed to stand out as a boutique alternative for the city's most discerning architectural enthusiasts.",
-        strategy: "We implemented an 'Architectural Curatorship' model. Instead of standard sales tactics, we built a brand around editorial storytelling, using cinematic photography and a minimalist visual language that honors the structure over the sale.",
-        deliverables: ["Brand Identity", "Editorial Design", "Market Strategy", "Digital Platform", "Client Experience Design"]
+        logo: "/logos/projects/bliss.png",
+        description: "Redefining the Toronto skyline. A bespoke real estate collective that treats property as high art, moving beyond transactions.",
+        deliverables: ["Brand Identity", "Editorial Design", "Market Strategy", "Digital Platform"]
     },
     {
         title: "Vanèlla",
         category: "Cosmetic Strategy",
         color: "#1a1a1a",
         img: "/1.png",
-        description: "The soul of the Maghreb, bottled for the modern world. A luxury skincare brand rooted in Algerian botanical heritage and ancient Saharan beauty secrets.",
-        gallery: {
-            main: "/1.png",
-            secondary: [
-                "https://images.unsplash.com/photo-1612817288484-6f916006741a?q=80&w=2670",
-                "https://images.unsplash.com/photo-1556229010-6c3f2c9ca5f8?q=80&w=2670",
-                "https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=2670",
-                "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=2670"
-            ]
-        },
-        brief: "Vanèlla sought to elevate traditional Algerian beauty rituals into a global luxury standard. They needed a brand that felt deeply ancestral yet perfectly at home in a Parisian boutique.",
-        strategy: "We developed a 'Heritage Modernism' framework—combining minimalist typography with intricate, subtly embossed patterns inspired by Berber craftsmanship. The visual narrative focuses on the raw purity of the ingredients sourced from the Atlas Mountains.",
-        deliverables: ["Brand Identity", "Packaging Design", "Art Direction", "Product Photography", "Visual Strategy"]
+        logo: "/logos/projects/vanella.png",
+        description: "The soul of the Maghreb, bottled for the modern world. A luxury skincare brand rooted in Algerian botanical heritage.",
+        deliverables: ["Brand Identity", "Packaging Design", "Art Direction", "Visual Strategy"]
+    },
+    {
+        title: "Cleansi",
+        category: "Tech & Services",
+        color: "#111",
+        img: "/2.png",
+        logo: "/logos/projects/cleansi.png",
+        description: "Innovative cleaning solutions for the modern home. A brand built on clarity, efficiency, and environmental consciousness.",
+        deliverables: ["Digital Design", "Web Development", "UI/UX Strategy"]
+    },
+    {
+        title: "Goya360",
+        category: "Production House",
+        color: "#111",
+        img: "/3.png",
+        logo: "/logos/projects/goya360.png",
+        description: "Immersive visual storytelling through 360-degree experiences. Pushing the boundaries of digital production and creative technology.",
+        deliverables: ["Art Direction", "Motion Graphics", "Production Strategy"]
+    },
+    {
+        title: "Slamdunk",
+        category: "Sports Marketing",
+        color: "#111",
+        img: "/4.png",
+        logo: "/logos/projects/slamdunk.png",
+        description: "Empowering athletes to build their digital legacy. A data-driven approach to personal branding and community engagement.",
+        deliverables: ["Social Strategy", "Brand Identity", "Content Creation"]
+    },
+    {
+        title: "Valgrand",
+        category: "Hospitality Management",
+        color: "#111",
+        img: "/1.png",
+        logo: "/logos/projects/valgrand.png",
+        description: "Redefining luxury hospitality through ancestral hospitality meets modern service. A boutique experience for the discerning traveler.",
+        deliverables: ["Guest Experience", "Visual Strategy", "Marketing Architecture"]
     }
 ];
 
-const Card = ({
-    i,
-    project,
-    progress,
-    range,
-    targetScale,
-    onOpen
-}: {
-    i: number;
-    project: Project;
-    progress: MotionValue<number>;
-    range: [number, number];
-    targetScale: number;
-    onOpen: (project: Project) => void;
-}) => {
-
-    const container = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: container,
-        offset: ['start end', 'start start']
-    });
-
-    // Entrance scale
-    const imageScale = useTransform(scrollYProgress, [0, 1], [2, 1]);
-
-    // Stacking exit scale
-    const scale = useTransform(progress, range, [1, targetScale]);
-
-    return (
-        <div ref={container} className="h-screen flex items-center justify-center sticky top-0">
-            <motion.div
-                onClick={() => onOpen(project)}
-                data-nav-dark
-                style={{ scale, top: `calc(-5vh + ${i * 25}px)` }}
-                className="relative flex flex-col w-[1000px] h-[70vh] rounded-3xl overflow-hidden shadow-2xl origin-top cursor-pointer group"
-            >
-                {/* Background Image with Zoom Effect */}
-                <div className="absolute inset-0 z-0 transition-transform duration-700 group-hover:scale-105">
-                    <motion.div style={{ scale: imageScale }} className="w-full h-full">
-                        <Image
-                            src={project.img}
-                            alt={project.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 1000px) 100vw, 1000px"
-                            priority={i === 0}
-                        />
-                    </motion.div>
-                    <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-500" />
-                </div>
-
-                {/* Content */}
-                <div className="relative z-10 p-12 h-full flex flex-col justify-between text-white">
-                    <div className="flex justify-between items-start">
-                        <h3 className="text-5xl font-bold tracking-tighter transition-transform duration-500 group-hover:translate-x-2">{project.title}</h3>
-                        <span className="border border-white/20 px-4 py-2 rounded-full text-sm backdrop-blur-md">
-                            {project.category}
-                        </span>
-                    </div>
-
-                    <div>
-                        <p className="text-white/80 max-w-md text-lg leading-relaxed mb-8 transition-opacity duration-500 group-hover:text-white">
-                            {project.description}
-                        </p>
-                        <div className="flex items-center gap-4">
-                            <button
-                                className="bg-white text-black px-8 py-3 rounded-full font-medium hover:bg-gray-200 transition-all flex items-center gap-2 group/btn"
-                            >
-                                View Case Study
-                                <div className="w-0 group-hover/btn:w-5 overflow-hidden transition-all duration-300 flex items-center">
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                                    </svg>
-                                </div>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </motion.div>
-        </div>
-    )
-}
-
 export function Work() {
-    const container = useRef(null);
-    const [selectedProject, setSelectedProject] = useState<Project | null>(null);
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
-
-    const { scrollYProgress } = useScroll({
-        target: container,
-        offset: ['start start', 'end end']
-    });
-
-    const handleOpenProject = (project: Project) => {
-        setSelectedProject(project);
-        setIsPopupOpen(true);
-    };
+    const [activeIndex, setActiveIndex] = useState(0);
+    const activeProject = projects[activeIndex];
 
     return (
-        <section id="work" ref={container} className="relative bg-background">
-            <div className="max-w-[1200px] mx-auto pb-[20vh]"> {/* Extra padding at bottom for scroll space */}
-                <div className="py-24 px-6 text-center md:text-left">
-                    <h2 className="text-6xl md:text-8xl font-semibold -tracking-[0.03em] mb-4">Selected Work.</h2>
-                    <p className="text-xl text-muted-foreground max-w-xl">
-                        A selection of projects that define my approach to brand building.
-                    </p>
+        <section id="work" className="relative bg-[#fafafa] text-neutral-900 py-32 md:py-48 px-6 overflow-hidden">
+            <div className="max-w-[1400px] mx-auto">
+                <div className="mb-20">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        className="flex items-center gap-4 mb-6"
+                    >
+                        <div className="w-12 h-px bg-neutral-200" />
+                        <span className="text-[10px] font-black uppercase tracking-[0.5em] text-neutral-400">Selected Archive</span>
+                    </motion.div>
+                    <motion.h2
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-6xl md:text-8xl font-bold tracking-tighter"
+                    >
+                        A legacy of <br /><span className="text-neutral-300 italic font-serif">Solutions.</span>
+                    </motion.h2>
                 </div>
 
-                <div className="px-6">
-                    {projects.map((project, index) => {
-                        // Calculate range for each card to scale down
-                        const targetScale = 1 - ((projects.length - index) * 0.05);
-                        return (
-                            <Card
-                                key={index}
-                                i={index}
-                                project={project}
-                                progress={scrollYProgress}
-                                range={[index * 0.25, 1] as [number, number]}
-                                targetScale={targetScale}
-                                onOpen={handleOpenProject}
-                            />
-                        )
-                    })}
+                <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start">
+                    {/* Left Side: Interactive List - Forced Scrollable */}
+                    <div className="space-y-4 h-auto lg:h-[650px] overflow-y-auto lg:pr-6 scrollbar-thin pb-20">
+                        {projects.map((project, index) => {
+                            const isActive = activeIndex === index;
+
+                            return (
+                                <motion.div
+                                    key={index}
+                                    onClick={() => setActiveIndex(index)}
+                                    layout
+                                    className={`relative transition-all duration-700 ease-[0.16,1,0.3,1] overflow-hidden rounded-[2.5rem] border cursor-pointer ${isActive
+                                        ? "bg-white border-neutral-200 shadow-[0_40px_80px_-20px_rgba(0,0,0,0.06)] p-10"
+                                        : "bg-transparent border-transparent p-6 md:p-8 hover:bg-black/[0.01]"
+                                        }`}
+                                >
+                                    {isActive && (
+                                        <motion.div
+                                            layoutId="active-bg"
+                                            className="absolute inset-0 bg-white"
+                                            style={{ zIndex: -1 }}
+                                        />
+                                    )}
+
+                                    <div className="flex items-center gap-6 md:gap-8">
+                                        <motion.div
+                                            layout
+                                            className={`relative w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center transition-all duration-700 overflow-hidden ${isActive ? "bg-black scale-110 shadow-xl" : "bg-black/5 opacity-40 grayscale"
+                                                }`}
+                                        >
+                                            <Image
+                                                src={project.logo}
+                                                alt={`${project.title} logo`}
+                                                fill
+                                                className="object-cover"
+                                            />
+                                        </motion.div>
+                                        <div className="flex-1">
+                                            <motion.h3
+                                                layout
+                                                className={`text-xl md:text-2xl lg:text-3xl font-bold tracking-tight transition-colors duration-700 ${isActive ? "text-black" : "text-neutral-300"
+                                                    }`}
+                                            >
+                                                {project.title}
+                                            </motion.h3>
+                                        </div>
+                                    </div>
+
+                                    <AnimatePresence mode="wait">
+                                        {isActive && (
+                                            <motion.div
+                                                initial={{ height: 0, opacity: 0 }}
+                                                animate={{ height: "auto", opacity: 1 }}
+                                                exit={{ height: 0, opacity: 0 }}
+                                                transition={{
+                                                    height: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+                                                    opacity: { duration: 0.4, delay: 0.2 }
+                                                }}
+                                            >
+                                                <p className="mt-8 text-neutral-500 text-base md:text-lg lg:text-xl leading-relaxed max-w-lg">
+                                                    {project.description}
+                                                </p>
+                                                <div className="flex flex-wrap gap-2 mt-10">
+                                                    {project.deliverables.map((d, i) => (
+                                                        <span key={i} className="px-3 md:px-4 py-1.5 md:py-2 bg-neutral-100 rounded-full text-[10px] font-black uppercase tracking-widest text-neutral-400 border border-neutral-200">
+                                                            {d}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </motion.div>
+                            );
+                        })}
+                    </div>
+
+                    {/* Right Side: Just Image - Hidden on Mobile */}
+                    <div className="hidden lg:block lg:sticky lg:top-32 h-[750px] overflow-hidden rounded-[4rem]">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeIndex}
+                                initial={{ opacity: 0, scale: 1.05 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.98 }}
+                                transition={{
+                                    duration: 0.8,
+                                    ease: [0.16, 1, 0.3, 1]
+                                }}
+                                className="relative w-full h-full shadow-[0_60px_100px_-20px_rgba(0,0,0,0.1)]"
+                            >
+                                <Image
+                                    src={activeProject.img}
+                                    alt={activeProject.title}
+                                    fill
+                                    className="object-cover"
+                                    priority
+                                />
+                                <div className="absolute inset-0 bg-neutral-900/5" />
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
                 </div>
             </div>
-
-            <ProjectPopup
-                project={selectedProject}
-                isOpen={isPopupOpen}
-                onClose={() => setIsPopupOpen(false)}
-            />
         </section>
     );
 }
-

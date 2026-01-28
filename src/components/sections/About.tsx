@@ -38,8 +38,8 @@ export function About() {
                         >
                             <span className="text-[10px] md:text-xs font-bold tracking-[0.4em] md:tracking-[0.5em] uppercase text-white/30 block">Biography / 01</span>
                             <h2 className="text-5xl sm:text-7xl lg:text-9xl font-bold tracking-tighter leading-[0.9] md:leading-[0.85]">
-                                Thinking <br />
-                                To <span className="text-neutral-700 italic font-serif font-light">Existence.</span>
+                                The Art of <br />
+                                <span className="text-neutral-700 italic font-serif font-light">Execution.</span>
                             </h2>
                         </motion.div>
                     </div>
@@ -66,18 +66,19 @@ export function About() {
                     </div>
                     <div className="lg:col-span-7 order-1 lg:order-2">
                         <div className="max-w-xl space-y-8 md:space-y-12">
-                            <h3 className="text-2xl sm:text-3xl md:text-5xl font-light leading-tight">
-                                I operate at the intersection of <span className="font-bold underline decoration-white/20 underline-offset-4">strategy</span> and <span className="font-bold border-b border-white italic">aesthetic dominance.</span>
+                            <h3 className="text-2xl sm:text-3xl md:text-5xl font-light leading-tight text-white/90">
+                                You don&apos;t just get a new look. <br />
+                                <span className="font-bold border-b-2 border-white/20">You get an unfair business advantage.</span>
                             </h3>
-                            <p className="text-lg md:text-xl text-white/50 leading-relaxed font-light">
-                                From early-stage visioning to global scale execution, I partner with founders who believe that design isn't a cost—it's an unfair advantage.
+                            <p className="text-lg md:text-xl text-white/60 leading-relaxed font-light">
+                                You will get a high-converter brand that actually makes sense for your bottom line. Beyond aesthetics, you get strategic clarity and a visual identity tailored to pull in exactly the right audience.
                             </p>
                             <div className="pt-4 md:pt-8">
                                 <motion.button
                                     onClick={() => window.open('https://wa.me/213799739969', '_blank')}
                                     className="flex items-center gap-4 md:gap-6 text-lg md:text-xl font-bold transition-all border-b border-white pb-2 hover:gap-8 group"
                                 >
-                                    GET IN TOUCH
+                                    START A PROJECT
                                     <ArrowUpRight className="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" />
                                 </motion.button>
                             </div>
@@ -89,7 +90,7 @@ export function About() {
                 <div className="mt-32 md:mt-64 border-t border-white/10 pt-20 md:pt-32">
                     <div className="flex items-center gap-4 mb-20 text-white/30 uppercase tracking-[0.5em] text-[10px] md:text-xs font-bold">
                         <div className="w-12 h-px bg-white/20" />
-                        Proven Metrics
+                        By the numbers
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:gap-16">
@@ -100,11 +101,11 @@ export function About() {
                             transition={{ duration: 0.8 }}
                             className="space-y-8"
                         >
-                            <h3 className="text-8xl md:text-[8vw] font-black tracking-tighter text-white leading-none">6+</h3>
+                            <h3 className="text-8xl md:text-[8vw] font-black tracking-tighter text-white leading-none">6yr+</h3>
                             <div className="space-y-4">
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">Years of Domain Mastery</p>
-                                <p className="text-lg font-light text-white/60 leading-relaxed">
-                                    Bridging the gap between conceptual art and functional strategy across diverse industries.
+                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">In the trenches</p>
+                                <p className="text-lg font-light text-white/50 leading-relaxed">
+                                    A journey from self-taught enthusiast to a precision specialist in brand design and development.
                                 </p>
                             </div>
                         </motion.div>
@@ -118,9 +119,9 @@ export function About() {
                         >
                             <h3 className="text-8xl md:text-[8vw] font-black tracking-tighter text-white leading-none">40+</h3>
                             <div className="space-y-4">
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">Global Partnerships</p>
-                                <p className="text-lg font-light text-white/60 leading-relaxed">
-                                    Consulting for brands at the forefront of their industries, from Silicon Valley to Dubai.
+                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">Happy Founders</p>
+                                <p className="text-lg font-light text-white/50 leading-relaxed">
+                                    Collaborating with businesses worldwide to solve complex visual and technical problems.
                                 </p>
                             </div>
                         </motion.div>
@@ -134,9 +135,9 @@ export function About() {
                         >
                             <h3 className="text-8xl md:text-[8vw] font-black tracking-tighter text-white leading-none">100%</h3>
                             <div className="space-y-4">
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">Bespoke Execution</p>
-                                <p className="text-lg font-light text-white/60 leading-relaxed">
-                                    No templates. No compromises. Every project is a unique architectural solution.
+                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">Dedication</p>
+                                <p className="text-lg font-light text-white/50 leading-relaxed">
+                                    I don&apos;t juggle 50 clients. I work on a few projects at a time to ensure total, absolute focus.
                                 </p>
                             </div>
                         </motion.div>

@@ -7,32 +7,32 @@ const services = [
     {
         icon: <Share2 className="w-8 h-8" />,
         title: "Brand Strategy",
-        description: "The foundation of everything. We define who you are, who you're for, and why it matters.",
-        tags: ["Market Research", "Brand Positioning", "Tone of Voice", "Message Architecture"],
+        description: "You will get absolute clarity on your voice. I'll help you find the raw truth of your brand and turn it into a narrative that commands attention.",
+        tags: ["Positioning", "Core Narrative", "Content Strategy", "Market Fit"],
         colSpan: "md:col-span-2",
         gradient: "from-blue-500/20 to-cyan-500/20"
     },
     {
         icon: <Palette className="w-8 h-8" />,
         title: "Visual Identity",
-        description: "Crafting the face of your brand. Distinctive, memorable, and scalable design systems.",
-        tags: ["Logo Design", "Typography", "Color Philosophy"],
+        description: "You will get an unmistakable visual language. I build sets of distinct, memorable assets that ensure your brand is consistent and scalable.",
+        tags: ["Logo Systems", "Typography", "Color Theory"],
         colSpan: "md:col-span-1",
         gradient: "from-purple-500/20 to-pink-500/20"
     },
     {
         icon: <Monitor className="w-8 h-8" />,
-        title: "Digital Experience",
-        description: "Websites and products that don't just inform, but delight and convert.",
-        tags: ["Web Design", "UI/UX", "Development"],
+        title: "Digital Products",
+        description: "You will get a website that works as hard as you do. I design high-performance digital presence optimized for conversion and growth.",
+        tags: ["Web Design", "Development", "Shopify/Webflow"],
         colSpan: "md:col-span-1",
         gradient: "from-orange-500/20 to-red-500/20"
     },
     {
         icon: <Layers className="w-8 h-8" />,
-        title: "Art Direction",
-        description: "Curating the visual world your brand inhabits through photography and motion.",
-        tags: ["Photo Shoots", "Video Production", "Motion Graphics", "Asset Creation"],
+        title: "Content Direction",
+        description: "You will get a cohesive visual world that tells your story perfectly. I curate the photography and motion assets that build your brand's desire.",
+        tags: ["Creative Direction", "Motion Design", "Asset Systems"],
         colSpan: "md:col-span-2",
         gradient: "from-emerald-500/20 to-teal-500/20"
     }
@@ -105,10 +105,10 @@ export function Services() {
             <div className="max-w-[1200px] mx-auto">
                 <div className="mb-24 md:flex justify-between items-end">
                     <h2 className="text-5xl md:text-7xl font-semibold tracking-tighter max-w-2xl">
-                        Holistic approach to brand building.
+                        I move the needle <br /> through design.
                     </h2>
                     <p className="mt-6 md:mt-0 text-white/50 max-w-sm text-lg leading-relaxed">
-                        Every touchpoint matters. I ensure your brand communicates consistently across all channels.
+                        Design isn&apos;t just about looking good—it&apos;s about achieving a specific goal. Every pixel is a strategic decision.
                     </p>
                 </div>
 

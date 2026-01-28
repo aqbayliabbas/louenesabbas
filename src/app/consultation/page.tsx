@@ -37,18 +37,20 @@ export default function ConsultationPage() {
         }
     };
 
-    // Dynamic calendar
+    // Dynamic calendar - Next 90 days
     const today = new Date();
-    const currentMonth = today.toLocaleString('en-US', { month: 'long' }); // English for aesthetic or French? using English as per code style mostly
-    const daysInMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0).getDate();
-    const days = Array.from({ length: daysInMonth }, (_, i) => {
-        const d = new Date(today.getFullYear(), today.getMonth(), i + 1);
+    const days = Array.from({ length: 90 }, (_, i) => {
+        const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
         return d;
-    }).filter(d => d >= today);
+    }).filter(d => d.getDay() === 0 || d.getDay() === 6);
+
+    const displayMonth = (selectedDate || days[0]).toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
     const timeSlots = [
         '10:00', '10:30', '11:00', '11:30',
-        '14:00', '14:30', '15:00', '15:30', '16:00'
+        '12:00', '12:30', '13:00', '13:30',
+        '14:00', '14:30', '15:00', '15:30',
+        '16:00', '16:30', '17:00'
     ];
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -146,7 +148,7 @@ export default function ConsultationPage() {
                                     </div>
                                     <h2 className="text-4xl font-black mb-6 tracking-tight">Request Sent.</h2>
                                     <p className="text-neutral-400 text-lg mb-12 max-w-sm">
-                                        I'll confirm the <strong>{platform === 'google_meet' ? 'Meet link' : 'WhatsApp call'}</strong> for {selectedDate?.getDate()} {currentMonth} shortly.
+                                        I'll confirm the <strong>{platform === 'google_meet' ? 'Meet link' : 'WhatsApp call'}</strong> for {selectedDate?.getDate()} {displayMonth} shortly.
                                     </p>
                                     <button
                                         onClick={() => window.location.href = '/'}
@@ -192,7 +194,7 @@ export default function ConsultationPage() {
                                         <div className="bg-black/40 rounded-3xl p-6 md:p-8 border border-white/5">
                                             {/* Calendar Header */}
                                             <div className="flex items-center justify-between mb-8">
-                                                <span className="text-2xl font-black">{currentMonth}</span>
+                                                <span className="text-2xl font-black">{displayMonth}</span>
                                                 <div className="flex gap-2">
                                                     <button
                                                         type="button"

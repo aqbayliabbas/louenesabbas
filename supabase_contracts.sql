@@ -76,3 +76,31 @@ CREATE POLICY "Enable all access for authenticated users" ON contracts
 
 -- Enable Realtime
 ALTER PUBLICATION supabase_realtime ADD TABLE contracts;
+
+-- ==========================================
+-- CONTRACT CLAUSES TABLE
+-- ==========================================
+
+-- Create contract_clauses table
+CREATE TABLE contract_clauses (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    contract_id UUID NOT NULL REFERENCES contracts(id) ON DELETE CASCADE,
+    title VARCHAR(255) NOT NULL,
+    content TEXT NOT NULL,
+    order_index INT DEFAULT 0,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Index for faster lookups
+CREATE INDEX idx_contract_clauses_contract_id ON contract_clauses(contract_id);
+
+-- Enable RLS
+ALTER TABLE contract_clauses ENABLE ROW LEVEL SECURITY;
+
+-- Policy (Open for admin use)
+CREATE POLICY "Enable all access for authenticated users" ON contract_clauses
+    FOR ALL USING (auth.role() = 'anon' OR auth.role() = 'authenticated');
+
+-- Enable Realtime
+ALTER PUBLICATION supabase_realtime ADD TABLE contract_clauses;
+

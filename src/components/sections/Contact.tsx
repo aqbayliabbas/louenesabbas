@@ -44,11 +44,11 @@ export function Contact() {
 
                     <div className="relative z-10 space-y-8 max-w-2xl mx-auto">
                         <h2 className="text-5xl md:text-7xl font-semibold tracking-tighter">
-                            Let's start a <br />
-                            <span className="text-white/50">Project together.</span>
+                            Enough about me. <br />
+                            <span className="text-white/50">Let&apos;s talk about you.</span>
                         </h2>
-                        <p className="text-xl text-white/60 leading-relaxed">
-                            Interested in working together? We should queue up a time to chat. I’ll buy the coffee.
+                        <p className="text-xl text-white/60 leading-relaxed font-light">
+                            Have a vision you want to bring to life? I&apos;m always down to chat about new challenges. I&apos;ll buy the coffee (virtual or real).
                         </p>
 
                         <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-4">

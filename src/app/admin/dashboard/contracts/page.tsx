@@ -11,10 +11,20 @@ import {
     CheckCircle,
     Printer,
     X,
-    PenTool
+    PenTool,
+    FileText,
+    GripVertical
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import DeleteModal from '@/components/ui/DeleteModal';
+
+interface ContractClause {
+    id?: string;
+    contract_id?: string;
+    title: string;
+    content: string;
+    order_index: number;
+}
 
 interface Contract {
     id: string;
@@ -29,6 +39,7 @@ interface Contract {
     total_amount: number;
     status: 'draft' | 'sent' | 'signed' | 'completed' | 'cancelled';
     created_at: string;
+    clauses?: ContractClause[];
 }
 
 const STATUS_LABELS: Record<string, { label: string; color: string }> = {
@@ -60,16 +71,29 @@ export default function ContractsPage() {
         total_amount: '',
     });
 
+    // Clauses state
+    const [clauses, setClauses] = useState<ContractClause[]>([]);
+
     const fetchContracts = async () => {
         setIsLoading(true);
         try {
             const { data, error } = await supabase
                 .from('contracts')
-                .select('*')
+                .select(`
+                    *,
+                    clauses:contract_clauses(*)
+                `)
                 .order('created_at', { ascending: false });
 
             if (error) throw error;
-            setContracts(data || []);
+
+            // Sort clauses by order_index
+            const contractsWithSortedClauses = (data || []).map(contract => ({
+                ...contract,
+                clauses: contract.clauses?.sort((a: ContractClause, b: ContractClause) => a.order_index - b.order_index) || []
+            }));
+
+            setContracts(contractsWithSortedClauses);
         } catch (error) {
             console.error('Failed to fetch contracts:', error);
         } finally {
@@ -99,7 +123,8 @@ export default function ContractsPage() {
         setIsSaving(true);
 
         try {
-            const { error } = await supabase
+            // Insert contract first
+            const { data: contractData, error: contractError } = await supabase
                 .from('contracts')
                 .insert([{
                     client_name: formData.client_name,
@@ -111,9 +136,27 @@ export default function ContractsPage() {
                     end_date: formData.end_date || null,
                     total_amount: parseFloat(formData.total_amount),
                     status: 'draft'
-                }]);
+                }])
+                .select()
+                .single();
 
-            if (error) throw error;
+            if (contractError) throw contractError;
+
+            // Insert clauses if any
+            if (clauses.length > 0 && contractData) {
+                const clausesToInsert = clauses.map((clause, index) => ({
+                    contract_id: contractData.id,
+                    title: clause.title,
+                    content: clause.content,
+                    order_index: index
+                }));
+
+                const { error: clausesError } = await supabase
+                    .from('contract_clauses')
+                    .insert(clausesToInsert);
+
+                if (clausesError) throw clausesError;
+            }
 
             setShowForm(false);
             setFormData({
@@ -126,12 +169,27 @@ export default function ContractsPage() {
                 end_date: '',
                 total_amount: '',
             });
+            setClauses([]);
             fetchContracts();
         } catch (error) {
             console.error('Failed to create contract:', error);
         } finally {
             setIsSaving(false);
         }
+    };
+
+    const addClause = () => {
+        setClauses([...clauses, { title: '', content: '', order_index: clauses.length }]);
+    };
+
+    const updateClause = (index: number, field: 'title' | 'content', value: string) => {
+        const newClauses = [...clauses];
+        newClauses[index] = { ...newClauses[index], [field]: value };
+        setClauses(newClauses);
+    };
+
+    const removeClause = (index: number) => {
+        setClauses(clauses.filter((_, i) => i !== index));
     };
 
     const handleDelete = async () => {
@@ -383,6 +441,62 @@ export default function ContractsPage() {
                                         onChange={(e) => setFormData({ ...formData, total_amount: e.target.value })}
                                         className="w-full px-5 py-4 bg-neutral-50 rounded-xl border border-neutral-100 focus:border-black focus:outline-none transition-all font-medium"
                                     />
+                                </div>
+
+                                {/* Custom Clauses */}
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between">
+                                        <h3 className="text-xs font-black uppercase tracking-[0.2em] text-neutral-400">Clauses Personnalisées</h3>
+                                        <button
+                                            type="button"
+                                            onClick={addClause}
+                                            className="flex items-center gap-2 px-3 py-2 bg-neutral-100 hover:bg-neutral-200 rounded-lg text-xs font-bold transition-all"
+                                        >
+                                            <Plus size={14} />
+                                            Ajouter Clause
+                                        </button>
+                                    </div>
+
+                                    {clauses.length === 0 ? (
+                                        <p className="text-xs text-neutral-400 bg-neutral-50 p-4 rounded-xl border border-neutral-100 text-center">
+                                            Aucune clause personnalisée. Les clauses standards (Propriété intellectuelle, confidentialité, etc.) seront automatiquement incluses.
+                                        </p>
+                                    ) : (
+                                        <div className="space-y-4">
+                                            {clauses.map((clause, index) => (
+                                                <div key={index} className="bg-neutral-50 p-4 rounded-xl border border-neutral-100 space-y-3">
+                                                    <div className="flex items-center justify-between">
+                                                        <div className="flex items-center gap-2 text-neutral-400">
+                                                            <GripVertical size={14} />
+                                                            <span className="text-xs font-bold">Clause {index + 1}</span>
+                                                        </div>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => removeClause(index)}
+                                                            className="p-1 text-red-500 hover:bg-red-50 rounded transition-colors"
+                                                        >
+                                                            <Trash2 size={14} />
+                                                        </button>
+                                                    </div>
+                                                    <input
+                                                        type="text"
+                                                        placeholder="Titre de la clause *"
+                                                        value={clause.title}
+                                                        onChange={(e) => updateClause(index, 'title', e.target.value)}
+                                                        className="w-full px-4 py-3 bg-white rounded-lg border border-neutral-200 focus:border-black focus:outline-none transition-all font-bold text-sm"
+                                                    />
+                                                    <textarea
+                                                        placeholder="Contenu de la clause *"
+                                                        rows={3}
+                                                        value={clause.content}
+                                                        onChange={(e) => updateClause(index, 'content', e.target.value)}
+                                                        className="w-full px-4 py-3 bg-white rounded-lg border border-neutral-200 focus:border-black focus:outline-none transition-all text-sm resize-none"
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+
                                     <p className="text-xs text-neutral-500 bg-neutral-50 p-4 rounded-xl border border-neutral-100">
                                         Note: Le contrat inclura automatiquement les clauses standards (Propriété intellectuelle, confidentialité, etc.) ainsi que l'échéancier de paiement 50/25/25.
                                     </p>
@@ -501,6 +615,11 @@ function ContractViewer({ contract, onClose, onStatusUpdate }: { contract: Contr
 
                 <h2>7. Résiliation</h2>
                 <p>En cas d'annulation du projet par le Client après signature, l'acompte de 50% reste acquis au Prestataire à titre d'indemnité. Tout travail supplémentaire déjà réalisé sera facturé au prorata.</p>
+
+                ${contract.clauses && contract.clauses.length > 0 ? contract.clauses.map((clause, index) => `
+                <h2>${8 + index}. ${clause.title}</h2>
+                <p>${clause.content.replace(/\n/g, '<br>')}</p>
+                `).join('') : ''}
 
                 <div class="signature-section">
                     <div>
@@ -623,9 +742,30 @@ function ContractViewer({ contract, onClose, onStatusUpdate }: { contract: Contr
                                 Le document imprimé inclura automatiquement les articles complets sur la Propriété Intellectuelle, la Confidentialité, le Droit de Publicité et les Conditions de Résiliation.
                             </div>
                         </section>
+
+                        {/* Custom Clauses */}
+                        {contract.clauses && contract.clauses.length > 0 && (
+                            <section>
+                                <h4 className="font-bold text-lg mb-4">Clauses Personnalisées</h4>
+                                <div className="space-y-4">
+                                    {contract.clauses.map((clause, index) => (
+                                        <div key={clause.id || index} className="bg-neutral-50 p-4 rounded-xl border border-neutral-100">
+                                            <div className="flex items-center gap-2 mb-2">
+                                                <FileText size={14} className="text-neutral-400" />
+                                                <h5 className="font-bold text-sm">{clause.title}</h5>
+                                            </div>
+                                            <p className="text-neutral-600 text-sm leading-relaxed whitespace-pre-wrap">
+                                                {clause.content}
+                                            </p>
+                                        </div>
+                                    ))}
+                                </div>
+                            </section>
+                        )}
                     </div>
                 </div>
             </motion.div>
         </motion.div>
     );
 }
+

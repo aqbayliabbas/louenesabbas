@@ -40,10 +40,10 @@ export function Clients() {
                     className="text-center mb-16"
                 >
                     <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-neutral-400 block mb-4">
-                        Partnerships
+                        Current & Past Partnerships
                     </span>
                     <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
-                        Collaborating with the best.
+                        Trusted by ambitious founders.
                     </h2>
                 </motion.div>
 

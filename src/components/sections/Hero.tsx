@@ -1,65 +1,105 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { ChevronRight } from 'lucide-react';
 
 export function Hero() {
   return (
-    <section id="hero" data-nav-light className="min-h-screen flex flex-col justify-center items-center px-6 relative overflow-hidden bg-white pt-24">
-      {/* Subtle Grain */}
-      <div
-        className="absolute inset-0 opacity-[0.03] pointer-events-none z-0"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
-          backgroundSize: '150px 150px'
-        }}
-      />
+    <section id="hero" className="min-h-screen flex flex-col items-center justify-center px-6 relative bg-white">
+      <div className="max-w-3xl w-full mx-auto flex flex-col items-center text-center relative z-10">
 
-      <div className="max-w-[1600px] w-full mx-auto relative z-10 text-center">
-        {/* Massive Typography */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16 md:mb-24"
-        >
-          <h1 className="text-[15vw] md:text-[12vw] lg:text-[10vw] leading-[0.85] font-black tracking-[-0.04em] text-black">
-            Thinking
-          </h1>
-          <h1 className="text-[15vw] md:text-[12vw] lg:text-[10vw] leading-[0.85] tracking-[-0.02em] text-neutral-400 font-serif italic font-light">
-            To life.
-          </h1>
-        </motion.div>
-
-        {/* Bottom Content */}
+        {/* Main Heading */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          className="flex flex-col items-center gap-10"
+          transition={{ duration: 1, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
+          className="mb-10 w-full"
         >
-          <p className="text-base md:text-lg text-neutral-500 max-w-md leading-relaxed font-light">
-            I build brands that refuse to be ignored. Bridging the gap between silence and noise with strategic precision.
-          </p>
+          <h1 className="text-3xl md:text-4xl lg:text-[40px] leading-[1.3] font-black tracking-[-0.02em] text-black mb-10 flex flex-wrap justify-center gap-x-[0.3em] gap-y-1 w-full mx-auto">
+            {["You", "will", "get", "a"].map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block text-neutral-400 font-serif italic font-light tracking-tight"
+            >
+              strategic brand
+            </motion.span>
+            {["that", "turns"].map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block text-neutral-400 font-serif italic font-light tracking-tight"
+            >
+              your raw vision
+            </motion.span>
+            {["into", "a"].map((word, i) => (
+              <motion.span
+                key={i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.55 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
+                className="inline-block"
+              >
+                {word}
+              </motion.span>
+            ))}
+            <motion.span
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
+              className="inline-block text-neutral-400 font-serif italic font-light tracking-tight"
+            >
+              lasting digital legacy.
+            </motion.span>
+          </h1>
 
-          <div className="flex gap-4">
-            <button
-              onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
-              className="px-8 py-4 rounded-full bg-black text-white font-medium text-sm hover:scale-105 transition-all shadow-xl active:scale-95"
-            >
-              Explore Projects
-            </button>
-            <button
-              onClick={() => window.open('https://wa.me/213799739969', '_blank')}
-              className="px-8 py-4 rounded-full border border-neutral-200 bg-white text-black font-medium text-sm hover:bg-neutral-50 transition-all active:scale-95"
-            >
-              Get in Touch
-            </button>
-          </div>
+        </motion.div>
+
+        {/* CTA Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.3 }}
+          className="flex flex-col sm:flex-row items-center gap-12"
+        >
+          <button
+            onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
+            className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.4em] text-black"
+          >
+            <span className="pb-1 border-b-[1px] border-black/10 group-hover:border-black transition-all">Check my work</span>
+            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+          </button>
+
+          <button
+            onClick={() => window.open('https://wa.me/213799739969', '_blank')}
+            className="px-12 py-4 bg-black text-white rounded-full font-bold text-[11px] uppercase tracking-[0.3em] hover:bg-neutral-800 transition-all shadow-xl active:scale-95"
+          >
+            Let&apos;s talk shop
+          </button>
         </motion.div>
       </div>
-
-      {/* Modern Vignette */}
-      <div className="absolute inset-0 ring-1 ring-inset ring-black/5 pointer-events-none z-20" />
     </section>
   );
 }

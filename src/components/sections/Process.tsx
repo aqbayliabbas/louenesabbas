@@ -7,29 +7,29 @@ import Image from 'next/image';
 const steps = [
     {
         number: "01",
-        title: "Deep Dive",
-        description: "We don't just ask what you do. We interrogate why it matters. Uncovering the raw truth of your business.",
+        title: "The Audit",
+        description: "You will get total clarity on your brand's unique position. I strip away the noise to uncover the raw truth that will make your business unmistakable.",
         color: "bg-blue-300",
         img: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2668&auto=format&fit=crop"
     },
     {
         number: "02",
-        title: "Blueprinting",
-        description: "Architecture before decoration. We build the strategic framework that will support your brand's weight.",
+        title: "The Architecture",
+        description: "You will get a strategic roadmap built for growth. I design the logical framework that supports your vision before a single pixel is moved.",
         color: "bg-indigo-300",
         img: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop"
     },
     {
         number: "03",
-        title: "Visual Synthesis",
-        description: "Translating abstract value into concrete desire. This is where strategy puts on a tuxedo.",
+        title: "The Creative",
+        description: "You will get high-end visual assets that turn abstract interest into concrete desire. I build the touchpoints that command your audience's attention.",
         color: "bg-purple-300",
         img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop"
     },
     {
         number: "04",
-        title: "Realization",
-        description: "The moment of truth. Pixel-perfect execution across every touchpoint. No compromises.",
+        title: "The Handover",
+        description: "You will get the tools and assets you need for a flawless launch. I deliver a production-ready system that scales without friction.",
         color: "bg-fuchsia-300",
         img: "https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=2536&auto=format&fit=crop"
     }
@@ -41,7 +41,7 @@ export function Process() {
     return (
         <section className="py-32 px-6 relative overflow-hidden">
             <div className="max-w-[1200px] mx-auto relative z-10">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-16">The Process</h2>
+                <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-16">How I work</h2>
 
                 <div className="space-y-4" onMouseLeave={() => setActiveStep(null)}>
                     {steps.map((step, index) => (
