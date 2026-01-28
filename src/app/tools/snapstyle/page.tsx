@@ -266,11 +266,11 @@ export default function SnapStylePage() {
 
                 // Draw the caster
                 sCtx.beginPath();
-                if ("roundRect" in sCtx) {
-                    // @ts-ignore
-                    sCtx.roundRect(drawX, drawY, drawW, drawH, settings.style.radius);
+                const casterCtx = sCtx as any;
+                if (casterCtx.roundRect) {
+                    casterCtx.roundRect(drawX, drawY, drawW, drawH, settings.style.radius);
                 } else {
-                    sCtx.rect(drawX, drawY, drawW, drawH);
+                    casterCtx.rect(drawX, drawY, drawW, drawH);
                 }
                 sCtx.fill();
                 sCtx.restore();
@@ -279,11 +279,11 @@ export default function SnapStylePage() {
                 sCtx.globalCompositeOperation = 'destination-out';
                 sCtx.fillStyle = 'black';
                 sCtx.beginPath();
-                if ("roundRect" in sCtx) {
-                    // @ts-ignore
-                    sCtx.roundRect(drawX, drawY, drawW, drawH, settings.style.radius);
+                const cutoutCtx = sCtx as any;
+                if (cutoutCtx.roundRect) {
+                    cutoutCtx.roundRect(drawX, drawY, drawW, drawH, settings.style.radius);
                 } else {
-                    sCtx.rect(drawX, drawY, drawW, drawH);
+                    cutoutCtx.rect(drawX, drawY, drawW, drawH);
                 }
                 sCtx.fill();
 
@@ -294,11 +294,11 @@ export default function SnapStylePage() {
             // Draw Image with Rounded Corners
             ctx.save();
             ctx.beginPath();
-            if ("roundRect" in ctx) {
-                // @ts-ignore
-                ctx.roundRect(drawX, drawY, drawW, drawH, settings.style.radius);
+            const clipCtx = ctx as any;
+            if (clipCtx.roundRect) {
+                clipCtx.roundRect(drawX, drawY, drawW, drawH, settings.style.radius);
             } else {
-                ctx.rect(drawX, drawY, drawW, drawH);
+                clipCtx.rect(drawX, drawY, drawW, drawH);
             }
             ctx.closePath();
             // Note: We don't fill here, we just clip the image
