@@ -1,93 +1,132 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import Image from 'next/image';
+import { motion, useScroll, useSpring } from 'framer-motion';
+import { useRef } from 'react';
 
 const steps = [
     {
         number: "01",
-        title: "The Audit",
-        description: "You will get total clarity on your brand's unique position. I strip away the noise to uncover the raw truth that will make your business unmistakable.",
-        color: "bg-blue-300",
-        img: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=2668&auto=format&fit=crop"
+        title: "Deep Discovery",
+        subtitle: "The Audit Phase",
+        description: "I strip away the noise to uncover the raw truth of your brand. We dive deep into your market, competitors, and core values to find your unique 'unfair' advantage.",
     },
     {
         number: "02",
-        title: "The Architecture",
-        description: "You will get a strategic roadmap built for growth. I design the logical framework that supports your vision before a single pixel is moved.",
-        color: "bg-indigo-300",
-        img: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2670&auto=format&fit=crop"
+        title: "Strategic Blueprint",
+        subtitle: "The Architecture Phase",
+        description: "Designing the logical framework that supports your vision. We build a strategic roadmap for growth before a single pixel is moved, ensuring design solves real problems.",
     },
     {
         number: "03",
-        title: "The Creative",
-        description: "You will get high-end visual assets that turn abstract interest into concrete desire. I build the touchpoints that command your audience's attention.",
-        color: "bg-purple-300",
-        img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2000&auto=format&fit=crop"
+        title: "Creative Execution",
+        subtitle: "The Craft Phase",
+        description: "Turning abstract strategy into concrete desire. I build high-end visual systems and digital experiences that command attention through meticulous craftsmanship.",
     },
     {
         number: "04",
-        title: "The Handover",
-        description: "You will get the tools and assets you need for a flawless launch. I deliver a production-ready system that scales without friction.",
-        color: "bg-fuchsia-300",
-        img: "https://images.unsplash.com/photo-1559028012-481c04fa702d?q=80&w=2536&auto=format&fit=crop"
+        title: "System Delivery",
+        subtitle: "The Handover Phase",
+        description: "Providing the tools for a flawless launch. I deliver production-ready assets and design systems that scale effortlessly across every touchpoint of your business.",
     }
 ];
 
 export function Process() {
-    const [activeStep, setActiveStep] = useState<number | null>(null);
+    const containerRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start center", "end center"]
+    });
+
+    const scaleY = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
 
     return (
-        <section className="py-32 px-6 relative overflow-hidden">
-            <div className="max-w-[1200px] mx-auto relative z-10">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-16">How I work</h2>
-
-                <div className="space-y-4" onMouseLeave={() => setActiveStep(null)}>
-                    {steps.map((step, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, x: -20 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            onMouseEnter={() => setActiveStep(index)}
-                            className="group border-t border-border py-8 md:py-12 flex flex-col md:flex-row md:items-start gap-6 md:gap-32 cursor-default transition-opacity duration-300"
-                            style={{
-                                opacity: activeStep !== null && activeStep !== index ? 0.3 : 1
-                            }}
-                        >
-                            <span className="text-xl font-mono text-muted-foreground group-hover:text-foreground transition-colors duration-300">
-                                {step.number}
-                            </span>
-                            <div className="flex-1">
-                                <h3 className="text-3xl md:text-4xl font-semibold mb-4 group-hover:translate-x-2 transition-transform duration-300">
-                                    {step.title}
-                                </h3>
-                            </div>
-
-                            {/* Floating Image reveal - out of frame */}
-                            <div className="absolute left-[40%] top-1/2 -translate-y-1/2 pointer-events-none opacity-0 group-hover:opacity-100 group-hover:scale-100 scale-90 -rotate-3 group-hover:rotate-3 transition-all duration-500 ease-[0.16,1,0.3,1] z-20">
-                                <div className="w-[320px] aspect-[4/5] relative rounded-2xl overflow-hidden shadow-[0_30px_60px_-15px_rgba(0,0,0,0.3)]">
-                                    <Image
-                                        src={step.img}
-                                        alt={step.title}
-                                        fill
-                                        className="object-cover transition-all duration-700"
-                                        sizes="320px"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex-1 max-w-md">
-                                <p className="text-lg text-muted-foreground leading-relaxed group-hover:text-foreground/80 transition-colors duration-300">
-                                    {step.description}
-                                </p>
-                            </div>
-                        </motion.div>
-                    ))}
-                    <div className="border-t border-border" />
+        <section ref={containerRef} id="process" className="py-24 md:py-48 bg-white relative overflow-hidden">
+            <div className="max-w-5xl mx-auto px-6">
+                {/* Header */}
+                <div className="mb-32 md:mb-48 text-center text-black">
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                    >
+                        <h2 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
+                            Our <br className="md:hidden" />
+                            <span className="text-neutral-300 italic font-serif font-light">Process.</span>
+                        </h2>
+                    </motion.div>
                 </div>
+
+                {/* Timeline Container */}
+                <div className="relative">
+                    {/* Central Vertical Line */}
+                    <div className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[2px] bg-neutral-100 -translate-x-1/2" />
+
+                    {/* Progress Line */}
+                    <motion.div
+                        className="absolute left-[20px] md:left-1/2 top-0 bottom-0 w-[2px] bg-neutral-900 -translate-x-1/2 origin-top"
+                        style={{ scaleY }}
+                    />
+
+                    {/* Steps Overlay */}
+                    <div className="space-y-32 md:space-y-64 relative">
+                        {steps.map((step, index) => {
+                            const isEven = index % 2 === 0;
+
+                            return (
+                                <div key={index} className="relative flex items-center md:justify-center">
+                                    {/* Circle Indicator */}
+                                    <div className="absolute left-[20px] md:left-1/2 -translate-x-1/2 flex items-center justify-center z-20">
+                                        <motion.div
+                                            initial={{ scale: 0.8, opacity: 0 }}
+                                            whileInView={{ scale: 1, opacity: 1 }}
+                                            viewport={{ once: true, margin: "-100px" }}
+                                            className="w-10 h-10 md:w-14 md:h-14 rounded-full bg-white border-2 border-neutral-900 flex items-center justify-center shadow-xl -translate-x-1/2 md:translate-x-0"
+                                        >
+                                            <span className="text-[10px] md:text-sm font-black text-black">{step.number}</span>
+                                        </motion.div>
+
+                                        {/* Outer Pulse Circle */}
+                                        <motion.div
+                                            className="absolute w-12 h-12 md:w-20 md:h-20 rounded-full border border-neutral-200 -translate-x-1/2 md:translate-x-0"
+                                            animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.5] }}
+                                            transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
+                                        />
+                                    </div>
+
+                                    {/* Content Card */}
+                                    <div className={`w-full flex ${isEven ? 'md:justify-start' : 'md:justify-end'}`}>
+                                        <motion.div
+                                            initial={{ opacity: 0, x: isEven ? -50 : 50 }}
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true, margin: "-100px" }}
+                                            className={`max-w-md ml-16 md:ml-0 ${isEven ? 'md:mr-32 md:text-right' : 'md:ml-32 md:text-left'}`}
+                                        >
+                                            <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em] text-neutral-400 mb-3 block">
+                                                {step.subtitle}
+                                            </span>
+                                            <h3 className="text-2xl md:text-4xl font-semibold text-neutral-950 mb-6 leading-tight">
+                                                {step.title}
+                                            </h3>
+                                            <p className="text-base md:text-lg text-neutral-500 leading-relaxed font-medium">
+                                                {step.description}
+                                            </p>
+                                        </motion.div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </div>
+            </div>
+
+            {/* Decorative Narrative background */}
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full flex justify-between px-12 pointer-events-none opacity-[0.02]">
+                <span className="text-[25vw] font-black uppercase rotate-90 origin-center leading-none text-black">STRATEGY</span>
+                <span className="text-[25vw] font-black uppercase -rotate-90 origin-center leading-none text-black">CRAFT</span>
             </div>
         </section>
     );

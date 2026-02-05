@@ -10,13 +10,22 @@ export function Preloader() {
     const [dimension, setDimension] = useState({ width: 0, height: 0 });
 
     useEffect(() => {
+        const hasLoaded = sessionStorage.getItem('hasLoaded');
+        if (hasLoaded) {
+            setIsLoading(false);
+            return;
+        }
+
         setDimension({ width: window.innerWidth, height: window.innerHeight });
 
         const interval = setInterval(() => {
             setProgress((prev) => {
                 if (prev >= 100) {
                     clearInterval(interval);
-                    setTimeout(() => setIsLoading(false), 500);
+                    setTimeout(() => {
+                        setIsLoading(false);
+                        sessionStorage.setItem('hasLoaded', 'true');
+                    }, 500);
                     return 100;
                 }
                 return prev + Math.floor(Math.random() * 10) + 1;

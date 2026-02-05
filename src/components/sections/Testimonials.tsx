@@ -32,49 +32,49 @@ const testimonials = [
 
 export function Testimonials() {
     return (
-        <section className="py-32 bg-background overflow-hidden">
+        <section className="py-32 bg-[#0a0a0a] text-white overflow-hidden">
             <div className="mb-16 px-6 max-w-[1200px] mx-auto">
                 <h2 className="text-4xl md:text-5xl font-semibold tracking-tight">Client Words.</h2>
             </div>
 
-            <div className="relative flex w-full overflow-hidden mask-linear-gradient">
+            <div className="relative flex w-full overflow-hidden">
                 {/* Gradient Masks */}
-                <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
-                <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
+                <div className="absolute left-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-10" />
+                <div className="absolute right-0 top-0 bottom-0 w-20 md:w-32 bg-gradient-to-l from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent z-10" />
 
                 {/* Marquee Container */}
                 <motion.div
-                    className="flex gap-8 whitespace-nowrap"
-                    animate={{ x: [0, -1000] }}
+                    className="flex gap-4 md:gap-8 whitespace-nowrap"
+                    animate={{ x: ["0%", "-50%"] }}
                     transition={{
-                        duration: 20,
+                        duration: 30,
                         repeat: Infinity,
                         ease: "linear"
                     }}
                 >
                     {/* Duplicated list for seamless loop */}
-                    {[...testimonials, ...testimonials, ...testimonials].map((t, i) => (
-                        <div key={i} className="w-[400px] md:w-[500px] p-8 md:p-12 rounded-3xl bg-muted/30 border border-border/50 shrink-0 whitespace-normal flex flex-col justify-between">
+                    {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+                        <div key={i} className="w-[300px] md:w-[500px] p-8 md:p-12 rounded-[2rem] md:rounded-3xl bg-white/5 border border-white/10 shrink-0 whitespace-normal flex flex-col justify-between">
                             <div>
-                                <span className="text-4xl text-accent font-serif italic">"</span>
-                                <p className="text-lg md:text-xl text-foreground font-medium leading-relaxed -mt-4 mb-8">
+                                <span className="text-3xl md:text-4xl text-neutral-500 font-serif italic">"</span>
+                                <p className="text-base md:text-xl text-white/90 font-medium leading-relaxed -mt-2 md:-mt-4 mb-6 md:mb-8">
                                     {t.quote}
                                 </p>
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <div className="relative w-12 h-12">
+                                <div className="relative w-10 h-10 md:w-12 md:h-12">
                                     <Image
                                         src={t.image}
                                         alt={t.author}
                                         fill
                                         className="rounded-full object-cover grayscale"
-                                        sizes="48px"
+                                        sizes="(max-w-768px) 40px, 48px"
                                     />
                                 </div>
                                 <div>
-                                    <h4 className="font-bold text-sm">{t.author}</h4>
-                                    <p className="text-xs text-muted-foreground uppercase tracking-wider">{t.role}</p>
+                                    <h4 className="font-bold text-[10px] md:text-sm">{t.author}</h4>
+                                    <p className="text-[8px] md:text-xs text-neutral-500 uppercase tracking-wider">{t.role}</p>
                                 </div>
                             </div>
                         </div>

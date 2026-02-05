@@ -1,146 +1,123 @@
 'use client';
 
-import { motion, useScroll, useTransform, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowUpRight } from 'lucide-react';
 import Image from 'next/image';
 
-
 export function About() {
-    const containerRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: containerRef,
-        offset: ["start end", "end start"]
-    });
-
-    const x = useTransform(scrollYProgress, [0, 1], [100, -300]);
-
     return (
-        <section id="about" data-nav-dark ref={containerRef} className="relative bg-[#050505] text-white overflow-hidden">
-            {/* Massive Scrolly Text Background */}
-            <div className="absolute top-0 left-0 w-full h-full hidden sm:flex items-center justify-center pointer-events-none -z-0">
-                <motion.span
-                    style={{ x }}
-                    className="text-[25vw] font-black text-white/[0.02] whitespace-nowrap leading-none select-none uppercase"
+        <section id="about" data-nav-dark className="relative bg-neutral-950 text-white py-24 md:py-48 overflow-hidden font-sans">
+            {/* Background Decorative Element */}
+            <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-white/[0.02] to-transparent pointer-events-none" />
+
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                {/* Section Label */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.8 }}
+                    className="flex items-center gap-4 mb-16 md:mb-24"
                 >
-                    Craft Performance Vision Strategy
-                </motion.span>
-            </div>
+                </motion.div>
 
-            <div className="max-w-7xl mx-auto px-6 py-20 md:py-48 lg:py-64 relative z-10">
-                {/* Header Spread */}
-                <div className="grid lg:grid-cols-12 gap-8 md:gap-12 mb-24 md:mb-40">
-                    <div className="lg:col-span-12">
+                <div className="grid lg:grid-cols-12 gap-16 md:gap-24">
+                    {/* Left Column: Image & Direct Message */}
+                    <div className="lg:col-span-5 space-y-12">
                         <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            className="space-y-6 md:space-y-8"
-                        >
-                            <span className="text-[10px] md:text-xs font-bold tracking-[0.4em] md:tracking-[0.5em] uppercase text-white/30 block">Biography / 01</span>
-                            <h2 className="text-5xl sm:text-7xl lg:text-9xl font-bold tracking-tighter leading-[0.9] md:leading-[0.85]">
-                                The Art of <br />
-                                <span className="text-neutral-700 italic font-serif font-light">Execution.</span>
-                            </h2>
-                        </motion.div>
-                    </div>
-                </div>
-
-                {/* Creative Large Image & Text Section */}
-                <div className="flex flex-col lg:grid lg:grid-cols-12 gap-16 md:gap-24 items-center mb-32 md:mb-64">
-                    <div className="w-full lg:col-span-5 order-2 lg:order-1">
-                        <motion.div
-                            initial={{ clipPath: "inset(100% 0 0 0)" }}
-                            whileInView={{ clipPath: "inset(0% 0 0 0)" }}
-                            transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                            className="relative aspect-[4/5] overflow-hidden rounded-2xl group w-full max-w-lg mx-auto lg:mx-0"
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            whileInView={{ opacity: 1, scale: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                            className="relative aspect-[4/5] rounded-[40px] overflow-hidden bg-neutral-900 shadow-2xl group"
                         >
                             <Image
                                 src="/me.png"
                                 alt="Louenes Abbas"
                                 fill
-                                className="object-cover grayscale brightness-50 md:group-hover:grayscale-0 md:group-hover:brightness-100 transition-all duration-1000"
+                                priority
+                                className="object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-1000"
                                 sizes="(max-width: 1024px) 100vw, 40vw"
                             />
-                            <div className="absolute inset-0 bg-linear-to-t from-black/80 to-transparent" />
+                            <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-[40px]" />
                         </motion.div>
-                    </div>
-                    <div className="lg:col-span-7 order-1 lg:order-2">
-                        <div className="max-w-xl space-y-8 md:space-y-12">
-                            <h3 className="text-2xl sm:text-3xl md:text-5xl font-light leading-tight text-white/90">
-                                You don&apos;t just get a new look. <br />
-                                <span className="font-bold border-b-2 border-white/20">You get an unfair business advantage.</span>
-                            </h3>
-                            <p className="text-lg md:text-xl text-white/60 leading-relaxed font-light">
-                                You will get a high-converter brand that actually makes sense for your bottom line. Beyond aesthetics, you get strategic clarity and a visual identity tailored to pull in exactly the right audience.
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.2 }}
+                            className="p-10 rounded-[40px] bg-white/[0.03] border border-white/10 backdrop-blur-sm"
+                        >
+                            <h4 className="text-xl font-medium mb-4 text-white">Visual Storytelling & Strategy</h4>
+                            <p className="text-white/50 leading-relaxed font-light">
+                                I believe that every brand has a soul. My job is to bring that soul into the digital light through meticulous design and data-driven strategy.
                             </p>
-                            <div className="pt-4 md:pt-8">
-                                <motion.button
+                        </motion.div>
+                    </div>
+
+                    {/* Right Column: Detailed Content */}
+                    <div className="lg:col-span-7 flex flex-col justify-center">
+                        <motion.h2
+                            initial={{ opacity: 0, y: 30 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                            className="text-4xl md:text-6xl lg:text-7xl font-semibold leading-[1.1] tracking-tight mb-12 text-white"
+                        >
+                            Turning vision into <br />
+                            <span className="text-neutral-500 italic font-serif">measurable</span> growth.
+                        </motion.h2>
+
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            className="space-y-8 max-w-xl"
+                        >
+                            <p className="text-xl md:text-2xl text-white/70 leading-relaxed font-light">
+                                You don&apos;t just get a new look. You get an <span className="text-white font-medium italic underline underline-offset-8 decoration-white/20">unfair business advantage</span>.
+                            </p>
+
+                            <p className="text-lg text-white/50 leading-relaxed font-light">
+                                Beyond aesthetics, you get strategic clarity and a visual identity tailored to pull in exactly the right audience. I build high-converting brands that actually make sense for your bottom line.
+                            </p>
+
+                            <div className="pt-8">
+                                <button
                                     onClick={() => window.open('https://wa.me/213799739969', '_blank')}
-                                    className="flex items-center gap-4 md:gap-6 text-lg md:text-xl font-bold transition-all border-b border-white pb-2 hover:gap-8 group"
+                                    className="group inline-flex items-center gap-8 bg-white text-black pl-8 pr-2 py-2 rounded-full text-xs font-bold uppercase tracking-[0.2em] transition-all hover:bg-neutral-200 hover:scale-[1.02] active:scale-95 shadow-xl shadow-white/5"
                                 >
-                                    START A PROJECT
-                                    <ArrowUpRight className="w-5 h-5 md:w-6 md:h-6 transition-transform group-hover:translate-x-2 group-hover:-translate-y-2" />
-                                </motion.button>
+                                    Start a project
+                                    <div className="w-10 h-10 rounded-full bg-black flex items-center justify-center text-white group-hover:rotate-45 transition-transform duration-500">
+                                        <ArrowUpRight size={18} strokeWidth={2.5} />
+                                    </div>
+                                </button>
                             </div>
+                        </motion.div>
+
+                        {/* Stats Grid - More refined */}
+                        <div className="mt-24 grid grid-cols-2 md:grid-cols-3 gap-12 border-t border-white/10 pt-16">
+                            {[
+                                { label: 'Experience', value: '6yr+', desc: 'Modern craftsmanship' },
+                                { label: 'Clients', value: '40+', desc: 'Happy founders' },
+                                { label: 'Feedback', value: '100%', desc: 'Absolute satisfaction' }
+                            ].map((stat, i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true }}
+                                    transition={{ duration: 0.8, delay: 0.4 + (i * 0.1) }}
+                                    className="space-y-2"
+                                >
+                                    <span className="text-xs font-bold uppercase tracking-widest text-white/30">{stat.label}</span>
+                                    <div className="text-3xl md:text-4xl font-bold text-white">{stat.value}</div>
+                                    <p className="text-[10px] uppercase tracking-wider text-white/40">{stat.desc}</p>
+                                </motion.div>
+                            ))}
                         </div>
-                    </div>
-                </div>
-
-                {/* The Stats: Modern Typographic Grid */}
-                <div className="mt-32 md:mt-64 border-t border-white/10 pt-20 md:pt-32">
-                    <div className="flex items-center gap-4 mb-20 text-white/30 uppercase tracking-[0.5em] text-[10px] md:text-xs font-bold">
-                        <div className="w-12 h-px bg-white/20" />
-                        By the numbers
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-20 md:gap-16">
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8 }}
-                            className="space-y-8"
-                        >
-                            <h3 className="text-8xl md:text-[8vw] font-black tracking-tighter text-white leading-none">6yr+</h3>
-                            <div className="space-y-4">
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">In the trenches</p>
-                                <p className="text-lg font-light text-white/50 leading-relaxed">
-                                    A journey from self-taught enthusiast to a precision specialist in brand design and development.
-                                </p>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: 0.1 }}
-                            className="space-y-8"
-                        >
-                            <h3 className="text-8xl md:text-[8vw] font-black tracking-tighter text-white leading-none">40+</h3>
-                            <div className="space-y-4">
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">Happy Founders</p>
-                                <p className="text-lg font-light text-white/50 leading-relaxed">
-                                    Collaborating with businesses worldwide to solve complex visual and technical problems.
-                                </p>
-                            </div>
-                        </motion.div>
-
-                        <motion.div
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            className="space-y-8"
-                        >
-                            <h3 className="text-8xl md:text-[8vw] font-black tracking-tighter text-white leading-none">100%</h3>
-                            <div className="space-y-4">
-                                <p className="text-xs font-bold tracking-[0.4em] uppercase text-white/40">Dedication</p>
-                                <p className="text-lg font-light text-white/50 leading-relaxed">
-                                    I don&apos;t juggle 50 clients. I work on a few projects at a time to ensure total, absolute focus.
-                                </p>
-                            </div>
-                        </motion.div>
                     </div>
                 </div>
             </div>

@@ -165,6 +165,7 @@ export default function QuestionnairePage() {
         deliverables: [],
     });
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [showError, setShowError] = useState(false);
 
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
@@ -199,17 +200,22 @@ export default function QuestionnairePage() {
     const canProceed = () => {
         const value = formData[currentQuestion.id];
         if (currentQuestion.type === 'text' || currentQuestion.type === 'textarea') {
-            return value && value.trim().length > 0;
+            return typeof value === 'string' && value.trim().length > 0;
         }
         if (currentQuestion.type === 'multiselect_pills' || currentQuestion.type === 'touchpoints_grid') {
-            return value && value.length > 0;
+            return Array.isArray(value) && value.length > 0;
         }
         return true; // personality_sliders always has values
     };
 
     const handleNext = () => {
-        if (!canProceed()) return;
+        if (!canProceed()) {
+            setShowError(true);
+            setTimeout(() => setShowError(false), 500);
+            return;
+        }
 
+        setShowError(false);
         if (step < questions.length - 1) {
             setStep(step + 1);
         } else {
@@ -225,6 +231,7 @@ export default function QuestionnairePage() {
 
     const handleInputChange = (id: string, value: any) => {
         setFormData((prev) => ({ ...prev, [id]: value }));
+        if (showError) setShowError(false);
     };
 
     const toggleMultiselect = (id: string, item: string) => {
@@ -408,44 +415,61 @@ export default function QuestionnairePage() {
                             {/* Dynamic Inputs */}
                             <div className="mt-6 md:mt-8">
                                 {currentQuestion.type === 'text' && (
-                                    <input
+                                    <motion.input
+                                        animate={showError ? { x: [-10, 10, -10, 10, 0] } : {}}
                                         autoFocus
                                         type="text"
                                         value={formData[currentQuestion.id] || ''}
                                         onChange={(e) => handleInputChange(currentQuestion.id, e.target.value)}
                                         placeholder={currentQuestion.placeholder}
-                                        className="w-full bg-transparent border-b-2 border-neutral-100 py-4 md:py-6 text-xl md:text-3xl lg:text-4xl font-light focus:outline-none focus:border-black transition-all duration-500 placeholder:text-neutral-200"
+                                        className={clsx(
+                                            "w-full bg-transparent border-b-2 py-4 md:py-6 text-xl md:text-3xl lg:text-4xl font-light focus:outline-none transition-all duration-500 placeholder:text-neutral-200",
+                                            showError ? "border-red-500 text-red-500" : "border-neutral-100 focus:border-black"
+                                        )}
                                     />
                                 )}
 
                                 {currentQuestion.type === 'textarea' && (
-                                    <textarea
+                                    <motion.textarea
+                                        animate={showError ? { x: [-10, 10, -10, 10, 0] } : {}}
                                         autoFocus
                                         value={formData[currentQuestion.id] || ''}
                                         onChange={(e) => handleInputChange(currentQuestion.id, e.target.value)}
                                         placeholder={currentQuestion.placeholder}
-                                        className="w-full bg-transparent border-b-2 border-neutral-100 py-4 md:py-6 text-lg md:text-2xl lg:text-3xl font-light focus:outline-none focus:border-black transition-all duration-500 resize-none h-[180px] md:h-[250px] placeholder:text-neutral-200"
+                                        className={clsx(
+                                            "w-full bg-transparent border-b-2 py-4 md:py-6 text-lg md:text-2xl lg:text-3xl font-light focus:outline-none transition-all duration-500 resize-none h-[180px] md:h-[250px] placeholder:text-neutral-200",
+                                            showError ? "border-red-500 text-red-500" : "border-neutral-100 focus:border-black"
+                                        )}
                                     />
                                 )}
 
-                                {currentQuestion.type === 'multiselect_pills' && (
-                                    <div className="flex flex-wrap gap-2 md:gap-3">
-                                        {(currentQuestion.options as string[])?.map((option) => (
-                                            <button
-                                                key={option}
-                                                onClick={() => toggleMultiselect(currentQuestion.id, option)}
-                                                className={clsx(
-                                                    'px-4 md:px-6 py-2.5 md:py-3 rounded-full border-2 transition-all duration-300 text-sm md:text-lg font-medium',
-                                                    formData[currentQuestion.id]?.includes(option)
-                                                        ? 'bg-black border-black text-white shadow-xl scale-105'
+                                <motion.div
+                                    animate={showError ? { x: [-10, 10, -10, 10, 0] } : {}}
+                                    className={clsx(
+                                        "flex flex-wrap gap-2 md:gap-3 p-4 rounded-3xl transition-colors",
+                                        showError && "bg-red-50/50 border border-red-100"
+                                    )}
+                                >
+                                    {(currentQuestion.options as string[])?.map((option) => (
+                                        <button
+                                            key={option}
+                                            onClick={() => {
+                                                toggleMultiselect(currentQuestion.id, option);
+                                                if (showError) setShowError(false);
+                                            }}
+                                            className={clsx(
+                                                'px-4 md:px-6 py-2.5 md:py-3 rounded-full border-2 transition-all duration-300 text-sm md:text-lg font-medium',
+                                                formData[currentQuestion.id]?.includes(option)
+                                                    ? 'bg-black border-black text-white shadow-xl scale-105'
+                                                    : showError
+                                                        ? 'bg-white border-red-200 text-red-400'
                                                         : 'bg-white border-neutral-100 text-neutral-500 hover:border-neutral-300'
-                                                )}
-                                            >
-                                                {option}
-                                            </button>
-                                        ))}
-                                    </div>
-                                )}
+                                            )}
+                                        >
+                                            {option}
+                                        </button>
+                                    ))}
+                                </motion.div>
 
                                 {currentQuestion.type === 'personality_sliders' && (
                                     <div className="space-y-8 md:space-y-12 max-w-3xl">
@@ -476,19 +500,30 @@ export default function QuestionnairePage() {
                                 )}
 
                                 {currentQuestion.type === 'touchpoints_grid' && (
-                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+                                    <motion.div
+                                        animate={showError ? { x: [-10, 10, -10, 10, 0] } : {}}
+                                        className={clsx(
+                                            "grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 p-4 rounded-3xl transition-colors",
+                                            showError && "bg-red-50/50 border border-red-100"
+                                        )}
+                                    >
                                         {(currentQuestion.options as TouchpointOption[])?.map((option) => {
                                             const Icon = option.icon;
                                             const isActive = formData[currentQuestion.id]?.includes(option.id);
                                             return (
                                                 <button
                                                     key={option.id}
-                                                    onClick={() => toggleMultiselect(currentQuestion.id, option.id)}
+                                                    onClick={() => {
+                                                        toggleMultiselect(currentQuestion.id, option.id);
+                                                        if (showError) setShowError(false);
+                                                    }}
                                                     className={clsx(
                                                         'p-4 md:p-8 rounded-xl md:rounded-[2rem] border-2 transition-all duration-500 flex flex-col items-center gap-2 md:gap-4 text-center group relative overflow-hidden backdrop-blur-sm',
                                                         isActive
                                                             ? 'bg-black border-black text-white shadow-2xl scale-105'
-                                                            : 'bg-white/50 border-neutral-100 text-neutral-400 hover:border-neutral-300'
+                                                            : showError
+                                                                ? 'bg-white/50 border-red-100 text-red-300'
+                                                                : 'bg-white/50 border-neutral-100 text-neutral-400 hover:border-neutral-300'
                                                     )}
                                                 >
                                                     <Icon size={24} className={clsx("md:hidden transition-transform duration-500 relative z-10", isActive ? "scale-110" : "group-hover:scale-110")} />
@@ -505,7 +540,7 @@ export default function QuestionnairePage() {
                                                 </button>
                                             );
                                         })}
-                                    </div>
+                                    </motion.div>
                                 )}
                             </div>
                         </motion.div>

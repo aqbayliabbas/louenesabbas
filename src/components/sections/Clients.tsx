@@ -42,7 +42,7 @@ export function Clients() {
                     <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-neutral-400 block mb-4">
                         Current & Past Partnerships
                     </span>
-                    <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+                    <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-neutral-950">
                         Trusted by ambitious founders.
                     </h2>
                 </motion.div>
@@ -56,15 +56,9 @@ export function Clients() {
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
                             transition={{ delay: i * 0.1, duration: 0.5 }}
-                            whileHover={{ scale: 1.1 }}
-                            className="relative h-10 w-28 md:h-12 md:w-36 grayscale hover:grayscale-0 opacity-40 hover:opacity-100 transition-all duration-500 cursor-pointer"
+                            className="relative h-10 w-28 md:h-12 md:w-36 grayscale opacity-20 transition-all duration-500"
                         >
-                            <Image
-                                src={logo}
-                                alt={`Client logo ${i + 1}`}
-                                fill
-                                className="object-contain"
-                            />
+                            <div className="bg-neutral-100 h-full w-full rounded" />
                         </motion.div>
                     ))}
                 </div>

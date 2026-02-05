@@ -1,103 +1,126 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { ChevronRight } from 'lucide-react';
+import { ArrowUpRight, Star, FileText } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
+import { CaseStudyModal } from '../ui/CaseStudyModal';
 
 export function Hero() {
+  const [isCaseStudyOpen, setIsCaseStudyOpen] = useState(false);
+
   return (
-    <section id="hero" className="min-h-screen flex flex-col items-center justify-center px-6 relative bg-white">
-      <div className="max-w-3xl w-full mx-auto flex flex-col items-center text-center relative z-10">
+    <section id="hero" className="min-h-[100svh] bg-white text-black flex flex-col font-sans selection:bg-black selection:text-white pt-24 md:pt-28 px-6 md:px-[10%]">
+      {/* Case Study Modal */}
+      <CaseStudyModal
+        isOpen={isCaseStudyOpen}
+        onClose={() => setIsCaseStudyOpen(false)}
+        pdfUrl="/case study.pdf"
+      />
 
-        {/* Main Heading */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.1, ease: [0.23, 1, 0.32, 1] }}
-          className="mb-10 w-full"
-        >
-          <h1 className="text-3xl md:text-4xl lg:text-[40px] leading-[1.3] font-black tracking-[-0.02em] text-black mb-10 flex flex-wrap justify-center gap-x-[0.3em] gap-y-1 w-full mx-auto">
-            {["You", "will", "get", "a"].map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block"
-              >
-                {word}
-              </motion.span>
-            ))}
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-block text-neutral-400 font-serif italic font-light tracking-tight"
-            >
-              strategic brand
-            </motion.span>
-            {["that", "turns"].map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block"
-              >
-                {word}
-              </motion.span>
-            ))}
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.45, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-block text-neutral-400 font-serif italic font-light tracking-tight"
-            >
-              your raw vision
-            </motion.span>
-            {["into", "a"].map((word, i) => (
-              <motion.span
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.55 + i * 0.05, ease: [0.16, 1, 0.3, 1] }}
-                className="inline-block"
-              >
-                {word}
-              </motion.span>
-            ))}
-            <motion.span
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-block text-neutral-400 font-serif italic font-light tracking-tight"
-            >
-              lasting digital legacy.
-            </motion.span>
-          </h1>
-
-        </motion.div>
-
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.3 }}
-          className="flex flex-col sm:flex-row items-center gap-12"
-        >
-          <button
-            onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
-            className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-[0.4em] text-black"
+      {/* Main Content Grid */}
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-[1.1fr_0.9fr] gap-8 lg:gap-12 py-8 md:py-20 items-stretch relative">
+        {/* Left Column: Text Content */}
+        <div className="flex flex-col justify-center">
+          {/* Status Badge */}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex items-center gap-3 px-4 py-2 rounded-full bg-neutral-900 text-white w-fit mb-8 md:mb-10 shadow-lg shadow-neutral-200"
           >
-            <span className="pb-1 border-b-[1px] border-black/10 group-hover:border-black transition-all">Check my work</span>
-            <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
-          </button>
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-neutral-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-widest">Available for work</span>
+          </motion.div>
 
-          <button
-            onClick={() => window.open('https://wa.me/213799739969', '_blank')}
-            className="px-12 py-4 bg-black text-white rounded-full font-bold text-[11px] uppercase tracking-[0.3em] hover:bg-neutral-800 transition-all shadow-xl active:scale-95"
+          {/* Heading */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
-            Let&apos;s talk shop
-          </button>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[88px] font-semibold leading-[1.1] md:leading-[1.02] tracking-[-0.04em] text-neutral-950 mb-8 md:mb-10">
+              Your trusted partner for quality digital strategy
+            </h1>
+          </motion.div>
+
+          {/* Description adapted from reference image vibe but updated for a brand strategist */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            className="text-base md:text-xl text-neutral-600 mb-10 md:mb-12 max-w-lg leading-relaxed font-medium"
+          >
+            Scale your business with a strategic brand identity and high-performance digital presence. Stop blending in and start converting your ideal audience with modern craftsmanship.
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="flex flex-wrap gap-4 md:gap-5"
+          >
+            <button
+              className="group inline-flex items-center gap-6 md:gap-10 bg-neutral-900 text-white pl-8 md:pl-10 pr-2 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] transition-all hover:bg-black hover:scale-[1.02] active:scale-95 shadow-xl shadow-neutral-200"
+              onClick={() => document.getElementById('work')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              Work with me
+              <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white flex items-center justify-center text-black group-hover:rotate-45 transition-transform duration-500">
+                <ArrowUpRight size={20} strokeWidth={2.5} />
+              </div>
+            </button>
+
+            <button
+              className="group inline-flex items-center gap-4 md:gap-5 bg-white text-neutral-900 px-6 md:px-8 py-4 md:py-5 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] border border-neutral-200 transition-all hover:bg-neutral-50 hover:border-neutral-300 hover:scale-[1.02] active:scale-95"
+              onClick={() => setIsCaseStudyOpen(true)}
+            >
+              <FileText size={16} className="text-neutral-400 group-hover:text-black transition-colors" />
+              Case Study
+            </button>
+          </motion.div>
+        </div>
+
+        {/* Right Column: Visual Image */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9, rotate: -1 }}
+          animate={{ opacity: 1, scale: 1, rotate: 0 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+          className="relative h-full w-full rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.15)] bg-neutral-100 group min-h-[400px] md:min-h-[500px]"
+        >
+          <Image
+            src="/IMG_5943.png"
+            alt="Strategic digital strategy and brand transformation"
+            fill
+            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+            priority
+          />
+          {/* Subtle gradient overlay for better contrast on the testimonial */}
+          <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+
+          {/* Testimonial Card Overlay */}
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 1, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
+            className="absolute bottom-6 right-6 left-6 md:left-auto md:bottom-10 md:right-10 bg-white/20 backdrop-blur-2xl border border-white/20 p-6 md:p-8 rounded-[24px] md:rounded-[40px] text-white shadow-2xl md:max-w-[340px]"
+          >
+            <div className="flex gap-1 mb-4 md:mb-5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={12} fill="white" className="text-white" />
+              ))}
+            </div>
+            <p className="text-sm md:text-base font-semibold leading-relaxed tracking-tight text-white/95 mb-4 md:mb-6">
+              &quot;Louenes has been a game-changer for my brand. The ability to blend strategy with exquisite design is truly unparalleled.&quot;
+            </p>
+            <div className="flex flex-col">
+              <span className="text-xs md:text-sm font-bold text-white tracking-wide">Athmane Bencheikh</span>
+              <span className="text-[10px] uppercase tracking-widest text-white/60 font-medium">Founder, Vitalys Pro</span>
+            </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>

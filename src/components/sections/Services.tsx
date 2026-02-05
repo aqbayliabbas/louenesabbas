@@ -104,7 +104,7 @@ export function Services() {
         <section data-nav-dark className="py-32 px-6 bg-[#0a0a0a] text-white">
             <div className="max-w-[1200px] mx-auto">
                 <div className="mb-24 md:flex justify-between items-end">
-                    <h2 className="text-5xl md:text-7xl font-semibold tracking-tighter max-w-2xl">
+                    <h2 className="text-5xl md:text-7xl font-semibold tracking-tighter max-w-2xl leading-[0.95]">
                         I move the needle <br /> through design.
                     </h2>
                     <p className="mt-6 md:mt-0 text-white/50 max-w-sm text-lg leading-relaxed">

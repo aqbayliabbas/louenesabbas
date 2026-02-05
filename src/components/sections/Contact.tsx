@@ -15,7 +15,7 @@ export function Contact() {
     }
 
     return (
-        <section id="contact" className="py-24 px-6 bg-background">
+        <section id="contact" className="py-24 px-6 bg-white">
             <div className="max-w-[1200px] mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -71,14 +71,13 @@ export function Contact() {
                 </motion.div>
 
                 {/* Footer */}
-                <div className="mt-24 flex flex-col md:flex-row justify-between items-center gap-8 text-sm text-muted-foreground uppercase tracking-widest font-medium border-t border-border pt-12">
+                <div className="mt-24 flex flex-col md:flex-row justify-between items-center gap-8 text-sm text-neutral-400 uppercase tracking-widest font-medium border-t border-neutral-100 pt-12">
                     <div>
-                        © 2024 Louenes Abbas
+                        © 2026 Louenes Abbas
                     </div>
                     <div className="flex gap-8">
-                        <a href="#" className="hover:text-foreground transition-colors">Twitter</a>
-                        <a href="#" className="hover:text-foreground transition-colors">LinkedIn</a>
-                        <a href="#" className="hover:text-foreground transition-colors">Instagram</a>
+                        <a href="https://www.linkedin.com/in/louenes-abbas-69311a272/" className="hover:text-black transition-colors">LinkedIn</a>
+                        <a href="https://www.instagram.com/louenes.abbas/" className="hover:text-black transition-colors">Instagram</a>
                     </div>
                 </div>
             </div>
