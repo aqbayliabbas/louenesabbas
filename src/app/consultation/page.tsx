@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
     Video,
@@ -11,7 +11,8 @@ import {
     ArrowRight,
     Loader2,
     ChevronRight,
-    ChevronLeft
+    ChevronLeft,
+    AlertCircle
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Navbar } from '@/components/ui/Navbar';
@@ -20,38 +21,92 @@ type Platform = 'google_meet' | 'whatsapp';
 
 export default function ConsultationPage() {
     const [platform, setPlatform] = useState<Platform | null>(null);
+    const [currentMonth, setCurrentMonth] = useState(new Date());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
+    const [takenSlots, setTakenSlots] = useState<string[]>([]);
+    const [isLoadingSlots, setIsLoadingSlots] = useState(false);
+
     const [contactInfo, setContactInfo] = useState('');
     const [name, setName] = useState('');
     const [notes, setNotes] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-    const scroll = (direction: 'left' | 'right') => {
-        if (scrollContainerRef.current) {
-            const { current } = scrollContainerRef;
-            const scrollAmount = direction === 'left' ? -200 : 200;
-            current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    // Fetch availability when date changes
+    useEffect(() => {
+        if (!selectedDate) return;
+
+        const fetchAvailability = async () => {
+            setIsLoadingSlots(true);
+            try {
+                const dateStr = selectedDate.toISOString().split('T')[0];
+                const res = await fetch(`/api/consultation/slots?date=${dateStr}`);
+                const data = await res.json();
+                setTakenSlots(data.takenSlots || []);
+            } catch (err) {
+                console.error('Failed to fetch availability:', err);
+            } finally {
+                setIsLoadingSlots(false);
+            }
+        };
+
+        fetchAvailability();
+        setSelectedTime(null); // Reset time when date changes
+    }, [selectedDate]);
+
+    // Calendar logic
+    const getDaysInMonth = (date: Date) => {
+        const year = date.getFullYear();
+        const month = date.getMonth();
+        const days = [];
+        const firstDay = new Date(year, month, 1);
+        const lastDay = new Date(year, month + 1, 0);
+
+        // Fill empty slots for previous month
+        const startDay = firstDay.getDay(); // 0 is Sunday
+        for (let i = 0; i < startDay; i++) {
+            days.push(null);
+        }
+
+        for (let i = 1; i <= lastDay.getDate(); i++) {
+            days.push(new Date(year, month, i));
+        }
+        return days;
+    };
+
+    const days = getDaysInMonth(currentMonth);
+    const monthName = currentMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' });
+
+    const prevMonth = () => {
+        const d = new Date(currentMonth);
+        d.setMonth(d.getMonth() - 1);
+        if (d >= new Date(new Date().getFullYear(), new Date().getMonth(), 1)) {
+            setCurrentMonth(d);
         }
     };
 
-    // Dynamic calendar - Next 90 days
-    const today = new Date();
-    const days = Array.from({ length: 90 }, (_, i) => {
-        const d = new Date(today.getFullYear(), today.getMonth(), today.getDate() + i);
-        return d;
-    }).filter(d => d.getDay() === 0 || d.getDay() === 6);
+    const nextMonth = () => {
+        const d = new Date(currentMonth);
+        d.setMonth(d.getMonth() + 1);
+        setCurrentMonth(d);
+    };
 
-    const displayMonth = (selectedDate || days[0]).toLocaleString('en-US', { month: 'long', year: 'numeric' });
+    const getTimeSlots = (date: Date | null) => {
+        if (!date) return [];
+        const isWeekend = date.getDay() === 0 || date.getDay() === 6;
+        const hours = isWeekend ? 5 : 3;
 
-    const timeSlots = [
-        '10:00', '10:30', '11:00', '11:30',
-        '12:00', '12:30', '13:00', '13:30',
-        '14:00', '14:30', '15:00', '15:30',
-        '16:00', '16:30', '17:00'
-    ];
+        const slots = [];
+        for (let i = 0; i < hours * 2; i++) {
+            const h = 10 + Math.floor(i / 2);
+            const m = (i % 2) * 30;
+            slots.push(`${h}:${m === 0 ? '00' : m}`);
+        }
+        return slots;
+    };
+
+    const timeSlots = getTimeSlots(selectedDate);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -80,14 +135,26 @@ export default function ConsultationPage() {
         }
     };
 
+    const isToday = (date: Date) => {
+        const today = new Date();
+        return date.getDate() === today.getDate() &&
+            date.getMonth() === today.getMonth() &&
+            date.getFullYear() === today.getFullYear();
+    };
+
+    const isPast = (date: Date) => {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        return date < today;
+    };
+
     return (
         <main className="min-h-screen bg-neutral-950 text-white selection:bg-white selection:text-black" data-nav-dark>
-            <Navbar forceDark />
 
-            <div className="pt-32 pb-20 px-6 max-w-[1600px] mx-auto min-h-screen grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24">
+            <div className="pt-32 pb-20 px-6 max-w-[1400px] mx-auto min-h-screen grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
 
                 {/* Left: Brand / Context */}
-                <div className="lg:col-span-5 lg:sticky lg:top-32 h-fit space-y-12">
+                <div className="lg:col-span-4 lg:sticky lg:top-32 h-fit space-y-12">
                     <motion.div
                         initial={{ opacity: 0, y: 40 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -99,231 +166,218 @@ export default function ConsultationPage() {
                                 Discovery Call
                             </span>
                         </div>
-                        <h1 className="text-6xl md:text-8xl font-black tracking-[-0.04em] leading-[0.9] text-white mb-8">
-                            Let's <br />
-                            <span className="text-neutral-500">Connect.</span>
+                        <h1 className="text-5xl md:text-7xl font-black tracking-[-0.04em] leading-[0.9] text-white mb-8">
+                            The First <br />
+                            <span className="text-neutral-500 italic font-serif font-light">Step.</span>
                         </h1>
-                        <p className="text-xl text-neutral-400 leading-relaxed font-light max-w-md">
-                            Book a 15-minute strategy session. No fluff, just clarity on how we can elevate your brand identity.
+                        <p className="text-lg text-neutral-400 leading-relaxed font-light max-w-sm">
+                            15 minutes of pure strategy. No sales pitch, just clarity on your vision and how we can bring it to life with precision.
                         </p>
                     </motion.div>
 
                     <div className="hidden lg:block space-y-6 pt-12 border-t border-white/10">
-                        <div className="flex items-center gap-4 text-neutral-500">
-                            <CheckCircle2 size={20} className="text-white" />
-                            <span className="tracking-wide">Clarify your vision</span>
-                        </div>
-                        <div className="flex items-center gap-4 text-neutral-500">
-                            <CheckCircle2 size={20} className="text-white" />
-                            <span className="tracking-wide">Discuss timeline & budget</span>
-                        </div>
-                        <div className="flex items-center gap-4 text-neutral-500">
-                            <CheckCircle2 size={20} className="text-white" />
-                            <span className="tracking-wide">Immediate value feedback</span>
-                        </div>
+                        {['Clarify your brand trajectory', 'Discuss timeline & investment', 'Immediate expert feedback'].map((item, i) => (
+                            <div key={i} className="flex items-center gap-4 text-neutral-500">
+                                <CheckCircle2 size={18} className="text-white shrink-0" />
+                                <span className="text-sm tracking-wide">{item}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
 
-                {/* Right: Interactive Booking Module */}
-                <div className="lg:col-span-7">
+                {/* Right: Booking Module */}
+                <div className="lg:col-span-8">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                        className="bg-neutral-900 rounded-[2rem] border border-white/5 p-8 md:p-12 relative overflow-hidden"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        className="bg-[#111] rounded-[2.5rem] border border-white/5 overflow-hidden"
                     >
-                        {/* Background Gradient */}
-                        <div className="absolute top-0 right-0 w-96 h-96 bg-white/5 rounded-full blur-[100px] pointer-events-none -translate-y-1/2 translate-x-1/2" />
-
                         <AnimatePresence mode="wait">
                             {isSuccess ? (
                                 <motion.div
                                     key="success"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    className="text-center py-32 flex flex-col items-center justify-center h-full"
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    className="text-center py-32 px-12 flex flex-col items-center justify-center h-full min-h-[600px]"
                                 >
-                                    <div className="w-24 h-24 bg-white text-black rounded-full flex items-center justify-center mb-8 shadow-[0_0_40px_rgba(255,255,255,0.2)]">
-                                        <CheckCircle2 size={48} />
+                                    <div className="w-20 h-20 bg-white text-black rounded-full flex items-center justify-center mb-8 shadow-[0_0_50px_rgba(255,255,255,0.15)]">
+                                        <CheckCircle2 size={32} />
                                     </div>
-                                    <h2 className="text-4xl font-black mb-6 tracking-tight">Request Sent.</h2>
-                                    <p className="text-neutral-400 text-lg mb-12 max-w-sm">
-                                        I'll confirm the <strong>{platform === 'google_meet' ? 'Meet link' : 'WhatsApp call'}</strong> for {selectedDate?.getDate()} {displayMonth} shortly.
+                                    <h2 className="text-4xl font-bold mb-4 tracking-tight">Booking Requested.</h2>
+                                    <p className="text-neutral-400 text-lg mb-12 max-w-sm font-medium">
+                                        I'll review your details and send a confirmation to your {platform === 'google_meet' ? 'email' : 'WhatsApp'} shortly.
                                     </p>
                                     <button
                                         onClick={() => window.location.href = '/'}
-                                        className="px-10 py-5 bg-white text-black rounded-full font-bold tracking-widest uppercase hover:bg-neutral-200 transition-all text-sm"
+                                        className="px-10 py-5 bg-white text-black rounded-full font-bold tracking-[0.2em] uppercase hover:bg-neutral-200 transition-all text-xs"
                                     >
                                         Back to Home
                                     </button>
                                 </motion.div>
                             ) : (
-                                <form onSubmit={handleSubmit} className="relative z-10 space-y-16">
+                                <form onSubmit={handleSubmit} className="divide-y divide-white/5">
 
-                                    {/* Step 1: Platform */}
-                                    <section>
-                                        <div className="flex items-center justify-between mb-8">
-                                            <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-white">01. Platform</h3>
-                                            <div className="h-px flex-1 bg-white/10 ml-6" />
+                                    {/* Platform Selection */}
+                                    <div className="p-8 md:p-12 space-y-8">
+                                        <div className="flex items-center gap-4">
+                                            <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">1</span>
+                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Choose preferred platform</h3>
                                         </div>
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <PlatformCard
-                                                icon={<Video size={24} />}
+                                                icon={<Video size={20} />}
                                                 label="Google Meet"
-                                                sub="Video Call"
                                                 isActive={platform === 'google_meet'}
                                                 onClick={() => setPlatform('google_meet')}
                                             />
                                             <PlatformCard
-                                                icon={<Phone size={24} />}
-                                                label="WhatsApp"
-                                                sub="Audio Call"
+                                                icon={<Phone size={20} />}
+                                                label="WhatsApp Call"
                                                 isActive={platform === 'whatsapp'}
                                                 onClick={() => setPlatform('whatsapp')}
                                             />
                                         </div>
-                                    </section>
+                                    </div>
 
-                                    {/* Step 2: Date & Time (Requires Step 1) */}
-                                    <section className={`transition-all duration-500 ${platform ? 'opacity-100 translate-y-0' : 'opacity-20 translate-y-10 pointer-events-none blur-sm'}`}>
-                                        <div className="flex items-center justify-between mb-8">
-                                            <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-white">02. Value Time</h3>
-                                            <div className="h-px flex-1 bg-white/10 ml-6" />
+                                    {/* Calendar & Slots */}
+                                    <div className={`p-8 md:p-12 space-y-8 transition-opacity duration-500 ${!platform && 'opacity-20 pointer-events-none'}`}>
+                                        <div className="flex items-center gap-4">
+                                            <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">2</span>
+                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Select a date & time</h3>
                                         </div>
 
-                                        <div className="bg-black/40 rounded-3xl p-6 md:p-8 border border-white/5">
-                                            {/* Calendar Header */}
-                                            <div className="flex items-center justify-between mb-8">
-                                                <span className="text-2xl font-black">{displayMonth}</span>
-                                                <div className="flex gap-2">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => scroll('left')}
-                                                        className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
-                                                    >
-                                                        <ChevronLeft size={16} />
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => scroll('right')}
-                                                        className="p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors"
-                                                    >
-                                                        <ChevronRight size={16} />
-                                                    </button>
+                                        <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
+                                            {/* Custom Calendar UI */}
+                                            <div className="space-y-6">
+                                                <div className="flex items-center justify-between px-2">
+                                                    <span className="text-lg font-bold">{monthName}</span>
+                                                    <div className="flex gap-1">
+                                                        <button type="button" onClick={prevMonth} className="p-2 hover:bg-white/5 rounded-full transition-colors"><ChevronLeft size={18} /></button>
+                                                        <button type="button" onClick={nextMonth} className="p-2 hover:bg-white/5 rounded-full transition-colors"><ChevronRight size={18} /></button>
+                                                    </div>
+                                                </div>
+                                                <div className="grid grid-cols-7 gap-1">
+                                                    {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
+                                                        <div key={d} className="h-10 flex items-center justify-center text-[10px] font-bold text-neutral-600">{d}</div>
+                                                    ))}
+                                                    {days.map((date, i) => {
+                                                        if (!date) return <div key={`empty-${i}`} className="h-12 md:h-14" />;
+                                                        const active = selectedDate?.toDateString() === date.toDateString();
+                                                        const disabled = isPast(date);
+
+                                                        return (
+                                                            <button
+                                                                key={i}
+                                                                type="button"
+                                                                disabled={disabled}
+                                                                onClick={() => setSelectedDate(date)}
+                                                                className={`h-12 md:h-14 rounded-2xl flex items-center justify-center text-sm font-bold transition-all relative group
+                                                                    ${active ? 'bg-white text-black shadow-xl shadow-white/10' : 'hover:bg-white/5'}
+                                                                    ${disabled ? 'opacity-10 cursor-not-allowed' : ''}
+                                                                `}
+                                                            >
+                                                                {date.getDate()}
+                                                                {isToday(date) && !active && <div className="absolute bottom-2 w-1 h-1 rounded-full bg-white" />}
+                                                            </button>
+                                                        );
+                                                    })}
                                                 </div>
                                             </div>
 
-                                            {/* Days Grid */}
-                                            <div
-                                                ref={scrollContainerRef}
-                                                className="flex gap-4 overflow-x-auto pb-4 snap-x [&::-webkit-scrollbar]:h-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-white/10 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-white/20"
-                                            >
-                                                {days.slice(0, 14).map((date, i) => (
-                                                    <button
-                                                        key={i}
-                                                        type="button"
-                                                        onClick={() => setSelectedDate(date)}
-                                                        className={`snap-center shrink-0 w-20 h-28 rounded-2xl flex flex-col items-center justify-center gap-2 border transition-all duration-300 ${selectedDate?.getDate() === date.getDate()
-                                                            ? 'bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.2)] scale-105'
-                                                            : 'bg-white/5 border-white/5 text-neutral-400 hover:bg-white/10 hover:border-white/20'
-                                                            }`}
-                                                    >
-                                                        <span className="text-[10px] uppercase font-bold tracking-widest opacity-60">
-                                                            {date.toLocaleString('en-US', { weekday: 'short' })}
-                                                        </span>
-                                                        <span className="text-3xl font-black">{date.getDate()}</span>
-                                                    </button>
-                                                ))}
+                                            {/* Time Picker */}
+                                            <div className="relative min-h-[300px]">
+                                                <AnimatePresence mode="wait">
+                                                    {!selectedDate ? (
+                                                        <motion.div
+                                                            key="no-date"
+                                                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                                                            className="h-full flex flex-col items-center justify-center text-center p-8 border border-dashed border-white/5 rounded-3xl"
+                                                        >
+                                                            <CalendarIcon size={32} className="text-neutral-700 mb-4" />
+                                                            <p className="text-sm text-neutral-500 font-medium">Select a date to <br /> see available slots</p>
+                                                        </motion.div>
+                                                    ) : isLoadingSlots ? (
+                                                        <motion.div
+                                                            key="loading"
+                                                            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                                                            className="h-full flex items-center justify-center"
+                                                        >
+                                                            <Loader2 className="animate-spin text-neutral-500" />
+                                                        </motion.div>
+                                                    ) : (
+                                                        <motion.div
+                                                            key="slots"
+                                                            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}
+                                                            className="grid grid-cols-2 sm:grid-cols-3 gap-2 h-fit"
+                                                        >
+                                                            {timeSlots.map((time) => {
+                                                                const taken = takenSlots.includes(time);
+                                                                return (
+                                                                    <button
+                                                                        key={time}
+                                                                        type="button"
+                                                                        disabled={taken}
+                                                                        onClick={() => setSelectedTime(time)}
+                                                                        className={`py-4 rounded-2xl text-[13px] font-bold transition-all border
+                                                                            ${selectedTime === time
+                                                                                ? 'bg-white text-black border-white'
+                                                                                : taken
+                                                                                    ? 'bg-neutral-900 border-white/5 text-neutral-700 opacity-50 cursor-not-allowed line-through'
+                                                                                    : 'bg-transparent border-white/5 text-neutral-400 hover:border-white/20 hover:text-white'
+                                                                            }`}
+                                                                    >
+                                                                        {time}
+                                                                    </button>
+                                                                );
+                                                            })}
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
                                             </div>
-
-                                            {/* Time Slots */}
-                                            <AnimatePresence>
-                                                {selectedDate && (
-                                                    <motion.div
-                                                        initial={{ opacity: 0, height: 0 }}
-                                                        animate={{ opacity: 1, height: 'auto' }}
-                                                        className="mt-8 pt-8 border-t border-white/5"
-                                                    >
-                                                        <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-                                                            {timeSlots.map((time) => (
-                                                                <button
-                                                                    key={time}
-                                                                    type="button"
-                                                                    onClick={() => setSelectedTime(time)}
-                                                                    className={`py-3 rounded-xl text-sm font-bold transition-all ${selectedTime === time
-                                                                        ? 'bg-white text-black'
-                                                                        : 'bg-transparent border border-white/10 text-neutral-400 hover:border-white/30 hover:text-white'
-                                                                        }`}
-                                                                >
-                                                                    {time}
-                                                                </button>
-                                                            ))}
-                                                        </div>
-                                                    </motion.div>
-                                                )}
-                                            </AnimatePresence>
                                         </div>
-                                    </section>
+                                    </div>
 
-                                    {/* Step 3: Identity & Confirm (Requires Step 2) */}
-                                    <section className={`transition-all duration-500 ${selectedDate && selectedTime ? 'opacity-100 translate-y-0' : 'opacity-20 translate-y-10 pointer-events-none blur-sm'}`}>
-                                        <div className="flex items-center justify-between mb-8">
-                                            <h3 className="text-sm font-bold uppercase tracking-[0.2em] text-white">03. The Details</h3>
-                                            <div className="h-px flex-1 bg-white/10 ml-6" />
+                                    {/* Final Detail Form */}
+                                    <div className={`p-8 md:p-12 space-y-8 transition-all duration-500 ${(!selectedDate || !selectedTime) && 'opacity-20 pointer-events-none'}`}>
+                                        <div className="flex items-center gap-4">
+                                            <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">3</span>
+                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Confirm your identity</h3>
                                         </div>
 
-                                        <div className="bg-black/40 rounded-3xl p-8 border border-white/5 space-y-6">
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold uppercase tracking-wider text-neutral-500 ml-4">Full Name</label>
-                                                    <input
-                                                        type="text"
-                                                        required
-                                                        value={name}
-                                                        onChange={(e) => setName(e.target.value)}
-                                                        className="w-full h-14 bg-white/5 rounded-2xl px-6 outline-none focus:bg-white/10 transition-all font-medium placeholder:text-neutral-700 border border-white/5 focus:border-white/20"
-                                                        placeholder="John Doe"
-                                                    />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-xs font-bold uppercase tracking-wider text-neutral-500 ml-4">
-                                                        {platform === 'whatsapp' ? 'Phone Number' : 'Email Address'}
-                                                    </label>
-                                                    <input
-                                                        type={platform === 'google_meet' ? 'email' : 'tel'}
-                                                        required
-                                                        value={contactInfo}
-                                                        onChange={(e) => setContactInfo(e.target.value)}
-                                                        className="w-full h-14 bg-white/5 rounded-2xl px-6 outline-none focus:bg-white/10 transition-all font-medium placeholder:text-neutral-700 border border-white/5 focus:border-white/20"
-                                                        placeholder={platform === 'whatsapp' ? '+213 ...' : 'john@example.com'}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div className="space-y-2">
-                                                <label className="text-xs font-bold uppercase tracking-wider text-neutral-500 ml-4">Anything specific?</label>
-                                                <textarea
-                                                    rows={2}
-                                                    value={notes}
-                                                    onChange={(e) => setNotes(e.target.value)}
-                                                    className="w-full bg-white/5 rounded-2xl px-6 py-4 outline-none focus:bg-white/10 transition-all font-medium placeholder:text-neutral-700 border border-white/5 focus:border-white/20 resize-none"
-                                                    placeholder="Briefly describe your project..."
+                                        <div className="space-y-4">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                <input
+                                                    type="text" required value={name} onChange={(e) => setName(e.target.value)}
+                                                    className="h-16 bg-white/5 rounded-2xl px-6 outline-none focus:bg-white/[0.08] transition-all font-medium border border-white/5 focus:border-white/20"
+                                                    placeholder="Full Name"
+                                                />
+                                                <input
+                                                    type={platform === 'google_meet' ? 'email' : 'tel'} required value={contactInfo} onChange={(e) => setContactInfo(e.target.value)}
+                                                    className="h-16 bg-white/5 rounded-2xl px-6 outline-none focus:bg-white/[0.08] transition-all font-medium border border-white/5 focus:border-white/20"
+                                                    placeholder={platform === 'whatsapp' ? 'Phone Number (+213...)' : 'Email Address'}
                                                 />
                                             </div>
+                                            <textarea
+                                                rows={3} value={notes} onChange={(e) => setNotes(e.target.value)}
+                                                className="w-full bg-white/5 rounded-3xl px-6 py-5 outline-none focus:bg-white/[0.08] transition-all font-medium border border-white/5 focus:border-white/20 resize-none"
+                                                placeholder="What's the main challenge you're facing with your brand?"
+                                            />
                                         </div>
 
                                         <button
                                             type="submit"
                                             disabled={isSubmitting}
-                                            className="w-full mt-8 h-20 bg-white text-black hover:bg-neutral-200 rounded-[2rem] font-black text-lg tracking-widest uppercase transition-all flex items-center justify-center gap-4 group disabled:opacity-50 disabled:cursor-not-allowed"
+                                            className="w-full mt-4 h-20 bg-white text-black hover:bg-neutral-200 rounded-[2rem] font-black tracking-[0.2em] uppercase transition-all flex items-center justify-center gap-4 group disabled:opacity-50"
                                         >
                                             {isSubmitting ? <Loader2 className="animate-spin" /> : (
                                                 <>
-                                                    Confirm Booking
-                                                    <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                                                    Request Consultation
+                                                    <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                                                 </>
                                             )}
                                         </button>
-                                    </section>
+                                    </div>
 
                                 </form>
                             )}
@@ -335,23 +389,19 @@ export default function ConsultationPage() {
     );
 }
 
-function PlatformCard({ icon, label, sub, isActive, onClick }: any) {
+function PlatformCard({ icon, label, isActive, onClick }: any) {
     return (
         <button
             type="button"
             onClick={onClick}
-            className={`relative p-6 rounded-3xl border-2 text-left transition-all duration-300 group overflow-hidden ${isActive
-                ? 'bg-white text-black border-white shadow-[0_0_30px_rgba(255,255,255,0.1)]'
-                : 'bg-white/5 border-white/5 text-neutral-400 hover:bg-white/10 hover:border-white/10'
+            className={`flex items-center gap-4 p-6 rounded-[2rem] border-2 transition-all duration-300 text-left
+                ${isActive
+                    ? 'bg-white text-black border-white shadow-[0_10px_30px_rgba(255,255,255,0.1)]'
+                    : 'bg-white/5 border-white/5 text-neutral-400 hover:bg-white/10 hover:border-white/10'
                 }`}
         >
-            <div className="relative z-10 flex flex-col h-full justify-between gap-8">
-                <div className={`text-inherit opacity-80`}>{icon}</div>
-                <div>
-                    <h3 className="font-bold text-lg leading-none mb-1 text-inherit">{label}</h3>
-                    <p className={`text-xs font-medium tracking-wide ${isActive ? 'text-neutral-500' : 'text-neutral-600'}`}>{sub}</p>
-                </div>
-            </div>
+            <div className={`p-3 rounded-xl ${isActive ? 'bg-black/5' : 'bg-white/5'}`}>{icon}</div>
+            <span className="font-bold tracking-tight">{label}</span>
         </button>
     )
 }

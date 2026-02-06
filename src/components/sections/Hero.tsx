@@ -106,19 +106,19 @@ export function Hero() {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute bottom-6 right-6 left-6 md:left-auto md:bottom-10 md:right-10 bg-white/20 backdrop-blur-2xl border border-white/20 p-6 md:p-8 rounded-[24px] md:rounded-[40px] text-white shadow-2xl md:max-w-[340px]"
+            className="absolute bottom-4 right-4 left-4 md:left-auto md:bottom-10 md:right-10 bg-white/20 backdrop-blur-2xl border border-white/20 p-4 md:p-8 rounded-[20px] md:rounded-[40px] text-white shadow-2xl md:max-w-[340px]"
           >
-            <div className="flex gap-1 mb-4 md:mb-5">
+            <div className="flex gap-1 mb-2 md:mb-5">
               {[...Array(5)].map((_, i) => (
-                <Star key={i} size={12} fill="white" className="text-white" />
+                <Star key={i} size={10} fill="white" className="text-white md:w-3 md:h-3" />
               ))}
             </div>
-            <p className="text-sm md:text-base font-semibold leading-relaxed tracking-tight text-white/95 mb-4 md:mb-6">
+            <p className="text-[13px] md:text-base font-semibold leading-relaxed tracking-tight text-white/95 mb-3 md:mb-6">
               &quot;Louenes has been a game-changer for my brand. The ability to blend strategy with exquisite design is truly unparalleled.&quot;
             </p>
             <div className="flex flex-col">
-              <span className="text-xs md:text-sm font-bold text-white tracking-wide">Athmane Bencheikh</span>
-              <span className="text-[10px] uppercase tracking-widest text-white/60 font-medium">Founder, Vitalys Pro</span>
+              <span className="text-[11px] md:text-sm font-bold text-white tracking-wide">Athmane Bencheikh</span>
+              <span className="text-[9px] uppercase tracking-widest text-white/60 font-medium">Founder, Vitalys Pro</span>
             </div>
           </motion.div>
         </motion.div>

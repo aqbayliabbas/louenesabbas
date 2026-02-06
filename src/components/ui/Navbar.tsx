@@ -2,15 +2,28 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
-export function Navbar({ forceDark = false }: { forceDark?: boolean }) {
+export function Navbar({ forceDark: initialForceDark = false }: { forceDark?: boolean }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isToolsOpen, setIsToolsOpen] = useState(false);
+    const [forceDark, setForceDark] = useState(initialForceDark);
+
+    useEffect(() => {
+        const checkTheme = () => {
+            const darkElement = document.querySelector('[data-nav-dark]');
+            setForceDark(initialForceDark || !!darkElement);
+        };
+
+        checkTheme();
+        // Also check on interval to handle dynamic transitions
+        const interval = setInterval(checkTheme, 500);
+        return () => clearInterval(interval);
+    }, [initialForceDark]);
 
     return (
-        <div className="fixed top-8 left-0 w-full z-50 px-6 flex justify-center pointer-events-none">
+        <div className="fixed top-8 left-0 w-full z-[100] px-6 flex justify-center">
             <motion.nav
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -21,7 +34,11 @@ export function Navbar({ forceDark = false }: { forceDark?: boolean }) {
                     }`}
             >
                 {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 pl-2">
+                <Link
+                    href="/"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-2 pl-2"
+                >
                     <span className={`text-[11px] font-black uppercase tracking-[0.25em] ${forceDark ? 'text-white' : 'text-neutral-900'}`}>
                         Louenes Abbas
                     </span>
@@ -109,7 +126,7 @@ export function Navbar({ forceDark = false }: { forceDark?: boolean }) {
                         initial={{ opacity: 0, scale: 0.95, y: -10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                        className={`md:hidden absolute top-20 left-6 right-6 p-8 rounded-3xl border shadow-2xl z-40 backdrop-blur-2xl
+                        className={`md:hidden absolute top-20 left-0 right-0 p-8 rounded-3xl border shadow-2xl z-40 backdrop-blur-2xl
                             ${forceDark
                                 ? 'bg-neutral-900/95 border-white/10 text-white'
                                 : 'bg-white/95 border-neutral-100 text-black'

@@ -13,8 +13,6 @@ import { Preloader } from '@/components/ui/Preloader';
 export default function Home() {
   return (
     <main className="min-h-screen bg-background selection:bg-black selection:text-white">
-      <Preloader />
-      <Navbar />
       <Hero />
       <About />
       <Work />

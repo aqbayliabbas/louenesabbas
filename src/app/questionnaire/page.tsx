@@ -186,16 +186,7 @@ export default function QuestionnairePage() {
     const currentQuestion = questions[step];
     const progress = ((step + 1) / questions.length) * 100;
 
-    useEffect(() => {
-        if (!isSubmitted) {
-            document.body.style.overflow = 'hidden';
-        } else {
-            document.body.style.overflow = 'auto';
-        }
-        return () => {
-            document.body.style.overflow = 'auto';
-        };
-    }, [isSubmitted]);
+    // Body scroll logic removed as it's handled by global layout and navbar needs interaction
 
     const canProceed = () => {
         const value = formData[currentQuestion.id];

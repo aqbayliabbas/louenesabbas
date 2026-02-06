@@ -5,28 +5,34 @@ import Image from 'next/image';
 
 const testimonials = [
     {
-        quote: "Louenes completely transformed our brand. The clarity and depth he brought to our identity was exactly what we needed to scale.",
-        author: "Sarah Jenkins",
-        role: "CEO, Vertex",
-        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=100&auto=format&fit=crop"
+        quote: "The strategic depth Louenes brought to Vanèlla was transformative. He didn't just design a logo; he created a sensory experience for our premium customers.",
+        author: "larbi mohamed",
+        role: "Founder, Vanèlla",
     },
     {
-        quote: "A true visionary. He doesn't just design; he thinks strategically about how the brand will live in the real world.",
-        author: "Michael Chen",
-        role: "Founder, Ozone",
-        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=100&auto=format&fit=crop"
+        quote: "Working with Louenes changed how we view our own business. Valgrand now has the visual authority to match our global architectural ambitions.",
+        author: "Ali",
+        role: "CEO, Valgrand",
     },
     {
-        quote: "The best investment we made this year. The rebrand paid for itself within two months of launching.",
-        author: "Elena Rodriguez",
-        role: "Marketing Director, Solstice",
-        image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=100&auto=format&fit=crop"
+        quote: "Bliss needed a digital presence that felt effortless and high-end. Louenes delivered exactly that, with a level of detail that is rare to find.",
+        author: "Sam Tremblay",
+        role: "Founder, Bliss",
     },
     {
-        quote: "Minimalist, bold, and effective. Louenes has an eye for detail that is unmatched in the industry.",
-        author: "David Park",
-        role: "Creative Lead, Aether",
-        image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=100&auto=format&fit=crop"
+        quote: "The rebrand was the turning point for our growth. Our conversion rates doubled within months of implementing the new Vitalys Pro identity.",
+        author: "Athmane Bencheikh",
+        role: "Founder, Vitalys Pro",
+    },
+    {
+        quote: "Aurora Labs is at the forefront of tech, and we needed a brand that reflected that. Louenes's vision was futuristic yet perfectly grounded.",
+        author: "larbi mohamed",
+        role: "Founder, Aurora Labs",
+    },
+    {
+        quote: "Diolata's identity is now as bold and unique as our products. Every touchpoint feels intentional, premium and meticulously crafted.",
+        author: "Ridha mohamed",
+        role: "Founder, Diolata",
     }
 ];
 
@@ -47,13 +53,13 @@ export function Testimonials() {
                     className="flex gap-4 md:gap-8 whitespace-nowrap"
                     animate={{ x: ["0%", "-50%"] }}
                     transition={{
-                        duration: 30,
+                        duration: 40,
                         repeat: Infinity,
                         ease: "linear"
                     }}
                 >
                     {/* Duplicated list for seamless loop */}
-                    {[...testimonials, ...testimonials, ...testimonials, ...testimonials].map((t, i) => (
+                    {[...testimonials, ...testimonials].map((t, i) => (
                         <div key={i} className="w-[300px] md:w-[500px] p-8 md:p-12 rounded-[2rem] md:rounded-3xl bg-white/5 border border-white/10 shrink-0 whitespace-normal flex flex-col justify-between">
                             <div>
                                 <span className="text-3xl md:text-4xl text-neutral-500 font-serif italic">"</span>
@@ -63,15 +69,7 @@ export function Testimonials() {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <div className="relative w-10 h-10 md:w-12 md:h-12">
-                                    <Image
-                                        src={t.image}
-                                        alt={t.author}
-                                        fill
-                                        className="rounded-full object-cover grayscale"
-                                        sizes="(max-w-768px) 40px, 48px"
-                                    />
-                                </div>
+                                <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-black border border-white/10" />
                                 <div>
                                     <h4 className="font-bold text-[10px] md:text-sm">{t.author}</h4>
                                     <p className="text-[8px] md:text-xs text-neutral-500 uppercase tracking-wider">{t.role}</p>

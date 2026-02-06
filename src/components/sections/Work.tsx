@@ -5,14 +5,14 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 const projects = [
-    { title: "Client: Vitalyspro", img: "/vitalyspro.png", category: "Brand Identity" },
-    { title: "Client: Vanèlla", img: "/vanella.png", category: "Packaging" },
-    { title: "Client: Diolata", img: "/diolata.png", category: "Digital Design" },
-    { title: "Client: Vitalys pro", img: "/boxes.png", category: "Creative Direction" },
-    { title: "Client: Vitalys pro", img: "/sac GM.png", category: "Product Design" },
-    { title: "Client: Vanèlla", img: "/cirum.png", category: "Visual Arts" },
-    { title: "Client: Valgrand", img: "/valgrand.png", category: "Identity" },
-    { title: "Client: Valgrand", img: "/valgrand 01.png", category: "Art Direction" },
+    { title: "Client: Vanèlla", img: "/vanella.png", category: "Packaging Design" },
+    { title: "Client: Valgrand", img: "/valgrand.png", category: "Identity Strategy" },
+    { title: "Client: Bliss", img: "/diolata.png", category: "Digital Experience" },
+    { title: "Client: Vitalys Pro", img: "/vitalyspro.png", category: "Brand Ecosystem" },
+    { title: "Client: Aurora Labs", img: "/boxes.png", category: "Digital Innovation" },
+    { title: "Client: Diolata", img: "/cirum.png", category: "Visual Arts" },
+    { title: "Client: Vanèlla", img: "/sac GM.png", category: "Product Design" },
+    { title: "Client: Valgrand", img: "/valgrand 01.png", category: "Strategic Direction" },
 ];
 
 const MarqueeRow = ({ items, direction = 1, speed = 30 }: { items: any[], direction?: 1 | -1, speed?: number }) => {
@@ -70,9 +70,14 @@ const MarqueeRow = ({ items, direction = 1, speed = 30 }: { items: any[], direct
 
 export function Work() {
     const [mounted, setMounted] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
         setMounted(true);
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
     }, []);
 
     if (!mounted) return null;
@@ -80,6 +85,12 @@ export function Work() {
     // Split projects into two groups for the two rows
     const topRowProjects = projects.slice(0, Math.ceil(projects.length / 2));
     const bottomRowProjects = projects.slice(Math.ceil(projects.length / 2));
+
+    // Responsive speeds: lower duration = faster movement
+    // Mobile needs much lower duration because the total width is smaller, 
+    // and we want it to feel "faster" visually.
+    const topSpeed = isMobile ? 12 : 25;
+    const bottomSpeed = isMobile ? 15 : 30;
 
     return (
         <section id="work" className="relative bg-[#FAFAFA] py-24 md:py-48 overflow-hidden flex flex-col justify-center">
@@ -92,8 +103,8 @@ export function Work() {
 
             {/* Horizontal Marquee Container */}
             <div className="relative w-full flex flex-col gap-6 md:gap-12 z-20">
-                <MarqueeRow items={topRowProjects} direction={1} speed={40} />
-                <MarqueeRow items={bottomRowProjects} direction={-1} speed={45} />
+                <MarqueeRow items={topRowProjects} direction={1} speed={topSpeed} />
+                <MarqueeRow items={bottomRowProjects} direction={-1} speed={bottomSpeed} />
             </div>
 
             {/* Aesthetic Side Fades */}
