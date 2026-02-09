@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 const projects = [
     { title: "Client: Vanèlla", img: "/vanella.png", category: "Packaging Design" },
     { title: "Client: Valgrand", img: "/valgrand.png", category: "Identity Strategy" },
-    { title: "Client: Bliss", img: "/diolata.png", category: "Digital Experience" },
+    { title: "Client: Diolata", img: "/diolata.png", category: "Digital Experience" },
     { title: "Client: Vitalys Pro", img: "/vitalyspro.png", category: "Brand Ecosystem" },
     { title: "Client: Aurora Labs", img: "/boxes.png", category: "Digital Innovation" },
     { title: "Client: Diolata", img: "/cirum.png", category: "Visual Arts" },

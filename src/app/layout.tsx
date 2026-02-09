@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     },
 };
 
-import { Navbar } from "@/components/ui/Navbar";
+import { NavbarWrapper } from "@/components/ui/NavbarWrapper";
 import { Preloader } from "@/components/ui/Preloader";
 
 export default function RootLayout({
@@ -47,7 +47,7 @@ export default function RootLayout({
                 className={`${geistSans.variable} ${geistMono.variable} ${poppins.variable} ${cormorant.variable} antialiased`}
             >
                 <Preloader />
-                <Navbar />
+                <NavbarWrapper />
                 {children}
             </body>
         </html>
