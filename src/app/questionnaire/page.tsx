@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionTemplate, useMotionValue } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Send, Sparkles, Monitor, Share2, Package, Globe, Smartphone, Newspaper, LucideIcon } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Send, Sparkles, Monitor, Share2, Package, Globe, Smartphone, Newspaper, LucideIcon, RefreshCw } from 'lucide-react';
 import Link from 'next/link';
 
 const clsx = (...classes: any[]) => classes.filter(Boolean).join(' ');
@@ -152,6 +152,13 @@ const questions: Question[] = [
         placeholder: 'Entre 50000 DZA et 120000 DZA...',
         type: 'text',
     },
+    {
+        id: 'email',
+        question: 'Quelle est votre adresse email ?',
+        description: 'Je vous enverrai mon analyse et mes propositions à cette adresse.',
+        placeholder: 'nom@exemple.com',
+        type: 'text',
+    },
 ];
 
 
@@ -163,8 +170,10 @@ export default function QuestionnairePage() {
         values: [],
         touchpoints: [],
         deliverables: [],
+        email: '',
     });
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
     const [showError, setShowError] = useState(false);
 
     const mouseX = useMotionValue(0);
@@ -236,6 +245,9 @@ export default function QuestionnairePage() {
     };
 
     const handleSubmit = async () => {
+        if (isSubmitting) return;
+        setIsSubmitting(true);
+
         console.log('Final Form Data:', formData);
         try {
             const res = await fetch('/api/responses', {
@@ -245,11 +257,16 @@ export default function QuestionnairePage() {
             });
             if (res.ok) {
                 setIsSubmitted(true);
+            } else {
+                const errorData = await res.json();
+                console.error('Submission failed:', errorData.message);
+                alert("Une erreur est survenue lors de l'envoi. Veuillez réessayer.");
             }
         } catch (error) {
             console.error('Submission failed:', error);
-            // Even if it fails, we show the success UI for now to avoid blocking the user
-            setIsSubmitted(true);
+            alert("Une erreur de connexion est survenue. Veuillez vérifier votre connexion.");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -434,33 +451,35 @@ export default function QuestionnairePage() {
                                     />
                                 )}
 
-                                <motion.div
-                                    animate={showError ? { x: [-10, 10, -10, 10, 0] } : {}}
-                                    className={clsx(
-                                        "flex flex-wrap gap-2 md:gap-3 p-4 rounded-3xl transition-colors",
-                                        showError && "bg-red-50/50 border border-red-100"
-                                    )}
-                                >
-                                    {(currentQuestion.options as string[])?.map((option) => (
-                                        <button
-                                            key={option}
-                                            onClick={() => {
-                                                toggleMultiselect(currentQuestion.id, option);
-                                                if (showError) setShowError(false);
-                                            }}
-                                            className={clsx(
-                                                'px-4 md:px-6 py-2.5 md:py-3 rounded-full border-2 transition-all duration-300 text-sm md:text-lg font-medium',
-                                                formData[currentQuestion.id]?.includes(option)
-                                                    ? 'bg-black border-black text-white shadow-xl scale-105'
-                                                    : showError
-                                                        ? 'bg-white border-red-200 text-red-400'
-                                                        : 'bg-white border-neutral-100 text-neutral-500 hover:border-neutral-300'
-                                            )}
-                                        >
-                                            {option}
-                                        </button>
-                                    ))}
-                                </motion.div>
+                                {currentQuestion.type === 'multiselect_pills' && (
+                                    <motion.div
+                                        animate={showError ? { x: [-10, 10, -10, 10, 0] } : {}}
+                                        className={clsx(
+                                            "flex flex-wrap gap-2 md:gap-3 p-4 rounded-3xl transition-colors",
+                                            showError && "bg-red-50/50 border border-red-100"
+                                        )}
+                                    >
+                                        {(currentQuestion.options as string[])?.map((option) => (
+                                            <button
+                                                key={option}
+                                                onClick={() => {
+                                                    toggleMultiselect(currentQuestion.id, option);
+                                                    if (showError) setShowError(false);
+                                                }}
+                                                className={clsx(
+                                                    'px-4 md:px-6 py-2.5 md:py-3 rounded-full border-2 transition-all duration-300 text-sm md:text-lg font-medium',
+                                                    formData[currentQuestion.id]?.includes(option)
+                                                        ? 'bg-black border-black text-white shadow-xl scale-105'
+                                                        : showError
+                                                            ? 'bg-white border-red-200 text-red-400'
+                                                            : 'bg-white border-neutral-100 text-neutral-500 hover:border-neutral-300'
+                                                )}
+                                            >
+                                                {option}
+                                            </button>
+                                        ))}
+                                    </motion.div>
+                                )}
 
                                 {currentQuestion.type === 'personality_sliders' && (
                                     <div className="space-y-8 md:space-y-12 max-w-3xl">
@@ -564,10 +583,18 @@ export default function QuestionnairePage() {
                 >
                     {step === questions.length - 1 ? (
                         <>
-                            <span className="hidden md:inline">Soumettre le projet</span>
-                            <span className="md:hidden">Soumettre</span>
-                            <Send size={16} className="md:hidden" />
-                            <Send size={20} className="hidden md:block" />
+                            <span className="hidden md:inline">
+                                {isSubmitting ? 'Envoi en cours...' : 'Soumettre le projet'}
+                            </span>
+                            <span className="md:hidden">
+                                {isSubmitting ? '...' : 'Soumettre'}
+                            </span>
+                            {isSubmitting ? (
+                                <RefreshCw size={16} className="animate-spin" />
+                            ) : (
+                                <Send size={16} className="md:hidden" />
+                            )}
+                            {!isSubmitting && <Send size={20} className="hidden md:block" />}
                         </>
                     ) : (
                         <>

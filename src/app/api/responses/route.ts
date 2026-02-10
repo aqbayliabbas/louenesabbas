@@ -23,6 +23,7 @@ export async function POST(request: Request) {
                     design_references: data.references,
                     timeline: data.timeline,
                     budget: data.budget,
+                    email: data.email,
                     raw_data: data
                 }
             ]);
