@@ -23,6 +23,7 @@ interface Question {
     type: QuestionType;
     options?: string[] | TouchpointOption[];
     traits?: { left: string; right: string; id: string }[];
+    required?: boolean;
 }
 
 const personalityTraits = [
@@ -134,23 +135,26 @@ const questions: Question[] = [
     {
         id: 'references',
         question: 'Des références visuelles qui vous inspirent ?',
-        description: 'Marques, styles artistiques ou préférences esthétiques.',
+        description: 'Marques, styles artistiques ou préférences esthétiques (Optionnel).',
         placeholder: "J'aime l'esthétique Apple, les couleurs terreuses...",
         type: 'textarea',
+        required: false,
     },
     {
         id: 'timeline',
         question: 'Quel est votre calendrier idéal ?',
-        description: 'Quand avez-vous besoin que les livrables soient finalisés ?',
+        description: 'Quand avez-vous besoin que les livrables soient finalisés ? (Optionnel)',
         placeholder: "D'ici fin mars 2024...",
         type: 'text',
+        required: false,
     },
     {
         id: 'budget',
         question: 'Quelle est votre fourchette budgétaire ?',
-        description: 'Cela nous aide à aligner les attentes et les livrables.',
+        description: 'Cela nous aide à aligner les attentes et les livrables (Optionnel).',
         placeholder: 'Entre 50000 DZA et 120000 DZA...',
         type: 'text',
+        required: false,
     },
     {
         id: 'email',
@@ -158,6 +162,7 @@ const questions: Question[] = [
         description: 'Je vous enverrai mon analyse et mes propositions à cette adresse.',
         placeholder: 'nom@exemple.com',
         type: 'text',
+        required: true,
     },
 ];
 
@@ -165,6 +170,14 @@ const questions: Question[] = [
 export default function QuestionnairePage() {
     const [step, setStep] = useState(0);
     const [formData, setFormData] = useState<Record<string, any>>({
+        company: '',
+        mission: '',
+        audience: '',
+        competitors: '',
+        emotion: '',
+        references: '',
+        timeline: '',
+        budget: '',
         personality_sliders: personalityTraits.reduce((acc, trait) => ({ ...acc, [trait.id]: 50 }), {}),
         positioning: positioningTraits.reduce((acc, trait) => ({ ...acc, [trait.id]: 50 }), {}),
         values: [],
@@ -198,6 +211,9 @@ export default function QuestionnairePage() {
     // Body scroll logic removed as it's handled by global layout and navbar needs interaction
 
     const canProceed = () => {
+        // If not required, always true
+        if (currentQuestion.required === false) return true;
+
         const value = formData[currentQuestion.id];
         if (currentQuestion.type === 'text' || currentQuestion.type === 'textarea') {
             return typeof value === 'string' && value.trim().length > 0;
