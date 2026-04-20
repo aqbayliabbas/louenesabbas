@@ -6,9 +6,9 @@ import { useRef, useState, useEffect } from 'react';
 const steps = [
     {
         number: "01",
-        title: "Exploration Profonde",
-        subtitle: "Phase d'Audit",
-        description: "J'élimine le superflu pour révéler la vérité brute de votre marque. Nous plongeons dans votre marché et vos valeurs pour identifier votre avantage concurrentiel unique.",
+        title: "Onboarding & Exploration",
+        subtitle: "Phase d'Immersion",
+        description: "Tout commence par une immersion totale. J'explore la vérité brute de votre marque, votre marché et vos valeurs pour identifier l'avantage concurrentiel qui vous fera briller.",
     },
     {
         number: "02",
@@ -24,9 +24,9 @@ const steps = [
     },
     {
         number: "04",
-        title: "Livraison du Système",
-        subtitle: "Phase de Passation",
-        description: "Fournir les outils pour un lancement parfait. Je livre des actifs prêts pour la production et des systèmes de design qui s'adaptent sans effort à votre entreprise.",
+        title: "Offboarding & Livraison",
+        subtitle: "Phase de Finalisation",
+        description: "Votre nouvelle identité est prête à conquérir le monde. Je livre un système de design complet et des actifs optimisés, assurant une transition fluide et une autonomie totale pour votre croissance.",
     }
 ];
 

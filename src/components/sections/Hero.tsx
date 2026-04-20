@@ -60,7 +60,7 @@ export function Hero() {
             transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           >
             <h1 className="text-3xl sm:text-4xl md:text-7xl lg:text-[88px] font-semibold leading-[1.1] md:leading-[1.02] tracking-[-0.05em] text-neutral-950 mb-8 md:mb-10">
-              Votre partenaire de confiance pour une stratégie digitale de qualité
+              L&apos;excellence digitale complète, de l&apos;onboarding à l&apos;offboarding.
             </h1>
           </motion.div>
 
@@ -71,7 +71,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="text-base md:text-xl text-neutral-600 mb-10 md:mb-12 max-w-lg leading-relaxed font-medium"
           >
-            Développez votre entreprise avec une identité de marque stratégique et une présence digitale haute performance. Cessez de passer inaperçu et commencez à convertir votre audience idéale.
+            Je prends en charge vos projets de A à Z : de l&apos;immersion initiale à l&apos;accompagnement final. Ensemble, nous transformons votre vision en une identité de marque puissante et une présence digitale haute performance qui convertit réellement.
           </motion.p>
 
           {/* CTA Buttons */}

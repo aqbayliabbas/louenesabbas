@@ -81,7 +81,7 @@ export function About() {
                             </p>
 
                             <p className="text-lg text-white/50 leading-relaxed font-light">
-                                Au-delà de l&apos;esthétique, vous gagnez en clarté stratégique et une identité visuelle conçue pour attirer précisément la bonne audience. Je crée des marques à fort taux de conversion qui servent réellement votre rentabilité.
+                                Au-delà de l&apos;esthétique, vous bénéficiez d&apos;un accompagnement intégral. Je gère l&apos;ensemble du processus—du début à la fin—de l&apos;onboarding stratégique à l&apos;offboarding complet, assurant que chaque détail serve réellement votre rentabilité.
                             </p>
 
                             <div className="pt-8">

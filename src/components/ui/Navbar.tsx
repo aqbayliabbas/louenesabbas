@@ -8,6 +8,7 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 export function Navbar({ forceDark: initialForceDark = false, hideLinks = false }: { forceDark?: boolean, hideLinks?: boolean }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isToolsOpen, setIsToolsOpen] = useState(false);
+    const [showProjectsTooltip, setShowProjectsTooltip] = useState(false);
     const [forceDark, setForceDark] = useState(initialForceDark);
     
     useEffect(() => {
@@ -55,12 +56,38 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                                 Consultation Gratuite
                             </Link>
 
-                            <Link
-                                href="/projects"
-                                className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${forceDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-600 hover:text-black'}`}
+                            <div 
+                                className="relative group"
+                                onMouseEnter={() => setShowProjectsTooltip(true)}
+                                onMouseLeave={() => setShowProjectsTooltip(false)}
                             >
-                                Projets
-                            </Link>
+                                <span
+                                    className={`text-[10px] font-bold uppercase tracking-widest cursor-not-allowed transition-colors ${forceDark ? 'text-neutral-600' : 'text-neutral-400'}`}
+                                >
+                                    Projets
+                                </span>
+                                <AnimatePresence>
+                                    {showProjectsTooltip && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: -8, x: '-50%' }}
+                                            animate={{ opacity: 1, y: 0, x: '-50%' }}
+                                            exit={{ opacity: 0, y: -4, x: '-50%' }}
+                                            className={`absolute top-full left-1/2 mt-4 px-4 py-2.5 rounded-[5px] border shadow-2xl backdrop-blur-xl whitespace-nowrap pointer-events-none z-[110]
+                                                ${forceDark 
+                                                    ? 'bg-neutral-900/95 border-white/10 text-white' 
+                                                    : 'bg-white/95 border-neutral-200 text-neutral-800'}`}
+                                        >
+                                            <p className="text-[9px] font-bold uppercase tracking-widest">
+                                                nous somme entrain d'ajouter les nouveau projets
+                                            </p>
+                                            {/* Subtle arrow - flipped to top */}
+                                            <div className={`absolute bottom-full left-1/2 -translate-x-1/2 w-2 h-2 rotate-45 border-l border-t -mb-1
+                                                ${forceDark ? 'bg-neutral-900 border-white/10' : 'bg-white border-neutral-200'}`} 
+                                            />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </div>
 
                             <Link
                                 href="/questionnaire"
@@ -146,7 +173,10 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                     >
                         <div className="flex flex-col gap-8 items-center">
                             <Link href="/consultation" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Consultation Gratuite</Link>
-                            <Link href="/projects" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Projets</Link>
+                            <div className="flex flex-col items-center gap-1.5 opacity-40">
+                                <span className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white' : 'text-neutral-800'}`}>Projets</span>
+                                <span className="text-[8px] font-medium uppercase tracking-[0.1em] text-neutral-500">Mise à jour en cours</span>
+                            </div>
                             <Link href="/questionnaire" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Questionnaire</Link>
                             <Link
                                 href="/questionnaire"
