@@ -9,6 +9,7 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isToolsOpen, setIsToolsOpen] = useState(false);
     const [forceDark, setForceDark] = useState(initialForceDark);
+    const [showAlert, setShowAlert] = useState(false);
 
     useEffect(() => {
         const checkTheme = () => {
@@ -17,17 +18,39 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
         };
 
         checkTheme();
-        // Also check on interval to handle dynamic transitions
         const interval = setInterval(checkTheme, 500);
         return () => clearInterval(interval);
     }, [initialForceDark]);
 
+    const handleProjectClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        setShowAlert(true);
+        setTimeout(() => setShowAlert(false), 3000);
+    };
+
     return (
         <div className="fixed top-8 left-0 w-full z-[100] px-6 flex justify-center">
+            {/* Project Lock Alert */}
+            <AnimatePresence>
+                {showAlert && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                        className="fixed top-24 left-1/2 -translate-x-1/2 z-[110] px-8 py-4 bg-black/90 backdrop-blur-2xl border border-white/20 rounded-[5px] text-white shadow-2xl flex items-center gap-4"
+                    >
+                        <div className="w-2 h-2 rounded-full bg-neutral-400 animate-pulse" />
+                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] whitespace-nowrap">
+                            Nous organisons les nouveaux projets
+                        </span>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
             <motion.nav
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`w-full max-w-5xl backdrop-blur-xl border rounded-full px-4 py-2 flex justify-between items-center shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-colors duration-500 pointer-events-auto
+                className={`w-full max-w-[1400px] backdrop-blur-xl border rounded-[5px] px-4 py-2 flex justify-between items-center shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-colors duration-500 pointer-events-auto
                     ${forceDark
                         ? 'bg-black/80 border-white/10 text-white'
                         : 'bg-white/80 border-neutral-200/50 text-black'
@@ -47,13 +70,20 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                 {!hideLinks && (
                     <>
                         {/* Desktop Menu */}
-                        <div className="hidden md:flex items-center gap-8">
+                        <div className="hidden md:flex items-center gap-4 md:gap-8">
                             <Link
                                 href="/consultation"
                                 className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${forceDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-600 hover:text-black'}`}
                             >
-                                Free Consultation
+                                Consultation Gratuite
                             </Link>
+
+                            <button
+                                onClick={handleProjectClick}
+                                className={`text-[10px] font-bold uppercase tracking-widest transition-colors cursor-pointer ${forceDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-600 hover:text-black'}`}
+                            >
+                                Projets
+                            </button>
 
                             <Link
                                 href="/questionnaire"
@@ -71,7 +101,7 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                                 <button
                                     className={`flex items-center gap-1 text-[10px] font-bold uppercase tracking-widest transition-colors outline-none ${forceDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-600 hover:text-black'}`}
                                 >
-                                    Tools
+                                    Outils
                                     <ChevronDown size={12} className={`transition-transform duration-300 ${isToolsOpen ? 'rotate-180' : ''}`} />
                                 </button>
 
@@ -82,7 +112,7 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: -5, scale: 0.95 }}
                                             transition={{ duration: 0.2 }}
-                                            className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 py-2 w-48 rounded-2xl shadow-xl border overflow-hidden ${forceDark ? 'bg-neutral-900 border-white/10' : 'bg-white border-neutral-100'}`}
+                                            className={`absolute top-full left-1/2 -translate-x-1/2 mt-4 py-2 w-48 rounded-[5px] shadow-xl border overflow-hidden ${forceDark ? 'bg-neutral-900 border-white/10' : 'bg-white border-neutral-100'}`}
                                         >
                                             <Link
                                                 href="/tools/colorizo"
@@ -92,7 +122,7 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                                             </Link>
                                             <Link
                                                 href="/tools/typology"
-                                                className={`block px-6 py-3 text-[10px) font-bold transition-colors uppercase tracking-widest ${forceDark ? 'text-neutral-400 hover:text-white hover:bg-white/5' : 'text-neutral-500 hover:text-black hover:bg-neutral-50'}`}
+                                                className={`block px-6 py-3 text-[10px] font-bold transition-colors uppercase tracking-widest ${forceDark ? 'text-neutral-400 hover:text-white hover:bg-white/5' : 'text-neutral-500 hover:text-black hover:bg-neutral-50'}`}
                                             >
                                                 Typology
                                             </Link>
@@ -106,9 +136,9 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                         <div className="flex items-center gap-2">
                             <Link
                                 href="/questionnaire"
-                                className={`hidden md:block px-8 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-full transition-all hover:scale-[1.02] active:scale-[0.98] ${forceDark ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800'}`}
+                                className={`hidden md:block px-8 py-2.5 text-[10px] font-black uppercase tracking-widest rounded-[5px] transition-all hover:scale-[1.02] active:scale-[0.98] ${forceDark ? 'bg-white text-black hover:bg-neutral-200' : 'bg-black text-white hover:bg-neutral-800'}`}
                             >
-                                Work with me
+                                Travailler avec moi
                             </Link>
 
                             {/* Mobile Toggle */}
@@ -131,23 +161,23 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                         initial={{ opacity: 0, scale: 0.95, y: -10 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: -10 }}
-                        className={`md:hidden absolute top-20 left-0 right-0 p-8 rounded-3xl border shadow-2xl z-40 backdrop-blur-2xl
+                        className={`md:hidden absolute top-20 left-0 right-0 p-8 rounded-[5px] border shadow-2xl z-40 backdrop-blur-2xl
                             ${forceDark
                                 ? 'bg-neutral-900/95 border-white/10 text-white'
                                 : 'bg-white/95 border-neutral-100 text-black'
                             }`}
                     >
                         <div className="flex flex-col gap-8 items-center">
-                            <Link href="/consultation" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Free Consultation</Link>
+                            <Link href="/consultation" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Consultation Gratuite</Link>
+                            <button onClick={handleProjectClick} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Projets</button>
                             <Link href="/questionnaire" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Questionnaire</Link>
-                            <Link href="/tools" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Tools</Link>
                             <Link
                                 href="/questionnaire"
                                 onClick={() => setIsMobileMenuOpen(false)}
-                                className={`w-full py-4 text-center rounded-2xl font-black uppercase tracking-widest text-xs transition-transform active:scale-95 shadow-xl
+                                className={`w-full py-4 text-center rounded-[5px] font-black uppercase tracking-widest text-xs transition-transform active:scale-95 shadow-xl
                                     ${forceDark ? 'bg-white text-black' : 'bg-black text-white'}`}
                             >
-                                Work with me
+                                Travailler avec moi
                             </Link>
                         </div>
                     </motion.div>

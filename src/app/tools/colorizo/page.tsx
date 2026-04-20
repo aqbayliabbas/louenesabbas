@@ -430,7 +430,7 @@ export default function ColorizoPage() {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="lg:sticky lg:top-32"
                     >
-                        <div className="bg-white p-6 rounded-3xl shadow-2xl border border-neutral-100 backdrop-blur-sm select-none">
+                        <div className="bg-white p-6 rounded-[5px] shadow-2xl border border-neutral-100 backdrop-blur-sm select-none">
                             <label className="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-4">
                                 Base Color
                             </label>
@@ -439,7 +439,7 @@ export default function ColorizoPage() {
                                 {/* Custom Saturation/Value Picker */}
                                 <div
                                     ref={satValRef}
-                                    className="relative w-full aspect-[1.618/1] rounded-2xl overflow-hidden cursor-crosshair shadow-inner"
+                                    className="relative w-full aspect-[1.618/1] rounded-[5px] overflow-hidden cursor-crosshair shadow-inner"
                                     onMouseDown={handleSatValDown}
                                     onTouchStart={handleSatValDown}
                                     style={{
@@ -451,7 +451,7 @@ export default function ColorizoPage() {
                                     }}
                                 >
                                     <div
-                                        className="absolute w-4 h-4 rounded-full border-2 border-white box-content shadow-md -translate-x-1/2 -translate-y-1/2 pointer-events-none"
+                                        className="absolute w-4 h-4 rounded-[2px] border-2 border-white box-content shadow-md -translate-x-1/2 -translate-y-1/2 pointer-events-none"
                                         style={{
                                             left: `${hsv.s}%`,
                                             top: `${100 - hsv.v}%`,
@@ -463,7 +463,7 @@ export default function ColorizoPage() {
                                 {/* Custom Hue Slider */}
                                 <div
                                     ref={hueRef}
-                                    className="relative w-full h-4 rounded-full cursor-pointer shadow-inner"
+                                    className="relative w-full h-4 rounded-[5px] cursor-pointer shadow-inner"
                                     onMouseDown={handleHueDown}
                                     onTouchStart={handleHueDown}
                                     style={{
@@ -471,7 +471,7 @@ export default function ColorizoPage() {
                                     }}
                                 >
                                     <div
-                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-full shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
+                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-[2px] shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
                                         style={{
                                             left: `${(hsv.h / 360) * 100}%`
                                         }}
@@ -481,7 +481,7 @@ export default function ColorizoPage() {
                                 {/* Custom Saturation Slider */}
                                 <div
                                     ref={satRef}
-                                    className="relative w-full h-4 rounded-full cursor-pointer shadow-inner"
+                                    className="relative w-full h-4 rounded-[5px] cursor-pointer shadow-inner"
                                     onMouseDown={handleSatDown}
                                     onTouchStart={handleSatDown}
                                     style={{
@@ -489,7 +489,7 @@ export default function ColorizoPage() {
                                     }}
                                 >
                                     <div
-                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-full shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
+                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-[2px] shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
                                         style={{
                                             left: `${hsv.s}%`
                                         }}
@@ -499,7 +499,7 @@ export default function ColorizoPage() {
                                 {/* Custom Lightness/Value Slider */}
                                 <div
                                     ref={valRef}
-                                    className="relative w-full h-4 rounded-full cursor-pointer shadow-inner"
+                                    className="relative w-full h-4 rounded-[5px] cursor-pointer shadow-inner"
                                     onMouseDown={handleValDown}
                                     onTouchStart={handleValDown}
                                     style={{
@@ -507,7 +507,7 @@ export default function ColorizoPage() {
                                     }}
                                 >
                                     <div
-                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-full shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
+                                        className="absolute w-6 h-6 bg-white border border-neutral-200 rounded-[2px] shadow-md -translate-x-1/2 -translate-y-1/2 top-1/2 pointer-events-none"
                                         style={{
                                             left: `${hsv.v}%`
                                         }}
@@ -530,7 +530,7 @@ export default function ColorizoPage() {
                                                     setBaseColor(val);
                                                 }
                                             }}
-                                            className="w-full bg-neutral-50 border-none rounded-xl px-4 py-4 font-mono text-lg text-black focus:ring-2 focus:ring-black/5 outline-none text-center uppercase tracking-wider transition-shadow"
+                                            className="w-full bg-neutral-50 border-none rounded-[5px] px-4 py-4 font-mono text-lg text-black focus:ring-2 focus:ring-black/5 outline-none text-center uppercase tracking-wider transition-shadow"
                                             placeholder="#000000"
                                             maxLength={7}
                                         />
@@ -541,7 +541,7 @@ export default function ColorizoPage() {
 
                                     <button
                                         onClick={randomize}
-                                        className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-black text-white rounded-xl text-xs font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors"
+                                        className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-black text-white rounded-[5px] text-xs font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors"
                                     >
                                         <RefreshCw size={14} />
                                         Randomize
@@ -559,7 +559,7 @@ export default function ColorizoPage() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.1 * idx }}
-                                className="bg-white p-6 rounded-3xl shadow-lg border border-neutral-100"
+                                className="bg-white p-6 rounded-[5px] shadow-lg border border-neutral-100"
                             >
                                 <h2 className="text-sm font-bold uppercase tracking-widest mb-4 flex items-center gap-3">
                                     <span className="w-8 h-[1px] bg-black"></span>
@@ -569,7 +569,7 @@ export default function ColorizoPage() {
                                 <div className="flex flex-col gap-6">
                                     {/* Preview Card */}
                                     <div
-                                        className="w-full aspect-[1.618/1] rounded-2xl overflow-hidden shadow-inner flex"
+                                        className="w-full aspect-[1.618/1] rounded-[5px] overflow-hidden shadow-inner flex"
                                     >
                                         {palette.colors.map((color, i) => (
                                             <div
@@ -588,9 +588,9 @@ export default function ColorizoPage() {
                                     {/* Color Codes List */}
                                     <div className="grid grid-cols-2 gap-3">
                                         {palette.colors.map((color, i) => (
-                                            <div key={i} className="flex items-center gap-3 group cursor-pointer p-2 rounded-lg hover:bg-neutral-50 transition-colors" onClick={() => handleCopy(color)}>
+                                            <div key={i} className="flex items-center gap-3 group cursor-pointer p-2 rounded-[5px] hover:bg-neutral-50 transition-colors" onClick={() => handleCopy(color)}>
                                                 <div
-                                                    className="w-6 h-6 rounded-full shadow-sm border border-black/10 transition-transform group-hover:scale-110"
+                                                    className="w-6 h-6 rounded-[2px] shadow-sm border border-black/10 transition-transform group-hover:scale-110"
                                                     style={{ backgroundColor: color }}
                                                 />
                                                 <span className="font-mono text-xs text-neutral-600 group-hover:text-black transition-colors">

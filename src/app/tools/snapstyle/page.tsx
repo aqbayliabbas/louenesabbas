@@ -69,7 +69,7 @@ const Slider = ({
                 max={max}
                 value={value}
                 onChange={(e) => onChange(Number(e.target.value))}
-                className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer accent-black hover:accent-neutral-800 transition-all"
+                className="w-full h-2 bg-neutral-100 rounded-[5px] appearance-none cursor-pointer accent-black hover:accent-neutral-800 transition-all"
             />
         </div>
     );
@@ -83,7 +83,7 @@ export default function SnapStylePage() {
     const [fileName, setFileName] = useState<string>('screenshot');
     const [settings, setSettings] = useState<SnapSettings>({
         background: { type: 'gradient', color1: '#FF0080', color2: '#7928CA', angle: 135, grain: 0.0 },
-        style: { radius: 16, shadow: 40, padding: 64, shadowOpacity: 0.3 },
+        style: { radius: 5, shadow: 40, padding: 64, shadowOpacity: 0.3 },
         size: { preset: 'FHD', width: 1920, height: 1080 },
         position: { x: 0, y: 0, scale: 1 }
     });
@@ -349,7 +349,7 @@ export default function SnapStylePage() {
                         className="space-y-6 lg:sticky lg:top-32"
                     >
                         {/* Importer */}
-                        <div className="bg-white p-6 rounded-3xl shadow-lg border border-neutral-100">
+                        <div className="bg-white p-6 rounded-[5px] shadow-lg border border-neutral-100">
                             <div className="flex items-center justify-between mb-4">
                                 <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400">Image</h3>
                                 {image && (
@@ -363,14 +363,14 @@ export default function SnapStylePage() {
                                 onClick={() => fileInputRef.current?.click()}
                                 onDrop={handleDrop}
                                 onDragOver={(e) => e.preventDefault()}
-                                className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors group ${image ? 'border-neutral-200 hover:border-neutral-300' : 'border-blue-500/20 bg-blue-50/50 hover:bg-blue-50'}`}
+                                className={`border-2 border-dashed rounded-[5px] p-8 text-center cursor-pointer transition-colors group ${image ? 'border-neutral-200 hover:border-neutral-300' : 'border-blue-500/20 bg-blue-50/50 hover:bg-blue-50'}`}
                             >
                                 <input ref={fileInputRef} type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
 
                                 {image ? (
                                     <div className="flex flex-col items-center gap-2">
                                         <div className="w-16 h-16 rounded-lg overflow-hidden shadow-sm border border-neutral-100 relative bg-neutral-100">
-                                            <img src={image} className="w-full h-full object-cover" alt="Preview" />
+                                            <img src={image} className="w-full h-full object-cover" alt="Preview" loading="lazy" />
                                         </div>
                                         <span className="text-xs font-mono text-neutral-500 truncate max-w-[200px]">{fileName}</span>
                                     </div>
@@ -392,7 +392,7 @@ export default function SnapStylePage() {
                                     <button
                                         key={t}
                                         onClick={() => setSettings(s => ({ ...s, background: { ...s.background, type: t as any } }))}
-                                        className={`flex-1 py-2 rounded-md text-xs font-bold uppercase tracking-wider transition-all ${settings.background.type === t ? 'bg-white shadow-sm text-black' : 'text-neutral-500 hover:text-black'}`}
+                                        className={`flex-1 py-2 rounded-[5px] text-xs font-bold uppercase tracking-wider transition-all ${settings.background.type === t ? 'bg-white shadow-sm text-black' : 'text-neutral-500 hover:text-black'}`}
                                     >
                                         {t}
                                     </button>
@@ -438,7 +438,7 @@ export default function SnapStylePage() {
                                     <button
                                         key={key}
                                         onClick={() => setSettings(s => ({ ...s, size: { ...s.size, preset: key as any, width: val.w, height: val.h } }))}
-                                        className={`py-2 px-3 border rounded-xl text-xs font-medium transition-colors text-left ${settings.size.preset === key ? 'border-black bg-neutral-50' : 'border-neutral-100 hover:border-neutral-200'}`}
+                                        className={`py-2 px-3 border rounded-[5px] text-xs font-medium transition-colors text-left ${settings.size.preset === key ? 'border-black bg-neutral-50' : 'border-neutral-100 hover:border-neutral-200'}`}
                                     >
                                         <div className="font-bold">{val.label}</div>
                                         <div className="text-[10px] text-neutral-400 mt-1">{val.w} x {val.h}</div>
@@ -452,7 +452,7 @@ export default function SnapStylePage() {
 
                             <button
                                 onClick={handleExport}
-                                className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-bold uppercase tracking-widest transition-all ${'bg-black text-white hover:bg-neutral-800 shadow-xl hover:shadow-2xl hover:-translate-y-1'}`}
+                                className={`w-full py-4 rounded-[5px] flex items-center justify-center gap-2 font-bold uppercase tracking-widest transition-all ${'bg-black text-white hover:bg-neutral-800 shadow-xl hover:shadow-2xl hover:-translate-y-1'}`}
                             >
                                 {isExporting ? (
                                     <Sparkles className="animate-spin" />
@@ -465,7 +465,7 @@ export default function SnapStylePage() {
                     </motion.div>
 
                     {/* Preview Area */}
-                    <div className="sticky top-32 min-h-[600px] flex items-center justify-center rounded-3xl border border-neutral-200/50 bg-[#e5e5e5] bg-[radial-gradient(#00000005_1px,transparent_1px)] [background-size:16px_16px] overflow-hidden p-8 shadow-inner">
+                    <div className="sticky top-32 min-h-[600px] flex items-center justify-center rounded-[5px] border border-neutral-200/50 bg-[#e5e5e5] bg-[radial-gradient(#00000005_1px,transparent_1px)] [background-size:16px_16px] overflow-hidden p-8 shadow-inner">
                         <motion.div
                             layout
                             className="relative shadow-2xl transition-all duration-300 ease-out origin-center cursor-move"
@@ -508,11 +508,12 @@ export default function SnapStylePage() {
                                         }}
                                         alt="Preview"
                                         draggable={false}
+                                        loading="lazy"
                                     />
                                 ) : (
                                     <div
                                         onClick={() => fileInputRef.current?.click()}
-                                        className="w-full h-full border-2 border-dashed border-black/10 rounded-3xl flex flex-col items-center justify-center cursor-pointer hover:bg-black/5 transition-colors gap-3 group"
+                                        className="w-full h-full border-2 border-dashed border-black/10 rounded-[5px] flex flex-col items-center justify-center cursor-pointer hover:bg-black/5 transition-colors gap-3 group"
                                         style={{
                                             borderRadius: `${settings.style.radius}px`,
                                         }}

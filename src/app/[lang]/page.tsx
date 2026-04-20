@@ -7,6 +7,8 @@ import { Contact } from '@/components/sections/Contact';
 import { Testimonials } from '@/components/sections/Testimonials';
 import { FAQ } from '@/components/sections/FAQ';
 import { Clients } from '@/components/sections/Clients';
+import { Navbar } from '@/components/ui/Navbar';
+import { Preloader } from '@/components/ui/Preloader';
 
 export default function Home() {
   return (

@@ -5,14 +5,14 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 
 const projects = [
-    { title: "Client: Vanèlla", img: "/vanella.png", category: "Packaging Design" },
-    { title: "Client: Valgrand", img: "/valgrand.png", category: "Identity Strategy" },
-    { title: "Client: Diolata", img: "/diolata.png", category: "Digital Experience" },
-    { title: "Client: Vitalys Pro", img: "/vitalyspro.png", category: "Brand Ecosystem" },
-    { title: "Client: Aurora Labs", img: "/boxes.png", category: "Digital Innovation" },
-    { title: "Client: Diolata", img: "/cirum.png", category: "Visual Arts" },
-    { title: "Client: Vanèlla", img: "/sac GM.png", category: "Product Design" },
-    { title: "Client: Valgrand", img: "/valgrand 01.png", category: "Strategic Direction" },
+    { title: "Client : Vanèlla", img: "/vanella.png", category: "Design de Packaging" },
+    { title: "Client : Valgrand", img: "/valgrand.png", category: "Stratégie d'Identité" },
+    { title: "Client : Diolata", img: "/diolata.png", category: "Expérience Digitale" },
+    { title: "Client : Vitalys Pro", img: "/vitalyspro.png", category: "Écosystème de Marque" },
+    { title: "Client : Aurora Labs", img: "/boxes.png", category: "Innovation Digitale" },
+    { title: "Client : Diolata", img: "/cirum.png", category: "Arts Visuels" },
+    { title: "Client : Vanèlla", img: "/sac GM.png", category: "Design de Produit" },
+    { title: "Client : Valgrand", img: "/valgrand 01.png", category: "Direction Stratégique" },
 ];
 
 const MarqueeRow = ({ items, direction = 1, speed = 30 }: { items: any[], direction?: 1 | -1, speed?: number }) => {
@@ -38,7 +38,7 @@ const MarqueeRow = ({ items, direction = 1, speed = 30 }: { items: any[], direct
                 {duplicatedItems.map((item, idx) => (
                     <div
                         key={`${item.title}-${idx}`}
-                        className="group/card relative w-[280px] md:w-[650px] shrink-0 aspect-[16/10] bg-neutral-100 rounded-[1.5rem] md:rounded-[2.5rem] overflow-hidden shadow-2xl shadow-black/5"
+                        className="group/card relative w-[280px] md:w-[650px] shrink-0 aspect-[16/10] bg-neutral-100 rounded-[5px] overflow-hidden shadow-2xl shadow-black/5"
                     >
                         <Image
                             src={item.img}
@@ -97,7 +97,7 @@ export function Work() {
             {/* Background Narrative Label */}
             <div className="absolute top-12 left-6 md:top-24 md:left-24 z-10">
                 <span className="text-neutral-200 text-[15vw] md:text-[10vw] font-bold leading-none select-none pointer-events-none opacity-40">
-                    WORKS
+                    PROJETS
                 </span>
             </div>
 
@@ -114,7 +114,7 @@ export function Work() {
             {/* Bottom Label for Mobile/UX */}
             <div className="mt-12 text-center">
                 <span className="text-neutral-400 text-[10px] md:text-sm font-medium uppercase tracking-[0.2em]">
-                    ( Slide to explore )
+                    ( Faire glisser pour explorer )
                 </span>
             </div>
         </section>

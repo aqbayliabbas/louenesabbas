@@ -16,18 +16,18 @@ export function Contact() {
 
     return (
         <section id="contact" className="py-24 px-6 bg-white">
-            <div className="max-w-[1200px] mx-auto">
+            <div className="max-w-[1400px] mx-auto">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     onMouseMove={handleMouseMove}
                     data-nav-dark
-                    className="group relative bg-[#0a0a0a] rounded-[3rem] p-12 md:p-24 overflow-hidden text-center text-white shadow-2xl"
+                    className="group relative bg-[#0a0a0a] rounded-[5px] p-12 md:p-24 overflow-hidden text-center text-white shadow-2xl"
                 >
                     {/* Spotlight Effect */}
                     <motion.div
-                        className="pointer-events-none absolute -inset-px rounded-[3rem] opacity-0 transition duration-300 group-hover:opacity-100"
+                        className="pointer-events-none absolute -inset-px rounded-[5px] opacity-0 transition duration-300 group-hover:opacity-100"
                         style={{
                             background: useMotionTemplate`
                 radial-gradient(
@@ -44,26 +44,26 @@ export function Contact() {
 
                     <div className="relative z-10 space-y-8 max-w-2xl mx-auto">
                         <h2 className="text-5xl md:text-7xl font-semibold tracking-tighter">
-                            Enough about me. <br />
-                            <span className="text-white/50">Let&apos;s talk about you.</span>
+                            Assez parlé de moi. <br />
+                            <span className="text-white/50">Parlons de vous.</span>
                         </h2>
                         <p className="text-xl text-white/60 leading-relaxed font-light">
-                            Have a vision you want to bring to life? I&apos;m always down to chat about new challenges. I&apos;ll buy the coffee (virtual or real).
+                            Vous avez une vision que vous voulez concrétiser ? Je suis toujours prêt à discuter de nouveaux défis. J&apos;offre le café (virtuel ou réel).
                         </p>
 
                         <div className="pt-8 flex flex-col md:flex-row items-center justify-center gap-4">
                             <button
                                 onClick={() => window.open('https://wa.me/213799739969', '_blank')}
-                                className="group relative inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-full font-bold text-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
+                                className="group relative inline-flex items-center gap-3 bg-white text-black px-10 py-5 rounded-[5px] font-bold text-lg hover:bg-gray-200 transition-all duration-300 hover:scale-105 active:scale-95"
                             >
-                                <span>WhatsApp Me</span>
+                                <span>Contactez-moi</span>
                                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                             </button>
                             <Link
                                 href="/questionnaire"
-                                className="group relative inline-flex items-center gap-3 bg-transparent border border-white/20 text-white px-10 py-5 rounded-full font-bold text-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95"
+                                className="group relative inline-flex items-center gap-3 bg-transparent border border-white/20 text-white px-10 py-5 rounded-[5px] font-bold text-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 active:scale-95"
                             >
-                                <span>Start Questionnaire</span>
+                                <span>Remplir le questionnaire</span>
                                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
                             </Link>
                         </div>

@@ -6,20 +6,20 @@ import { Plus } from 'lucide-react';
 
 const faqs = [
     {
-        question: "What is your typical timeline for a branding project?",
-        answer: "Most full identity projects take between 4-8 weeks. This allows for deep research, strategy development, and iterative design cycles to ensure the result is perfect."
+        question: "Quel est votre délai habituel pour un projet de branding ?",
+        answer: "La plupart des projets d'identité complète prennent entre 4 et 8 semaines. Cela permet une recherche approfondie, le développement de la stratégie et des cycles de design itératifs."
     },
     {
-        question: "Do you offer web development services?",
-        answer: "Yes. I specialize in designing and building high-performance websites using technologies like Next.js and Framer. I believe design and code should live under one roof for the best result."
+        question: "Offrez-vous des services de développement web ?",
+        answer: "Oui. Je me spécialise dans la conception et la création de sites web haute performance avec Next.js et Framer. Je crois que le design et le code doivent cohabiter pour un résultat optimal."
     },
     {
-        question: "How do you price your services?",
-        answer: "I work on a project-basis. After our initial discovery call, I'll provide a custom proposal tailored to your specific needs and goals. I don't believe in one-size-fits-all pricing."
+        question: "Comment fixez-vous vos tarifs ?",
+        answer: "Je travaille par projet. Après notre appel de découverte, je vous proposerai un devis personnalisé adapté à vos besoins spécifiques. Je ne crois pas aux tarifs standardisés."
     },
     {
-        question: "What do I need to have ready before we start?",
-        answer: "Just a clear idea of your business goals and who your target audience is. I can help clarify the rest during our strategy phase."
+        question: "Que dois-je préparer avant de commencer ?",
+        answer: "Simplement une idée claire de vos objectifs commerciaux et de votre public cible. Je peux vous aider à clarifier le reste durant notre phase stratégique."
     }
 ];
 
@@ -28,11 +28,11 @@ export function FAQ() {
 
     return (
         <section data-nav-dark className="py-32 px-6 bg-[#050505] text-white">
-            <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
+            <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-12">
                 <div className="md:col-span-4">
-                    <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">Got<br />Questions?</h2>
+                    <h2 className="text-4xl md:text-5xl font-semibold tracking-tight mb-6">Des<br />Questions ?</h2>
                     <p className="text-white/60 text-lg">
-                        Everything you need to know about how I work with my clients.
+                        Tout ce que vous devez savoir sur ma façon de travailler avec mes clients.
                     </p>
                 </div>
 

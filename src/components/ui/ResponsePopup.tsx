@@ -133,7 +133,7 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                     initial={{ opacity: 0, scale: 0.95, y: 20 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                    className="relative w-full max-w-5xl h-[90vh] bg-white rounded-[2.5rem] shadow-[0_50px_100px_rgba(0,0,0,0.5)] z-10 overflow-hidden flex flex-col print:h-auto print:rounded-none print:shadow-none"
+                    className="relative w-full max-w-5xl h-[90vh] bg-white rounded-[5px] shadow-[0_50px_100px_rgba(0,0,0,0.5)] z-10 overflow-hidden flex flex-col print:h-auto print:rounded-none print:shadow-none"
                 >
                     {/* Sticky Header: Dossier Identity */}
                     <div className="flex items-center justify-between p-8 md:px-12 bg-white border-b border-neutral-100 z-50 print:hidden">
@@ -148,14 +148,14 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                                             onDelete(response.id);
                                         }
                                     }}
-                                    className="p-3 bg-red-50 hover:bg-red-100 text-red-500 rounded-2xl transition-all border border-red-100/50"
+                                    className="p-3 bg-red-50 hover:bg-red-100 text-red-500 rounded-[5px] transition-all border border-red-100/50"
                                 >
                                     <Trash2 size={18} />
                                 </button>
                             )}
                             <button
                                 onClick={onClose}
-                                className="p-3 bg-neutral-900 hover:bg-black text-white rounded-2xl transition-all shadow-xl"
+                                className="p-3 bg-neutral-900 hover:bg-black text-white rounded-[5px] transition-all shadow-xl"
                             >
                                 <X size={20} />
                             </button>
@@ -181,7 +181,7 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                             >
                                 <div className="flex items-center gap-8">
                                     <div className="flex items-center gap-4 shrink-0">
-                                        <div className="p-3 bg-black text-white rounded-xl shadow-lg">
+                                        <div className="p-3 bg-black text-white rounded-[5px] shadow-lg">
                                             <section.icon size={20} />
                                         </div>
                                         <h3 className="text-xl font-black tracking-tighter uppercase">{section.title}</h3>
@@ -202,14 +202,14 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                                                     {Object.entries(item.value || {}).map(([key, value]: [string, any]) => {
                                                         const pair = item.labels[key] || [key, ''];
                                                         return (
-                                                            <div key={key} className="space-y-4 p-6 bg-neutral-50 rounded-[1.5rem] border border-neutral-100 group hover:border-black/10 transition-colors">
+                                                            <div key={key} className="space-y-4 p-6 bg-neutral-50 rounded-[5px] border border-neutral-100 group hover:border-black/10 transition-colors">
                                                                 <div className="flex justify-between text-[9px] font-black uppercase tracking-widest leading-none">
                                                                     <span className={value < 50 ? 'text-black' : 'text-neutral-300'}>{pair[0]}</span>
                                                                     <span className={value >= 50 ? 'text-black' : 'text-neutral-300'}>{pair[1]}</span>
                                                                 </div>
-                                                                <div className="relative h-[2px] bg-neutral-200 rounded-full w-full">
+                                                                <div className="relative h-[2px] bg-neutral-200 rounded-[5px] w-full">
                                                                     <div
-                                                                        className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-black rounded-full border-2 border-white shadow-md transition-all duration-700"
+                                                                        className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-black rounded-[2px] border-2 border-white shadow-md transition-all duration-700"
                                                                         style={{ left: `${value}%` }}
                                                                     />
                                                                 </div>
@@ -223,7 +223,7 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                                             ) : item.type === 'pills' ? (
                                                 <div className="flex flex-wrap gap-2">
                                                     {item.value?.map((v: string, idx: number) => (
-                                                        <span key={`${v}-${idx}`} className="px-4 py-2 bg-neutral-50 border border-neutral-100 rounded-xl text-xs font-bold hover:bg-black hover:text-white transition-all cursor-default">
+                                                        <span key={`${v}-${idx}`} className="px-4 py-2 bg-neutral-50 border border-neutral-100 rounded-[5px] text-xs font-bold hover:bg-black hover:text-white transition-all cursor-default">
                                                             {v}
                                                         </span>
                                                     ))}
@@ -231,7 +231,7 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                                             ) : item.type === 'tags' ? (
                                                 <div className="flex flex-wrap gap-2 text-[10px] font-black uppercase tracking-widest">
                                                     {item.value?.map((v: string, idx: number) => (
-                                                        <span key={`${v}-${idx}`} className="px-4 py-2 border-2 border-black rounded-full">
+                                                        <span key={`${v}-${idx}`} className="px-4 py-2 border-2 border-black rounded-[5px]">
                                                             {v}
                                                         </span>
                                                     ))}

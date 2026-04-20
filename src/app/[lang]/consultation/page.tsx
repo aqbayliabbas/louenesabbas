@@ -76,7 +76,7 @@ export default function ConsultationPage() {
     };
 
     const days = getDaysInMonth(currentMonth);
-    const monthName = currentMonth.toLocaleString('fr-FR', { month: 'long', year: 'numeric' });
+    const monthName = currentMonth.toLocaleString('en-US', { month: 'long', year: 'numeric' });
 
     const prevMonth = () => {
         const d = new Date(currentMonth);
@@ -163,20 +163,20 @@ export default function ConsultationPage() {
                         <div className="flex items-center gap-4 mb-8">
                             <span className="h-px w-12 bg-white/20"></span>
                             <span className="text-xs font-bold tracking-[0.3em] uppercase text-neutral-400">
-                                Appel Découverte
+                                Discovery Call
                             </span>
                         </div>
                         <h1 className="text-5xl md:text-7xl font-black tracking-[-0.04em] leading-[0.9] text-white mb-8">
-                            La Première <br />
-                            <span className="text-neutral-500 italic font-serif font-light">Étape.</span>
+                            The First <br />
+                            <span className="text-neutral-500 italic font-serif font-light">Step.</span>
                         </h1>
                         <p className="text-lg text-neutral-400 leading-relaxed font-light max-w-sm">
-                            15 minutes de stratégie pure. Aucun discours commercial, juste de la clarté sur votre vision et comment nous pouvons la concrétiser avec précision.
+                            15 minutes of pure strategy. No sales pitch, just clarity on your vision and how we can bring it to life with precision.
                         </p>
                     </motion.div>
 
                     <div className="hidden lg:block space-y-6 pt-12 border-t border-white/10">
-                        {['Clarifier la trajectoire de votre marque', 'Discuter des délais & de l\'investissement', 'Retours d\'expert immédiats'].map((item, i) => (
+                        {['Clarify your brand trajectory', 'Discuss timeline & investment', 'Immediate expert feedback'].map((item, i) => (
                             <div key={i} className="flex items-center gap-4 text-neutral-500">
                                 <CheckCircle2 size={18} className="text-white shrink-0" />
                                 <span className="text-sm tracking-wide">{item}</span>
@@ -204,15 +204,15 @@ export default function ConsultationPage() {
                                     <div className="w-20 h-20 bg-white text-black rounded-full flex items-center justify-center mb-8 shadow-[0_0_50px_rgba(255,255,255,0.15)]">
                                         <CheckCircle2 size={32} />
                                     </div>
-                                    <h2 className="text-4xl font-bold mb-4 tracking-tight">Réservation Demandée.</h2>
+                                    <h2 className="text-4xl font-bold mb-4 tracking-tight">Booking Requested.</h2>
                                     <p className="text-neutral-400 text-lg mb-12 max-w-sm font-medium">
-                                        Je vais examiner vos détails et vous envoyer une confirmation par {platform === 'google_meet' ? 'email' : 'WhatsApp'} rapidement.
+                                        I'll review your details and send a confirmation to your {platform === 'google_meet' ? 'email' : 'WhatsApp'} shortly.
                                     </p>
                                     <button
                                         onClick={() => window.location.href = '/'}
                                         className="px-10 py-5 bg-white text-black rounded-full font-bold tracking-[0.2em] uppercase hover:bg-neutral-200 transition-all text-xs"
                                     >
-                                        Retour à l'Accueil
+                                        Back to Home
                                     </button>
                                 </motion.div>
                             ) : (
@@ -222,7 +222,7 @@ export default function ConsultationPage() {
                                     <div className="p-8 md:p-12 space-y-8">
                                         <div className="flex items-center gap-4">
                                             <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">1</span>
-                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Choisissez votre plateforme</h3>
+                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Choose preferred platform</h3>
                                         </div>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <PlatformCard
@@ -233,7 +233,7 @@ export default function ConsultationPage() {
                                             />
                                             <PlatformCard
                                                 icon={<Phone size={20} />}
-                                                label="Appel WhatsApp"
+                                                label="WhatsApp Call"
                                                 isActive={platform === 'whatsapp'}
                                                 onClick={() => setPlatform('whatsapp')}
                                             />
@@ -244,21 +244,21 @@ export default function ConsultationPage() {
                                     <div className={`p-8 md:p-12 space-y-8 transition-opacity duration-500 ${!platform && 'opacity-20 pointer-events-none'}`}>
                                         <div className="flex items-center gap-4">
                                             <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">2</span>
-                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Sélectionnez une date & heure</h3>
+                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Select a date & time</h3>
                                         </div>
 
                                         <div className="grid grid-cols-1 xl:grid-cols-2 gap-12">
                                             {/* Custom Calendar UI */}
                                             <div className="space-y-6">
                                                 <div className="flex items-center justify-between px-2">
-                                                    <span className="text-lg font-bold capitalize">{monthName}</span>
+                                                    <span className="text-lg font-bold">{monthName}</span>
                                                     <div className="flex gap-1">
                                                         <button type="button" onClick={prevMonth} className="p-2 hover:bg-white/5 rounded-full transition-colors"><ChevronLeft size={18} /></button>
                                                         <button type="button" onClick={nextMonth} className="p-2 hover:bg-white/5 rounded-full transition-colors"><ChevronRight size={18} /></button>
                                                     </div>
                                                 </div>
                                                 <div className="grid grid-cols-7 gap-1">
-                                                    {['D', 'L', 'M', 'M', 'J', 'V', 'S'].map(d => (
+                                                    {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => (
                                                         <div key={d} className="h-10 flex items-center justify-center text-[10px] font-bold text-neutral-600">{d}</div>
                                                     ))}
                                                     {days.map((date, i) => {
@@ -295,7 +295,7 @@ export default function ConsultationPage() {
                                                             className="h-full flex flex-col items-center justify-center text-center p-8 border border-dashed border-white/5 rounded-3xl"
                                                         >
                                                             <CalendarIcon size={32} className="text-neutral-700 mb-4" />
-                                                            <p className="text-sm text-neutral-500 font-medium">Sélectionnez une date pour <br /> voir les créneaux</p>
+                                                            <p className="text-sm text-neutral-500 font-medium">Select a date to <br /> see available slots</p>
                                                         </motion.div>
                                                     ) : isLoadingSlots ? (
                                                         <motion.div
@@ -342,7 +342,7 @@ export default function ConsultationPage() {
                                     <div className={`p-8 md:p-12 space-y-8 transition-all duration-500 ${(!selectedDate || !selectedTime) && 'opacity-20 pointer-events-none'}`}>
                                         <div className="flex items-center gap-4">
                                             <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-bold">3</span>
-                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Confirmez votre identité</h3>
+                                            <h3 className="text-xs font-bold uppercase tracking-[0.3em]">Confirm your identity</h3>
                                         </div>
 
                                         <div className="space-y-4">
@@ -350,18 +350,18 @@ export default function ConsultationPage() {
                                                 <input
                                                     type="text" required value={name} onChange={(e) => setName(e.target.value)}
                                                     className="h-16 bg-white/5 rounded-2xl px-6 outline-none focus:bg-white/[0.08] transition-all font-medium border border-white/5 focus:border-white/20"
-                                                    placeholder="Nom Complet"
+                                                    placeholder="Full Name"
                                                 />
                                                 <input
                                                     type={platform === 'google_meet' ? 'email' : 'tel'} required value={contactInfo} onChange={(e) => setContactInfo(e.target.value)}
                                                     className="h-16 bg-white/5 rounded-2xl px-6 outline-none focus:bg-white/[0.08] transition-all font-medium border border-white/5 focus:border-white/20"
-                                                    placeholder={platform === 'whatsapp' ? 'Numéro de Téléphone (+213...)' : 'Adresse Email'}
+                                                    placeholder={platform === 'whatsapp' ? 'Phone Number (+213...)' : 'Email Address'}
                                                 />
                                             </div>
                                             <textarea
                                                 rows={3} value={notes} onChange={(e) => setNotes(e.target.value)}
                                                 className="w-full bg-white/5 rounded-3xl px-6 py-5 outline-none focus:bg-white/[0.08] transition-all font-medium border border-white/5 focus:border-white/20 resize-none"
-                                                placeholder="Quel est le principal défi auquel votre marque est confrontée ?"
+                                                placeholder="What's the main challenge you're facing with your brand?"
                                             />
                                         </div>
 
@@ -372,7 +372,7 @@ export default function ConsultationPage() {
                                         >
                                             {isSubmitting ? <Loader2 className="animate-spin" /> : (
                                                 <>
-                                                    Demander une Consultation
+                                                    Request Consultation
                                                     <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
                                                 </>
                                             )}

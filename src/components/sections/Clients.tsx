@@ -30,7 +30,7 @@ export function Clients() {
                 </motion.div>
             </div>
 
-            <div className="max-w-[1200px] mx-auto px-6 relative z-10">
+            <div className="max-w-[1400px] mx-auto px-6 relative z-10">
                 {/* Simple centered grid */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
@@ -40,10 +40,10 @@ export function Clients() {
                     className="text-center mb-16"
                 >
                     <span className="text-[10px] font-bold tracking-[0.4em] uppercase text-neutral-400 block mb-4">
-                        Current & Past Partnerships
+                        Partenariats Actuels & Passés
                     </span>
                     <h2 className="text-3xl md:text-5xl font-bold tracking-tighter text-neutral-950">
-                        Trusted by ambitious founders.
+                        Ils me font confiance.
                     </h2>
                 </motion.div>
 
@@ -58,7 +58,7 @@ export function Clients() {
                             transition={{ delay: i * 0.1, duration: 0.5 }}
                             className="relative h-10 w-28 md:h-12 md:w-36 grayscale opacity-20 transition-all duration-500"
                         >
-                            <div className="bg-neutral-100 h-full w-full rounded" />
+                            <div className="bg-neutral-100 h-full w-full rounded-[5px]" />
                         </motion.div>
                     ))}
                 </div>

@@ -42,12 +42,12 @@ export function CaseStudyModal({ isOpen, onClose, pdfUrl }: CaseStudyModalProps)
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.9, y: 20 }}
                         transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                        className="relative w-full max-w-6xl h-full max-h-[90vh] bg-white rounded-[2.5rem] shadow-2xl overflow-hidden flex flex-col"
+                        className="relative w-full max-w-6xl h-full max-h-[90vh] bg-white rounded-[5px] shadow-2xl overflow-hidden flex flex-col"
                     >
                         {/* Header */}
                         <div className="px-8 py-6 border-b border-neutral-100 flex items-center justify-between bg-white">
                             <div className="flex items-center gap-4">
-                                <div className="p-3 bg-neutral-900 text-white rounded-2xl">
+                                <div className="p-3 bg-neutral-900 text-white rounded-[5px]">
                                     <FileText size={24} />
                                 </div>
                                 <div>
@@ -60,14 +60,14 @@ export function CaseStudyModal({ isOpen, onClose, pdfUrl }: CaseStudyModalProps)
                                 <a
                                     href={pdfUrl}
                                     download
-                                    className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-full bg-neutral-100 text-neutral-900 text-sm font-bold hover:bg-neutral-200 transition-all active:scale-95"
+                                    className="hidden md:flex items-center gap-2 px-5 py-2.5 rounded-[5px] bg-neutral-100 text-neutral-900 text-sm font-bold hover:bg-neutral-200 transition-all active:scale-95"
                                 >
                                     <Download size={18} />
                                     Download
                                 </a>
                                 <button
                                     onClick={onClose}
-                                    className="p-3 hover:bg-neutral-100 rounded-full transition-colors text-neutral-400 hover:text-neutral-900"
+                                    className="p-3 hover:bg-neutral-100 rounded-[5px] transition-colors text-neutral-400 hover:text-neutral-900"
                                 >
                                     <X size={24} />
                                 </button>
@@ -80,6 +80,7 @@ export function CaseStudyModal({ isOpen, onClose, pdfUrl }: CaseStudyModalProps)
                                 src={`${pdfUrl}#toolbar=0&navpanes=0&scrollbar=0`}
                                 className="w-full h-full border-none"
                                 title="Case Study PDF"
+                                loading="lazy"
                             />
 
                             {/* Mobile Friendly Link */}
@@ -87,7 +88,7 @@ export function CaseStudyModal({ isOpen, onClose, pdfUrl }: CaseStudyModalProps)
                                 <a
                                     href={pdfUrl}
                                     target="_blank"
-                                    className="pointer-events-auto flex items-center gap-2 px-6 py-3 rounded-full bg-white text-black text-sm font-bold shadow-xl"
+                                    className="pointer-events-auto flex items-center gap-2 px-6 py-3 rounded-[5px] bg-white text-black text-sm font-bold shadow-xl"
                                 >
                                     <ExternalLink size={18} />
                                     Open in New Tab
@@ -100,7 +101,7 @@ export function CaseStudyModal({ isOpen, onClose, pdfUrl }: CaseStudyModalProps)
                             <a
                                 href={pdfUrl}
                                 download
-                                className="flex items-center gap-2 px-6 py-3 rounded-full bg-neutral-900 text-white text-sm font-bold shadow-lg"
+                                className="flex items-center gap-2 px-6 py-3 rounded-[5px] bg-neutral-900 text-white text-sm font-bold shadow-lg"
                             >
                                 <Download size={18} />
                                 Download Case Study

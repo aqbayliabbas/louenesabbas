@@ -6,27 +6,27 @@ import { useRef, useState, useEffect } from 'react';
 const steps = [
     {
         number: "01",
-        title: "Deep Discovery",
-        subtitle: "The Audit Phase",
-        description: "I strip away the noise to uncover the raw truth of your brand. We dive deep into your market, competitors, and core values to find your unique 'unfair' advantage.",
+        title: "Exploration Profonde",
+        subtitle: "Phase d'Audit",
+        description: "J'élimine le superflu pour révéler la vérité brute de votre marque. Nous plongeons dans votre marché et vos valeurs pour identifier votre avantage concurrentiel unique.",
     },
     {
         number: "02",
-        title: "Strategic Blueprint",
-        subtitle: "The Architecture Phase",
-        description: "Designing the logical framework that supports your vision. We build a strategic roadmap for growth before a single pixel is moved, ensuring design solves real problems.",
+        title: "Plan Stratégique",
+        subtitle: "Phase d'Architecture",
+        description: "Conception du cadre logique qui soutient votre vision. Nous établissons une feuille de route stratégique avant de designer, assurant que chaque choix résout un problème réel.",
     },
     {
         number: "03",
-        title: "Creative Execution",
-        subtitle: "The Craft Phase",
-        description: "Turning abstract strategy into concrete desire. I build high-end visual systems and digital experiences that command attention through meticulous craftsmanship.",
+        title: "Exécution Créative",
+        subtitle: "Phase de Réalisation",
+        description: "Transformer une stratégie abstraite en désir concret. Je crée des systèmes visuels haut de gamme et des expériences digitales qui captent l'attention par leur précision.",
     },
     {
         number: "04",
-        title: "System Delivery",
-        subtitle: "The Handover Phase",
-        description: "Providing the tools for a flawless launch. I deliver production-ready assets and design systems that scale effortlessly across every touchpoint of your business.",
+        title: "Livraison du Système",
+        subtitle: "Phase de Passation",
+        description: "Fournir les outils pour un lancement parfait. Je livre des actifs prêts pour la production et des systèmes de design qui s'adaptent sans effort à votre entreprise.",
     }
 ];
 
@@ -63,8 +63,8 @@ export function Process() {
                         viewport={{ once: true }}
                     >
                         <h2 className="text-5xl md:text-8xl font-semibold tracking-tighter leading-none">
-                            Our <br className="md:hidden" />
-                            <span className="text-neutral-300 italic font-serif font-light">Process.</span>
+                            Notre <br className="md:hidden" />
+                            <span className="text-neutral-300 italic font-serif font-light">Processus.</span>
                         </h2>
                     </motion.div>
                 </div>
@@ -93,14 +93,14 @@ export function Process() {
                                             initial={{ scale: 0.8, opacity: 0 }}
                                             whileInView={{ scale: 1, opacity: 1 }}
                                             viewport={{ once: true, margin: "-100px" }}
-                                            className="w-8 h-8 md:w-14 md:h-14 rounded-full bg-white border border-neutral-200 md:border-2 md:border-neutral-900 flex items-center justify-center shadow-xl md:translate-x-0"
+                                            className="w-8 h-8 md:w-14 md:h-14 rounded-[5px] bg-white border border-neutral-200 md:border-2 md:border-neutral-900 flex items-center justify-center shadow-xl md:translate-x-0"
                                         >
                                             <span className="text-[10px] md:text-sm font-black text-black">{step.number}</span>
                                         </motion.div>
 
                                         {/* Outer Pulse Circle - only visible when coming into view or always pulsing for life */}
                                         <motion.div
-                                            className="absolute w-10 h-10 md:w-20 md:h-20 rounded-full border border-neutral-200 md:translate-x-0"
+                                            className="absolute w-10 h-10 md:w-20 md:h-20 rounded-[5px] border border-neutral-200 md:translate-x-0"
                                             animate={{ scale: [1, 1.2, 1], opacity: [0.5, 0.2, 0.5] }}
                                             transition={{ repeat: Infinity, duration: 3, ease: "easeInOut" }}
                                         />
@@ -134,8 +134,8 @@ export function Process() {
 
             {/* Decorative Narrative background */}
             <div className="absolute top-1/2 left-0 -translate-y-1/2 w-full flex justify-between px-12 pointer-events-none opacity-[0.02]">
-                <span className="text-[25vw] font-black uppercase rotate-90 origin-center leading-none text-black">STRATEGY</span>
-                <span className="text-[25vw] font-black uppercase -rotate-90 origin-center leading-none text-black">CRAFT</span>
+                <span className="text-[25vw] font-black uppercase rotate-90 origin-center leading-none text-black">STRATÉGIE</span>
+                <span className="text-[25vw] font-black uppercase -rotate-90 origin-center leading-none text-black">RÉALISATION</span>
             </div>
         </section>
     );

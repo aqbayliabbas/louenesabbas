@@ -138,7 +138,7 @@ export default function TypologyPage() {
             <motion.div
                 initial={{ y: 100, opacity: 0 }}
                 animate={{ y: selectedIds.size > 0 ? 0 : 100, opacity: selectedIds.size > 0 ? 1 : 0 }}
-                className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-[#1a1a1a] text-white pl-8 pr-4 py-3 rounded-full shadow-2xl flex items-center gap-8 border border-white/10 backdrop-blur-md"
+                className="fixed bottom-8 left-1/2 -translate-x-1/2 z-40 bg-[#1a1a1a] text-white pl-8 pr-4 py-3 rounded-[5px] shadow-2xl flex items-center gap-8 border border-white/10 backdrop-blur-md"
             >
                 <div className="text-sm font-medium whitespace-nowrap">
                     <span className="font-bold text-[#d4af37] text-lg mr-2">{selectedIds.size}</span>
@@ -148,7 +148,7 @@ export default function TypologyPage() {
                     <button
                         onClick={handleDownloadFonts}
                         disabled={isDownloading}
-                        className={`px-6 py-3 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all ${isDownloading
+                        className={`px-6 py-3 rounded-[5px] text-[10px] font-bold uppercase tracking-widest transition-all ${isDownloading
                             ? 'bg-neutral-600 text-neutral-400 cursor-wait'
                             : 'bg-white text-black hover:bg-[#d4af37] hover:text-white'
                             }`}
@@ -179,7 +179,7 @@ export default function TypologyPage() {
                                     <button
                                         key={cat}
                                         onClick={() => setFilter(cat)}
-                                        className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${filter === cat
+                                        className={`px-4 py-2 rounded-[5px] text-xs font-bold uppercase tracking-widest transition-all ${filter === cat
                                             ? 'bg-black text-white'
                                             : 'bg-white border border-neutral-200 text-neutral-500 hover:border-black hover:text-black'
                                             }`}
@@ -197,7 +197,7 @@ export default function TypologyPage() {
                                     placeholder="Search fonts..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
-                                    className="w-full bg-white border border-neutral-200 rounded-full px-12 py-3 text-sm focus:outline-none focus:border-black transition-colors"
+                                    className="w-full bg-white border border-neutral-200 rounded-[5px] px-12 py-3 text-sm focus:outline-none focus:border-black transition-colors"
                                 />
                             </div>
                         </div>
@@ -235,7 +235,7 @@ function FontCard({ pair, index, loaded, isSelected, onToggle }: { pair: FontPai
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: index * 0.05 }}
             onClick={onToggle}
-            className={`group relative bg-white rounded-3xl p-8 transition-all duration-300 border flex flex-col justify-between h-[400px] cursor-pointer ${isSelected
+            className={`group relative bg-white rounded-[5px] p-8 transition-all duration-300 border flex flex-col justify-between h-[400px] cursor-pointer ${isSelected
                 ? 'ring-2 ring-black border-transparent shadow-2xl translate-y-[-8px] z-10'
                 : 'border-black/5 hover:shadow-xl hover:-translate-y-1 hover:border-black/20'
                 }`}
@@ -270,7 +270,7 @@ function FontCard({ pair, index, loaded, isSelected, onToggle }: { pair: FontPai
             {/* Footer / Meta */}
             <div className="border-t border-neutral-100 pt-6 flex justify-between items-end mt-auto pointer-events-none">
                 <div>
-                    <span className="inline-block px-3 py-1 bg-neutral-100 rounded-lg text-[10px] font-bold uppercase tracking-widest text-neutral-500 mb-2">
+                    <span className="inline-block px-3 py-1 bg-neutral-100 rounded-[5px] text-[10px] font-bold uppercase tracking-widest text-neutral-500 mb-2">
                         {pair.category}
                     </span>
                     <p className="text-xs text-neutral-400 max-w-[200px] leading-relaxed line-clamp-2">
@@ -279,7 +279,7 @@ function FontCard({ pair, index, loaded, isSelected, onToggle }: { pair: FontPai
                 </div>
 
                 <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 ${isSelected
+                    className={`w-10 h-10 rounded-[5px] flex items-center justify-center transition-all duration-300 ${isSelected
                         ? 'bg-black text-white rotate-0'
                         : 'bg-neutral-100 text-neutral-400 group-hover:bg-black group-hover:text-white'
                         }`}
@@ -289,7 +289,7 @@ function FontCard({ pair, index, loaded, isSelected, onToggle }: { pair: FontPai
             </div>
 
             {/* Selection Overlay Tint */}
-            {isSelected && <div className="absolute inset-0 bg-black/[0.02] pointer-events-none rounded-3xl" />}
+            {isSelected && <div className="absolute inset-0 bg-black/[0.02] pointer-events-none rounded-[5px]" />}
         </motion.div>
     );
 }

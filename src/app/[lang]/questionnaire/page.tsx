@@ -48,7 +48,7 @@ const valueOptions = [
 
 const deliverableOptions = [
     'Logo & Variations', 'Charte Graphique', 'Cartes de Visite', 'Réseaux Sociaux',
-    'Direction Artistique', 'Stratégie Site Web', 'Packaging design', 'Papeterie',
+    'Direction Artistique', 'Site Web Strategy', 'Packaging design', 'Papeterie',
     'Signature Email', 'Typographies Custom', 'Iconographie'
 ];
 
@@ -152,7 +152,7 @@ const questions: Question[] = [
         id: 'budget',
         question: 'Quelle est votre fourchette budgétaire ?',
         description: 'Cela nous aide à aligner les attentes et les livrables (Optionnel).',
-        placeholder: 'Ex: 150 000 DZA...',
+        placeholder: 'Entre 50000 DZA et 120000 DZA...',
         type: 'text',
         required: false,
     },
@@ -208,7 +208,10 @@ export default function QuestionnairePage() {
     const currentQuestion = questions[step];
     const progress = ((step + 1) / questions.length) * 100;
 
+    // Body scroll logic removed as it's handled by global layout and navbar needs interaction
+
     const canProceed = () => {
+        // If not required, always true
         if (currentQuestion.required === false) return true;
 
         const value = formData[currentQuestion.id];
@@ -218,7 +221,7 @@ export default function QuestionnairePage() {
         if (currentQuestion.type === 'multiselect_pills' || currentQuestion.type === 'touchpoints_grid') {
             return Array.isArray(value) && value.length > 0;
         }
-        return true; 
+        return true; // personality_sliders always has values
     };
 
     const handleNext = () => {
@@ -261,6 +264,7 @@ export default function QuestionnairePage() {
         if (isSubmitting) return;
         setIsSubmitting(true);
 
+        console.log('Final Form Data:', formData);
         try {
             const res = await fetch('/api/responses', {
                 method: 'POST',
@@ -298,11 +302,13 @@ export default function QuestionnairePage() {
                 onMouseMove={handleMouseMove}
                 className="min-h-screen bg-white selection:bg-black selection:text-white flex flex-col items-center justify-center p-4 md:p-6 text-center overflow-hidden relative"
             >
+                {/* Re-use dynamic background */}
                 <motion.div
                     className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]"
                     style={{ background: mouseBackground }}
                 />
 
+                {/* Grain Overlay */}
                 <div
                     className="absolute inset-0 pointer-events-none z-10 opacity-[0.04] mix-blend-multiply"
                     style={{
@@ -369,11 +375,13 @@ export default function QuestionnairePage() {
             onMouseMove={handleMouseMove}
             className="min-h-screen bg-white selection:bg-black selection:text-white flex flex-col overflow-hidden relative"
         >
+            {/* Dynamic Background */}
             <motion.div
                 className="pointer-events-none absolute inset-0 z-0 opacity-[0.03]"
                 style={{ background: mouseBackground }}
             />
 
+            {/* Grain Overlay */}
             <div
                 className="absolute inset-0 pointer-events-none z-10 opacity-[0.04] mix-blend-multiply"
                 style={{
@@ -382,6 +390,7 @@ export default function QuestionnairePage() {
                 }}
             />
 
+            {/* Header / Progress bar */}
             <div className="fixed top-0 left-0 w-full z-50">
                 <div className="h-1 md:h-1.5 bg-neutral-100 w-full overflow-hidden">
                     <motion.div
@@ -399,8 +408,8 @@ export default function QuestionnairePage() {
                 </div>
             </div>
 
-            <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 pt-24 md:pt-24 pb-28 md:pb-32 relative z-20 overflow-y-auto">
-                <div className="max-w-4xl w-full relative">
+            <div className="flex-1 flex flex-col items-center justify-center p-4 md:p-6 pt-20 md:pt-24 pb-28 md:pb-32 relative z-20 overflow-y-auto">
+                <div className="max-w-5xl w-full relative">
                     <AnimatePresence mode="wait">
                         <motion.div
                             key={step}
@@ -414,7 +423,8 @@ export default function QuestionnairePage() {
                                 <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
                                     <span className="text-[10px] md:text-xs font-bold tracking-[0.2em] md:tracking-[0.3em] text-neutral-400 uppercase">ÉTAPE {step + 1}</span>
                                     <div className="h-px w-6 md:w-8 bg-neutral-200" />
-                                    <Sparkles size={14} className="text-neutral-300" />
+                                    <Sparkles size={12} className="text-neutral-300 md:hidden" />
+                                    <Sparkles size={14} className="text-neutral-300 hidden md:block" />
                                 </div>
                                 <hgroup>
                                     <h2 className="text-2xl md:text-4xl lg:text-[clamp(1.5rem,5vw,3.2rem)] font-bold tracking-tighter leading-[1.1] mb-4 md:mb-6">
@@ -426,6 +436,7 @@ export default function QuestionnairePage() {
                                 </hgroup>
                             </div>
 
+                            {/* Dynamic Inputs */}
                             <div className="mt-6 md:mt-8">
                                 {currentQuestion.type === 'text' && (
                                     <motion.input
@@ -541,7 +552,8 @@ export default function QuestionnairePage() {
                                                                 : 'bg-white/50 border-neutral-100 text-neutral-400 hover:border-neutral-300'
                                                     )}
                                                 >
-                                                    <Icon size={32} className={clsx("transition-transform duration-500 relative z-10", isActive ? "scale-110" : "group-hover:scale-110")} />
+                                                    <Icon size={24} className={clsx("md:hidden transition-transform duration-500 relative z-10", isActive ? "scale-110" : "group-hover:scale-110")} />
+                                                    <Icon size={32} className={clsx("hidden md:block transition-transform duration-500 relative z-10", isActive ? "scale-110" : "group-hover:scale-110")} />
                                                     <span className="font-bold tracking-tight text-sm md:text-lg relative z-10">{option.label}</span>
                                                     {isActive && (
                                                         <motion.div
@@ -562,6 +574,7 @@ export default function QuestionnairePage() {
                 </div>
             </div>
 
+            {/* Navigation Footer */}
             <div className="fixed bottom-0 left-0 w-full p-4 md:p-10 flex justify-between items-center backdrop-blur-md bg-white/50 z-50">
                 <button
                     onClick={handleBack}
@@ -571,8 +584,9 @@ export default function QuestionnairePage() {
                         step === 0 ? 'opacity-0 pointer-events-none' : 'opacity-100'
                     )}
                 >
-                    <ArrowLeft size={18} />
-                    <span>Précédent</span>
+                    <ArrowLeft size={16} className="md:hidden" />
+                    <ArrowLeft size={18} className="hidden md:block" />
+                    <span className="hidden md:inline">Précédent</span>
                 </button>
 
                 <button
@@ -585,13 +599,25 @@ export default function QuestionnairePage() {
                 >
                     {step === questions.length - 1 ? (
                         <>
-                            <span>{isSubmitting ? 'Envoi...' : 'Soumettre le projet'}</span>
-                            {isSubmitting ? <RefreshCw size={20} className="animate-spin" /> : <Send size={20} />}
+                            <span className="hidden md:inline">
+                                {isSubmitting ? 'Envoi en cours...' : 'Soumettre le projet'}
+                            </span>
+                            <span className="md:hidden">
+                                {isSubmitting ? '...' : 'Soumettre'}
+                            </span>
+                            {isSubmitting ? (
+                                <RefreshCw size={16} className="animate-spin" />
+                            ) : (
+                                <Send size={16} className="md:hidden" />
+                            )}
+                            {!isSubmitting && <Send size={20} className="hidden md:block" />}
                         </>
                     ) : (
                         <>
-                            <span>Continuer</span>
-                            <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+                            <span className="hidden md:inline">Continuer</span>
+                            <span className="md:hidden">Suivant</span>
+                            <ArrowRight size={16} className="md:hidden group-hover:translate-x-1 transition-transform" />
+                            <ArrowRight size={20} className="hidden md:block group-hover:translate-x-1 transition-transform" />
                         </>
                     )}
                 </button>
@@ -600,14 +626,21 @@ export default function QuestionnairePage() {
             <style jsx global>{`
         input[type='range']::-webkit-slider-thumb {
           appearance: none;
-          height: 24px;
-          width: 24px;
+          height: 20px;
+          width: 20px;
           border-radius: 50%;
           background: black;
           cursor: pointer;
-          border: 4px solid white;
+          border: 3px solid white;
           box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
           transition: transform 0.2s;
+        }
+        @media (min-width: 768px) {
+          input[type='range']::-webkit-slider-thumb {
+            height: 24px;
+            width: 24px;
+            border: 4px solid white;
+          }
         }
         input[type='range']::-webkit-slider-thumb:hover {
           transform: scale(1.2);
