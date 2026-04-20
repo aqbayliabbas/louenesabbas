@@ -15,26 +15,26 @@ interface FontPair {
 }
 
 const FONT_PAIRINGS: FontPair[] = [
-    { id: '1', heading: 'Playfair Display', body: 'Lato', category: 'Classic', description: 'Timeless elegance meeting modern clarity.' },
-    { id: '2', heading: 'Oswald', body: 'Open Sans', category: 'Modern', description: 'Strong, condensed headlines with a neutral body.' },
-    { id: '3', heading: 'Montserrat', body: 'Merriweather', category: 'Classic', description: 'Geometric urban energy balanced with readable serifs.' },
-    { id: '4', heading: 'Raleway', body: 'Roboto', category: 'Tech', description: 'Sophisticated thin weights paired with mechanical precision.' },
-    { id: '5', heading: 'Abril Fatface', body: 'Poppins', category: 'Editorial', description: 'High contrast curves with geometric stability.' },
-    { id: '6', heading: 'Cinzel', body: 'Fauna One', category: 'Classic', description: 'Classical Roman proportions for high-end luxury.' },
-    { id: '7', heading: 'Syne', body: 'Inter', category: 'Modern', description: 'Art-house eccentricity grounded by functionalism.' },
-    { id: '8', heading: 'Space Grotesk', body: 'Space Mono', category: 'Tech', description: 'Brutalist technological aesthetics.' },
-    { id: '9', heading: 'DM Serif Display', body: 'DM Sans', category: 'Editorial', description: 'Contemporary editorial powerhouse.' },
-    { id: '10', heading: 'Unbounded', body: 'Work Sans', category: 'Modern', description: 'Expansive, distinctive headers with practical details.' },
-    { id: '11', heading: 'Cormorant Garamond', body: 'Proza Libre', category: 'Classic', description: 'Fluid, organic elegance for refined brands.' },
-    { id: '12', heading: 'Bebas Neue', body: 'Montserrat', category: 'Modern', description: 'The ultimate condensed headline font with a geometric partner.' },
-    { id: '13', heading: 'Righteous', body: 'Ubuntu', category: 'Tech', description: 'Sci-fi inspired curves with humanist warmth.' },
-    { id: '14', heading: 'Lora', body: 'Source Sans 3', category: 'Editorial', description: 'Calligraphic roots meeting digital reliability.' },
-    { id: '15', heading: 'Yeseva One', body: 'Josefin Sans', category: 'Classic', description: 'Feminine grace with geometric sharpness.' },
-    { id: '16', heading: 'Archivo Black', body: 'Archivo', category: 'Modern', description: 'Heavy impact with consistent grotesque dna.' },
-    { id: '17', heading: 'Fraunces', body: 'Mulish', category: 'Playful', description: 'Old-style soft serifs with friendly minimalism.' },
-    { id: '18', heading: 'Permanent Marker', body: 'Caveat', category: 'Playful', description: 'Hand-drawn, authentic, and completely informal.' },
-    { id: '19', heading: 'Prata', body: 'Lato', category: 'Classic', description: 'High-fashion didone vibes offering sharp contrast.' },
-    { id: '20', heading: 'Anton', body: 'Roboto Condensed', category: 'Modern', description: 'Bold, attention-grabbing posters.' },
+    { id: '1', heading: 'Playfair Display', body: 'Lato', category: 'Classic', description: 'L\'élégance intemporelle rencontre la clarté moderne.' },
+    { id: '2', heading: 'Oswald', body: 'Open Sans', category: 'Modern', description: 'Des titres forts et condensés avec un corps de texte neutre.' },
+    { id: '3', heading: 'Montserrat', body: 'Merriweather', category: 'Classic', description: 'Énergie urbaine géométrique équilibrée par des empattements lisibles.' },
+    { id: '4', heading: 'Raleway', body: 'Roboto', category: 'Tech', description: 'Graisses fines sophistiquées associées à une précision mécanique.' },
+    { id: '5', heading: 'Abril Fatface', body: 'Poppins', category: 'Editorial', description: 'Courbes à haut contraste avec stabilité géométrique.' },
+    { id: '6', heading: 'Cinzel', body: 'Fauna One', category: 'Classic', description: 'Proportions romaines classiques pour le luxe haut de gamme.' },
+    { id: '7', heading: 'Syne', body: 'Inter', category: 'Modern', description: 'Excentricité d\'art et d\'essai ancrée dans le fonctionnalisme.' },
+    { id: '8', heading: 'Space Grotesk', body: 'Space Mono', category: 'Tech', description: 'Esthétique technologique brutaliste.' },
+    { id: '9', heading: 'DM Serif Display', body: 'DM Sans', category: 'Editorial', description: 'Puissance éditoriale contemporaine.' },
+    { id: '10', heading: 'Unbounded', body: 'Work Sans', category: 'Modern', description: 'En-têtes expansifs et distinctifs avec des détails pratiques.' },
+    { id: '11', heading: 'Cormorant Garamond', body: 'Proza Libre', category: 'Classic', description: 'Élégance fluide et organique pour les marques raffinées.' },
+    { id: '12', heading: 'Bebas Neue', body: 'Montserrat', category: 'Modern', description: 'La police de titre condensée ultime avec un partenaire géométrique.' },
+    { id: '13', heading: 'Righteous', body: 'Ubuntu', category: 'Tech', description: 'Courbes d\'inspiration science-fiction avec une chaleur humaniste.' },
+    { id: '14', heading: 'Lora', body: 'Source Sans 3', category: 'Editorial', description: 'Racines calligraphiques rencontrant la fiabilité numérique.' },
+    { id: '15', heading: 'Yeseva One', body: 'Josefin Sans', category: 'Classic', description: 'Grâce féminine avec une netteté géométrique.' },
+    { id: '16', heading: 'Archivo Black', body: 'Archivo', category: 'Modern', description: 'Impact lourd avec un ADN grotesque cohérent.' },
+    { id: '17', heading: 'Fraunces', body: 'Mulish', category: 'Playful', description: 'Empattements doux à l\'ancienne avec un minimalisme amical.' },
+    { id: '18', heading: 'Permanent Marker', body: 'Caveat', category: 'Playful', description: 'Dessiné à la main, authentique et totalement informel.' },
+    { id: '19', heading: 'Prata', body: 'Lato', category: 'Classic', description: 'Vibes didones de haute couture offrant un contraste tranchant.' },
+    { id: '20', heading: 'Anton', body: 'Roboto Condensed', category: 'Modern', description: 'Affiches audacieuses qui captent l\'attention.' },
 ];
 
 export default function TypologyPage() {
@@ -128,7 +128,7 @@ export default function TypologyPage() {
         return matchesCategory && matchesSearch;
     });
 
-    const categories = ['All', 'Modern', 'Classic', 'Editorial', 'Tech', 'Playful'];
+    const categories = ['Tout', 'Moderne', 'Classique', 'Éditorial', 'Technologique', 'Ludique'];
 
     return (
         <main className="min-h-screen bg-[#FDFBF7] selection:bg-black selection:text-white pb-32 font-sans relative">
@@ -142,7 +142,7 @@ export default function TypologyPage() {
             >
                 <div className="text-sm font-medium whitespace-nowrap">
                     <span className="font-bold text-[#d4af37] text-lg mr-2">{selectedIds.size}</span>
-                    <span className="text-neutral-400 uppercase tracking-widest text-[10px]">Collection Selected</span>
+                    <span className="text-neutral-400 uppercase tracking-widest text-[10px]">Collection Sélectionnée</span>
                 </div>
                 <div className="flex items-center gap-4">
                     <button
@@ -153,7 +153,7 @@ export default function TypologyPage() {
                             : 'bg-white text-black hover:bg-[#d4af37] hover:text-white'
                             }`}
                     >
-                        {isDownloading ? 'Bundling...' : 'Download ZIP'}
+                        {isDownloading ? 'Compilation...' : 'Télécharger ZIP'}
                     </button>
                 </div>
             </motion.div>
@@ -169,7 +169,7 @@ export default function TypologyPage() {
                             Typology<span className="text-[#d4af37]">.</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-neutral-500 max-w-2xl font-light mb-12">
-                            Curated typographic systems. Discover the perfect pairing for your brand.
+                            Systèmes typographiques sélectionnés. Découvrez le mariage parfait pour votre marque.
                         </p>
 
                         <div className="flex flex-col md:flex-row gap-6 md:items-center justify-between border-b border-black/10 pb-8">
@@ -194,7 +194,7 @@ export default function TypologyPage() {
                                 <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400" size={16} />
                                 <input
                                     type="text"
-                                    placeholder="Search fonts..."
+                                    placeholder="Rechercher des polices..."
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                     className="w-full bg-white border border-neutral-200 rounded-[5px] px-12 py-3 text-sm focus:outline-none focus:border-black transition-colors"
@@ -220,7 +220,7 @@ export default function TypologyPage() {
                 {filteredPairings.length === 0 && (
                     <div className="py-20 text-center text-neutral-400">
                         <Type size={48} className="mx-auto mb-4 opacity-50" />
-                        <p className="text-sm font-bold uppercase tracking-widest">No pairings found</p>
+                        <p className="text-sm font-bold uppercase tracking-widest">Aucun mariage trouvé</p>
                     </div>
                 )}
             </div>
@@ -244,23 +244,23 @@ function FontCard({ pair, index, loaded, isSelected, onToggle }: { pair: FontPai
                 {/* Visual Preview */}
                 <div className="space-y-6 mb-8 pointer-events-none">
                     <div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-300 mb-2 block">Heading</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-300 mb-2 block">Titre</span>
                         <h3
                             className="text-4xl leading-tight text-black"
                             style={{ fontFamily: `"${pair.heading}", sans-serif` }}
                         >
-                            The Quick Brown Fox
+                            Portez ce vieux vin blond au juge qui fume
                         </h3>
                         <p className="text-xs text-neutral-400 mt-1">{pair.heading}</p>
                     </div>
 
                     <div>
-                        <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-300 mb-2 block">Body</span>
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-neutral-300 mb-2 block">Corps de texte</span>
                         <p
                             className="text-lg leading-relaxed text-neutral-600 line-clamp-3"
                             style={{ fontFamily: `"${pair.body}", sans-serif` }}
                         >
-                            Every brand tells a story. The typography you choose sets the voice, tone, and rhythm of that narrative regardless of the content itself.
+                            Chaque marque raconte une histoire. La typographie que vous choisissez définit la voix, le ton et le rythme de ce récit.
                         </p>
                         <p className="text-xs text-neutral-400 mt-1">{pair.body}</p>
                     </div>

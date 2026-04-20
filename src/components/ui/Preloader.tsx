@@ -72,7 +72,7 @@ export function Preloader() {
                             animate={{ opacity: 1, y: 0 }}
                             className="text-[10px] md:text-sm font-bold tracking-[0.5em] uppercase text-neutral-500 mb-4"
                         >
-                            Starting your success journey
+                            Démarrage de votre succès
                         </motion.span>
 
                         {/* Counter */}
@@ -119,7 +119,7 @@ export function Preloader() {
                             transition={{ delay: 0.2 }}
                             className="text-[10px] font-mono text-neutral-800 block"
                         >
-                            STRATEGY / DESIGN / CODE
+                            STRATÉGIE / DESIGN / CODE
                         </motion.span>
                     </div>
                     <div className="absolute bottom-10 right-10 overflow-hidden z-10">
@@ -129,7 +129,7 @@ export function Preloader() {
                             transition={{ delay: 0.3 }}
                             className="text-[10px] font-mono text-neutral-800 block uppercase"
                         >
-                            © 2024 SYSTEM BOOT
+                            © 2024 INITIALISATION
                         </motion.span>
                     </div>
                 </motion.div>

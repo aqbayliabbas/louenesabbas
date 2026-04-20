@@ -186,31 +186,31 @@ export default function ColorizoPage() {
 
         const newPalettes: Palette[] = [
             {
-                name: 'Complementary',
+                name: 'Complémentaire',
                 colors: [hex, hslToHex(h + 180, s, l)]
             },
             {
-                name: 'Triadic',
+                name: 'Triadique',
                 colors: [hex, hslToHex(h + 120, s, l), hslToHex(h + 240, s, l)]
             },
             {
-                name: 'Analogous',
+                name: 'Analogue',
                 colors: [hslToHex(h - 30, s, l), hex, hslToHex(h + 30, s, l)]
             },
             {
-                name: 'Split Complementary',
+                name: 'Complémentaire Adjacente',
                 colors: [hex, hslToHex(h + 150, s, l), hslToHex(h + 210, s, l)]
             },
             {
-                name: 'Tetradic (Square)',
+                name: 'Tétradique (Carré)',
                 colors: [hex, hslToHex(h + 90, s, l), hslToHex(h + 180, s, l), hslToHex(h + 270, s, l)]
             },
             {
-                name: 'Tetradic (Rectangular)',
+                name: 'Tétradique (Rectangle)',
                 colors: [hex, hslToHex(h + 60, s, l), hslToHex(h + 180, s, l), hslToHex(h + 240, s, l)]
             },
             {
-                name: 'Monochromatic',
+                name: 'Monochromatique',
                 colors: [
                     hslToHex(h, s, Math.max(0, l - 30)),
                     hslToHex(h, s, Math.max(0, l - 15)),
@@ -220,7 +220,7 @@ export default function ColorizoPage() {
                 ]
             },
             {
-                name: 'Shades',
+                name: 'Nuances',
                 colors: [
                     hslToHex(h, s, 90),
                     hslToHex(h, s, 70),
@@ -230,7 +230,7 @@ export default function ColorizoPage() {
                 ]
             },
             {
-                name: 'Tones',
+                name: 'Tons',
                 colors: [
                     hslToHex(h, 20, l),
                     hslToHex(h, 40, l),
@@ -417,7 +417,7 @@ export default function ColorizoPage() {
                             Colorizo<span className="text-[#d4af37]">.</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-neutral-500 max-w-2xl font-light">
-                            The Golden Ratio of Color. Generate harmonious palettes instantly.
+                            Le Nombre d&apos;Or de la Couleur. Générez des palettes harmonieuses instantanément.
                         </p>
                     </motion.div>
                 </header>
@@ -432,7 +432,7 @@ export default function ColorizoPage() {
                     >
                         <div className="bg-white p-6 rounded-[5px] shadow-2xl border border-neutral-100 backdrop-blur-sm select-none">
                             <label className="block text-xs font-bold uppercase tracking-widest text-neutral-400 mb-4">
-                                Base Color
+                                Couleur de Base
                             </label>
 
                             <div className="flex flex-col gap-6">
@@ -535,7 +535,7 @@ export default function ColorizoPage() {
                                             maxLength={7}
                                         />
                                         <div className="text-center mt-2 text-xs text-neutral-400">
-                                            Hex Code
+                                            Code Hex
                                         </div>
                                     </div>
 
@@ -544,7 +544,7 @@ export default function ColorizoPage() {
                                         className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-black text-white rounded-[5px] text-xs font-bold uppercase tracking-widest hover:bg-neutral-800 transition-colors"
                                     >
                                         <RefreshCw size={14} />
-                                        Randomize
+                                        Aléatoire
                                     </button>
                                 </div>
                             </div>
@@ -601,7 +601,7 @@ export default function ColorizoPage() {
                                                         initial={{ opacity: 0, x: -5 }} animate={{ opacity: 1, x: 0 }}
                                                         className="text-[8px] font-bold text-green-600 uppercase tracking-wider"
                                                     >
-                                                        Copied
+                                                        Copié
                                                     </motion.span>
                                                 )}
                                             </div>

@@ -10,14 +10,8 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function ProjectsPage() {
-    const router = useRouter();
-
-    useEffect(() => {
-        router.push('/');
-    }, [router]);
-
-    return null;
-}
+    return (
+        <main className="min-h-screen bg-white">
             {/* Hero Section */}
             <header className="pt-48 pb-24 px-6 md:px-[10%] w-full">
                 <motion.div
@@ -97,3 +91,4 @@ export default function ProjectsPage() {
         </main>
     );
 }
+

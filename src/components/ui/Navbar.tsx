@@ -9,8 +9,7 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isToolsOpen, setIsToolsOpen] = useState(false);
     const [forceDark, setForceDark] = useState(initialForceDark);
-    const [showAlert, setShowAlert] = useState(false);
-
+    
     useEffect(() => {
         const checkTheme = () => {
             const darkElement = document.querySelector('[data-nav-dark]');
@@ -22,30 +21,8 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
         return () => clearInterval(interval);
     }, [initialForceDark]);
 
-    const handleProjectClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        setShowAlert(true);
-        setTimeout(() => setShowAlert(false), 3000);
-    };
-
     return (
         <div className="fixed top-8 left-0 w-full z-[100] px-6 flex justify-center">
-            {/* Project Lock Alert */}
-            <AnimatePresence>
-                {showAlert && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20, scale: 0.95 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: -20, scale: 0.95 }}
-                        className="fixed top-24 left-1/2 -translate-x-1/2 z-[110] px-8 py-4 bg-black/90 backdrop-blur-2xl border border-white/20 rounded-[5px] text-white shadow-2xl flex items-center gap-4"
-                    >
-                        <div className="w-2 h-2 rounded-full bg-neutral-400 animate-pulse" />
-                        <span className="text-[10px] font-bold uppercase tracking-[0.2em] whitespace-nowrap">
-                            Nous organisons les nouveaux projets
-                        </span>
-                    </motion.div>
-                )}
-            </AnimatePresence>
 
             <motion.nav
                 initial={{ opacity: 0, y: -20 }}
@@ -78,12 +55,12 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                                 Consultation Gratuite
                             </Link>
 
-                            <button
-                                onClick={handleProjectClick}
-                                className={`text-[10px] font-bold uppercase tracking-widest transition-colors cursor-pointer ${forceDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-600 hover:text-black'}`}
+                            <Link
+                                href="/projects"
+                                className={`text-[10px] font-bold uppercase tracking-widest transition-colors ${forceDark ? 'text-neutral-400 hover:text-white' : 'text-neutral-600 hover:text-black'}`}
                             >
                                 Projets
-                            </button>
+                            </Link>
 
                             <Link
                                 href="/questionnaire"
@@ -169,7 +146,7 @@ export function Navbar({ forceDark: initialForceDark = false, hideLinks = false 
                     >
                         <div className="flex flex-col gap-8 items-center">
                             <Link href="/consultation" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Consultation Gratuite</Link>
-                            <button onClick={handleProjectClick} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Projets</button>
+                            <Link href="/projects" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Projets</Link>
                             <Link href="/questionnaire" onClick={() => setIsMobileMenuOpen(false)} className={`text-xs font-bold uppercase tracking-widest ${forceDark ? 'text-white/70' : 'text-neutral-800'}`}>Questionnaire</Link>
                             <Link
                                 href="/questionnaire"

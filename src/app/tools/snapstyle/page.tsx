@@ -34,10 +34,10 @@ interface SnapSettings {
 }
 
 const PRESETS = {
-    'FHD': { label: 'Full HD (16:9)', w: 1920, h: 1080 },
-    'Sq': { label: 'Square (1:1)', w: 1080, h: 1080 },
+    'FHD': { label: 'Plein HD (16:9)', w: 1920, h: 1080 },
+    'Sq': { label: 'Carré (1:1)', w: 1080, h: 1080 },
     'Port': { label: 'Portrait (4:5)', w: 1080, h: 1350 },
-    'Tw': { label: 'Twitter Header', w: 1500, h: 500 },
+    'Tw': { label: 'Bannière Twitter', w: 1500, h: 500 },
 };
 
 // --- Components ---
@@ -335,7 +335,7 @@ export default function SnapStylePage() {
                             SnapStyle<span className="text-[#FF0080]">.</span>
                         </h1>
                         <p className="text-xl md:text-2xl text-neutral-500 max-w-2xl font-light">
-                            Elevate your screenshots. Backgrounds, shadows, and style in seconds.
+                            Sublimez vos captures d&apos;écran. Arrière-plans, ombres et style en quelques secondes.
                         </p>
                     </motion.div>
                 </header>
@@ -377,7 +377,7 @@ export default function SnapStylePage() {
                                 ) : (
                                     <div className="flex flex-col items-center gap-3 text-neutral-400 group-hover:text-blue-500 transition-colors">
                                         <Upload size={24} />
-                                        <span className="text-sm font-medium">Click or Drop Image</span>
+                                        <span className="text-sm font-medium">Cliquez ou Déposez l&apos;Image</span>
                                     </div>
                                 )}
                             </div>
@@ -385,7 +385,7 @@ export default function SnapStylePage() {
 
                         {/* Background Controls */}
                         <div className="bg-white p-6 rounded-3xl shadow-lg border border-neutral-100">
-                            <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-6">Background</h3>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-6">Arrière-plan</h3>
 
                             <div className="flex gap-2 mb-6 p-1 bg-neutral-100 rounded-lg">
                                 {['solid', 'gradient'].map((t) => (
@@ -394,7 +394,7 @@ export default function SnapStylePage() {
                                         onClick={() => setSettings(s => ({ ...s, background: { ...s.background, type: t as any } }))}
                                         className={`flex-1 py-2 rounded-[5px] text-xs font-bold uppercase tracking-wider transition-all ${settings.background.type === t ? 'bg-white shadow-sm text-black' : 'text-neutral-500 hover:text-black'}`}
                                     >
-                                        {t}
+                                        {t === 'solid' ? 'Solide' : 'Dégradé'}
                                     </button>
                                 ))}
                             </div>
@@ -414,7 +414,7 @@ export default function SnapStylePage() {
                                     <Slider label="Angle" value={settings.background.angle} min={0} max={360} onChange={(v) => setSettings(s => ({ ...s, background: { ...s.background, angle: v } }))} unit="°" />
                                 )}
 
-                                <Slider label="Noise / Grain" value={Math.round(settings.background.grain * 100)} min={0} max={50} onChange={(v) => setSettings(s => ({ ...s, background: { ...s.background, grain: v / 100 } }))} unit="%" />
+                                <Slider label="Bruit / Grain" value={Math.round(settings.background.grain * 100)} min={0} max={50} onChange={(v) => setSettings(s => ({ ...s, background: { ...s.background, grain: v / 100 } }))} unit="%" />
                             </div>
                         </div>
 
@@ -422,16 +422,16 @@ export default function SnapStylePage() {
                         <div className="bg-white p-6 rounded-3xl shadow-lg border border-neutral-100">
                             <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-6">Style</h3>
                             <div className="space-y-6">
-                                <Slider label="Padding" value={settings.style.padding} min={0} max={200} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, padding: v } }))} unit="px" />
-                                <Slider label="Roundness" value={settings.style.radius} min={0} max={50} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, radius: v } }))} unit="px" />
-                                <Slider label="Shadow Blur" value={settings.style.shadow} min={0} max={100} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, shadow: v } }))} unit="px" />
-                                <Slider label="Shadow Opacity" value={Math.round(settings.style.shadowOpacity * 100)} min={0} max={100} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, shadowOpacity: v / 100 } }))} unit="%" />
+                                <Slider label="Espacement" value={settings.style.padding} min={0} max={200} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, padding: v } }))} unit="px" />
+                                <Slider label="Arrondi" value={settings.style.radius} min={0} max={50} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, radius: v } }))} unit="px" />
+                                <Slider label="Flou de l&apos;Ombre" value={settings.style.shadow} min={0} max={100} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, shadow: v } }))} unit="px" />
+                                <Slider label="Opacité de l&apos;Ombre" value={Math.round(settings.style.shadowOpacity * 100)} min={0} max={100} onChange={(v) => setSettings(s => ({ ...s, style: { ...s.style, shadowOpacity: v / 100 } }))} unit="%" />
                             </div>
                         </div>
 
                         {/* Size & Export */}
                         <div className="bg-white p-6 rounded-3xl shadow-lg border border-neutral-100">
-                            <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-6">Canvas</h3>
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-neutral-400 mb-6">Canevas</h3>
 
                             <div className="grid grid-cols-2 gap-2 mb-6">
                                 {(Object.entries(PRESETS) as [string, any][]).map(([key, val]) => (
@@ -447,7 +447,7 @@ export default function SnapStylePage() {
                             </div>
 
                             <div className="mb-6">
-                                <Slider label="Scale" value={Math.round(settings.position.scale * 100)} min={10} max={200} onChange={(v) => setSettings(s => ({ ...s, position: { ...s.position, scale: v / 100 } }))} unit="%" />
+                                <Slider label="Échelle" value={Math.round(settings.position.scale * 100)} min={10} max={200} onChange={(v) => setSettings(s => ({ ...s, position: { ...s.position, scale: v / 100 } }))} unit="%" />
                             </div>
 
                             <button
@@ -459,7 +459,7 @@ export default function SnapStylePage() {
                                 ) : (
                                     <Download size={20} />
                                 )}
-                                {isExporting ? 'Processing...' : 'Export PNG'}
+                                {isExporting ? 'Traitement...' : 'Exporter en PNG'}
                             </button>
                         </div>
                     </motion.div>
@@ -521,7 +521,7 @@ export default function SnapStylePage() {
                                         <div className="w-12 h-12 rounded-full bg-white shadow-sm flex items-center justify-center text-neutral-400 group-hover:text-black transition-colors">
                                             <Upload size={20} />
                                         </div>
-                                        <span className="text-xs font-bold uppercase tracking-widest text-neutral-400 group-hover:text-black transition-colors">Add Image</span>
+                                        <span className="text-xs font-bold uppercase tracking-widest text-neutral-400 group-hover:text-black transition-colors">Ajouter une Image</span>
                                     </div>
                                 )}
                             </div>
