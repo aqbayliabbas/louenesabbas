@@ -62,15 +62,23 @@ export default function ResponsesPage() {
     const fetchResponses = async () => {
         setIsLoading(true);
         try {
-            const { data, error } = await supabase
-                .from('responses')
-                .select('*')
-                .order('created_at', { ascending: false });
+            const res = await fetch('/api/responses');
+            if (res.ok) {
+                const json = await res.json();
+                const resData = json.responses || [];
+                setResponses(resData);
+                calculateStats(resData);
+            } else {
+                const { data, error } = await supabase
+                    .from('responses')
+                    .select('*')
+                    .order('created_at', { ascending: false });
 
-            if (error) throw error;
-            const resData = data || [];
-            setResponses(resData);
-            calculateStats(resData);
+                if (error) throw error;
+                const resData = data || [];
+                setResponses(resData);
+                calculateStats(resData);
+            }
         } catch (error) {
             console.error('Failed to fetch:', error);
         } finally {
@@ -203,7 +211,14 @@ export default function ResponsesPage() {
                                                     {res.company_name?.[0] || '?'}
                                                 </div>
                                                 <div className="min-w-0">
-                                                    <p className="text-xl font-bold tracking-tight text-black line-clamp-1">{res.company_name}</p>
+                                                    <div className="flex items-center gap-2">
+                                                        <p className="text-xl font-bold tracking-tight text-black line-clamp-1">{res.company_name}</p>
+                                                        {(res.raw_data?.lang || res.lang) && (
+                                                            <span className="text-xs px-2 py-0.5 bg-neutral-100 rounded text-neutral-600 font-mono shrink-0">
+                                                                {(res.raw_data?.lang || res.lang) === 'ar' ? '🇩🇿 AR' : '🇫🇷 FR'}
+                                                            </span>
+                                                        )}
+                                                    </div>
                                                     <p className="text-sm text-neutral-400 font-medium truncate">{res.email || 'No identity recorded'}</p>
                                                 </div>
                                             </div>

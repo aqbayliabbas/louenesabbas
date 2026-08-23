@@ -45,11 +45,20 @@ export default function DashboardOverview() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            // Fetch responses
-            const { data: responses, error: respError } = await supabase
-                .from('responses')
-                .select('*')
-                .order('created_at', { ascending: false });
+            // Fetch responses via API route
+            let responsesData: any[] = [];
+            try {
+                const res = await fetch('/api/responses');
+                if (res.ok) {
+                    const json = await res.json();
+                    responsesData = json.responses || [];
+                } else {
+                    const { data } = await supabase.from('responses').select('*').order('created_at', { ascending: false });
+                    responsesData = data || [];
+                }
+            } catch (err) {
+                console.error('Error fetching responses via API:', err);
+            }
 
             // Fetch invoices
             const { data: invoices, error: invError } = await supabase
@@ -57,10 +66,8 @@ export default function DashboardOverview() {
                 .select('*')
                 .order('created_at', { ascending: false });
 
-            if (respError) console.error('Responses error:', respError);
             if (invError) console.error('Invoices error:', invError);
 
-            const responsesData = responses || [];
             const invoicesData = invoices || [];
 
             // Calculate stats

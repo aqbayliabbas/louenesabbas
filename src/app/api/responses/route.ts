@@ -5,6 +5,13 @@ export async function POST(request: Request) {
     try {
         const data = await request.json();
 
+        const isSupabaseConfigured = process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder-url.supabase.co';
+
+        if (!isSupabaseConfigured) {
+            console.warn('⚠️ Supabase credentials missing or set to placeholder. Form submission mocked locally.');
+            return NextResponse.json({ message: 'Success (Mocked local development)' });
+        }
+
         // Insert into Supabase table 'responses'
         const { error } = await supabase
             .from('responses')

@@ -39,6 +39,8 @@ interface ResponsePopupProps {
         timeline?: string;
         budget?: string;
         email?: string;
+        lang?: string;
+        raw_data?: any;
     } | null;
     onClose: () => void;
     onDelete?: (id: string) => void;
@@ -46,6 +48,8 @@ interface ResponsePopupProps {
 
 export default function ResponsePopup({ response, onClose, onDelete }: ResponsePopupProps) {
     if (!response) return null;
+
+    const lang = response.raw_data?.lang || response.lang;
 
     const handlePrint = () => window.print();
 
@@ -137,8 +141,13 @@ export default function ResponsePopup({ response, onClose, onDelete }: ResponseP
                 >
                     {/* Sticky Header: Dossier Identity */}
                     <div className="flex items-center justify-between p-8 md:px-12 bg-white border-b border-neutral-100 z-50 print:hidden">
-                        <div className="flex flex-col">
-                            <h2 className="text-2xl font-bold tracking-tight mt-1">{response.company_name}</h2>
+                        <div className="flex items-center gap-3 mt-1">
+                            <h2 className="text-2xl font-bold tracking-tight">{response.company_name}</h2>
+                            {lang && (
+                                <span className="text-xs px-2.5 py-1 bg-neutral-100 rounded text-neutral-700 font-mono font-bold">
+                                    {lang === 'ar' ? '🇩🇿 العربية (AR)' : '🇫🇷 Français (FR)'}
+                                </span>
+                            )}
                         </div>
                         <div className="flex items-center gap-3">
                             {onDelete && (

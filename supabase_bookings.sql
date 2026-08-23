@@ -14,12 +14,14 @@ CREATE TABLE bookings (
 -- Enable RLS
 ALTER TABLE bookings ENABLE ROW LEVEL SECURITY;
 
--- Policy (Open for public create)
+-- Policies (Drop existing first to avoid duplicate policy errors)
+DROP POLICY IF EXISTS "Enable insert for everyone" ON bookings;
+DROP POLICY IF EXISTS "Enable read for authenticated users" ON bookings;
+DROP POLICY IF EXISTS "Enable update for authenticated users" ON bookings;
+DROP POLICY IF EXISTS "Enable delete for authenticated users" ON bookings;
+
 CREATE POLICY "Enable insert for everyone" ON bookings FOR INSERT WITH CHECK (true);
-
--- Policy (Read for admin only - simulating public read for dev if needed, typically authenticated)
 CREATE POLICY "Enable read for authenticated users" ON bookings FOR SELECT USING (auth.role() = 'anon' OR auth.role() = 'authenticated');
-
 CREATE POLICY "Enable update for authenticated users" ON bookings FOR UPDATE USING (auth.role() = 'authenticated');
-
 CREATE POLICY "Enable delete for authenticated users" ON bookings FOR DELETE USING (auth.role() = 'authenticated');
+
